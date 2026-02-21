@@ -1,0 +1,144 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["app"]
+}
+
+model User {
+  id        String    @id @default(uuid())
+  username  String    @unique
+  password  String
+  name      String
+  email     String?
+  role      String    @default("surveyor")
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  mustahik  Mustahik?
+
+  @@schema("app")
+}
+
+model AidProgram {
+  id                 String             @id @default(uuid())
+  name               String
+  description        String
+  totalBudget        Decimal            @db.Decimal(15, 2)
+  budgetPerRecipient Decimal            @db.Decimal(15, 2)
+  quota              Int
+  startDate          DateTime
+  endDate            DateTime
+  status             String
+  selectedCandidates Json?
+  createdAt          DateTime           @default(now())
+  monitoringData     MonitoringData[]
+  recipientHistory   RecipientHistory[]
+
+  @@map("Program")
+  @@schema("app")
+}
+
+model Criterion {
+  id          String         @id @default(uuid())
+  code        String         @unique
+  name        String
+  weight      Float
+  type        String         @default("benefit")
+  description String?
+  icon        String?
+  color       String?
+  subCriteria SubCriterion[]
+
+  @@map("Kriteria")
+  @@schema("app")
+}
+
+model SubCriterion {
+  id             String          @id @default(uuid())
+  criterionId    String
+  aspect         String
+  name           String
+  label          String
+  value          Int
+  mustahikScores MustahikScore[]
+  criterion      Criterion       @relation(fields: [criterionId], references: [id], onDelete: Cascade)
+
+  @@map("SubKriteria")
+  @@schema("app")
+}
+
+model Mustahik {
+  id               String             @id
+  userId           String?            @unique
+  name             String
+  address          String
+  phone            String
+  businessStatus   BusinessStatus     @default(belum_usaha)
+  registeredDate   DateTime           @default(now())
+  user             User?              @relation(fields: [userId], references: [id])
+  monitoringData   MonitoringData[]
+  criteriaScores   MustahikScore[]
+  recipientHistory RecipientHistory[]
+
+  @@schema("app")
+}
+
+model MustahikScore {
+  id             String       @id @default(uuid())
+  mustahikId     String
+  subCriterionId String
+  mustahik       Mustahik     @relation(fields: [mustahikId], references: [id], onDelete: Cascade)
+  subCriterion   SubCriterion @relation(fields: [subCriterionId], references: [id], onDelete: Cascade)
+
+  @@unique([mustahikId, subCriterionId])
+  @@map("SkorMustahik")
+  @@schema("app")
+}
+
+model RecipientHistory {
+  id           String     @id @default(uuid())
+  mustahikId   String
+  programId    String
+  amount       Decimal    @db.Decimal(15, 2)
+  receivedDate DateTime
+  mooraScore   Float
+  rank         Int?
+  notes        String?
+  mustahik     Mustahik   @relation(fields: [mustahikId], references: [id])
+  program      AidProgram @relation(fields: [programId], references: [id])
+
+  @@map("RiwayatMenerima")
+  @@schema("app")
+}
+
+model MonitoringData {
+  id                      String     @id @default(uuid())
+  mustahikId              String
+  programId               String
+  monitoringDate          DateTime
+  businessProgress        Json
+  socialEconomicCondition Json
+  challenges              String?
+  achievements            String?
+  nextPlan                String?
+  surveyor                String?
+  notes                   String?
+  mustahik                Mustahik   @relation(fields: [mustahikId], references: [id])
+  program                 AidProgram @relation(fields: [programId], references: [id])
+
+  @@map("MonitoringData")
+  @@schema("app")
+}
+
+enum BusinessStatus {
+  belum_usaha
+  rintisan
+  berkembang
+  maju
+
+  @@schema("app")
+}
