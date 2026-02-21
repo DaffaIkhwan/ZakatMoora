@@ -1,4 +1,5 @@
-export const API_URL = 'http://localhost:5000/api';
+const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+export const API_URL = isDev ? 'http://localhost:5000/api' : '/api';
 
 const getHeaders = () => {
     const token = localStorage.getItem('token');

@@ -1,0 +1,15 @@
+﻿­ƒöº Fixing incorrect data values based on reference document...
+
+Ô£à Fixed Sri Molna Yerti / C5A: 12 ÔåÆ 6
+Ô£à Fixed Sri Molna Yerti / C5B: 4 ÔåÆ 0
+Ô£à Fixed Sri Wahyuni (Tenayan) / C5B: 6 ÔåÆ 4
+Ô£à Fixed Sri Wahyuni (Tenayan) / C6A: 6 ÔåÆ 12
+Ô£à Fixed Sri Wahyuni (Tenayan) / C6B: 9 ÔåÆ 6
+Ô£à Fixed Sri Wahyuni (Tenayan) / C6C: 6 ÔåÆ 12
+Ô£à Fixed Sri handini / C4B: 1 ÔåÆ 0
+Ô£à Fixed Sri handini / C4C: 2 ÔåÆ 0
+Ô£à Fixed Sri handini / C5A: 6 ÔåÆ 12
+Ô£à Fixed Suriati / C5C: 4 ÔåÆ 2
+
+Ô£à Done! Running verification...
+

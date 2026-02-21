@@ -1,19 +1,23 @@
 # Dependencies
 node_modules/
+backend/node_modules/
 
 # Build output
 build/
 dist/
+.vercel/
 
 # Environment variables
 .env
 .env.local
-.env.production
 backend/.env
 
-# Debug & temp files
-*.txt
-!README.md
+# Prisma
+backend/prisma/client/
+backend/prisma/*.db
+
+# Logs & Debug
+*.log
 backend/*-out.txt
 backend/*-output.txt
 backend/debug*.txt
@@ -23,18 +27,3 @@ backend/*.docx
 # IDE
 .vscode/
 .idea/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Agent config (optional - remove if you want to track)
-.agent/
-
-# Prisma
-backend/prisma/*.db
-backend/prisma/*.db-journal
-
-# Logs
-*.log
-npm-debug.log*

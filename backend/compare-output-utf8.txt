@@ -1,0 +1,136 @@
+﻿
+Total mustahik in DB: 27
+Names (alphabetical order = A1..A27):
+  A1: Anis mayanti
+  A2: Delvi Efriwarty
+  A3: Desi Safitri
+  A4: Desi Yuliani
+  A5: Harni Yanti
+  A6: Henti Anti
+  A7: Hidayathul Asni
+  A8: Liza Yeni
+  A9: Maijesti
+  A10: Mega Gustiana
+  A11: Nelda Wati
+  A12: Nuri Syamsi
+  A13: Nurmaya
+  A14: Ramadhan Saputra
+  A15: Roza Nelita
+  A16: Sofia Wartini
+  A17: Sri Molna Yerti
+  A18: Sri Wahyuni (Marpoyan)
+  A19: Sri Wahyuni (Tenayan)
+  A20: Sri handini
+  A21: Sulistiawati
+  A22: Suriati
+  A23: Susi Anita
+  A24: Veni Rahmayani
+  A25: Wanda Febrian Hendri
+  A26: Yuliana
+  A27: Yusniar
+
+--- Denominators ---
+  C1A: 29.6648
+  C2A: 50.5569
+  C2B: 2.6458
+  C3A: 16.5227
+  C3B: 9.7980
+  C3C: 5.0000
+  C4A: 10.0995
+  C4B: 3.1623
+  C4C: 4.0000
+  C5A: 53.4416
+  C5B: 22.0907
+  C5C: 10.9545
+  C6A: 48.0000
+  C6B: 44.7996
+  C6C: 45.2990
+  C6D: 51.9615
+  C7A: 8.4853
+  C7B: 11.8322
+  C7C: 17.2337
+
+--- Yi Comparison (System vs Document) ---
+Alt  | System | Doc    | Diff   | Match | Name
+-----|--------|--------|--------|-------|-----
+A1   | 0.1227 | 0.1234 | 0.0007 | Ô£à    | Anis mayanti
+A2   | 0.1610 | 0.1616 | 0.0006 | Ô£à    | Delvi Efriwarty
+A3   | 0.1580 | 0.1587 | 0.0007 | Ô£à    | Desi Safitri
+A4   | 0.1522 | 0.1528 | 0.0006 | Ô£à    | Desi Yuliani
+A5   | 0.1481 | 0.1488 | 0.0007 | Ô£à    | Harni Yanti
+A6   | 0.1299 | 0.1305 | 0.0006 | Ô£à    | Henti Anti
+A7   | 0.1686 | 0.1693 | 0.0007 | Ô£à    | Hidayathul Asni
+A8   | 0.1492 | 0.1498 | 0.0006 | Ô£à    | Liza Yeni
+A9   | 0.1601 | 0.1607 | 0.0006 | Ô£à    | Maijesti
+A10  | 0.2190 | 0.2197 | 0.0007 | Ô£à    | Mega Gustiana
+A11  | 0.1547 | 0.1554 | 0.0007 | Ô£à    | Nelda Wati
+A12  | 0.1292 | 0.1299 | 0.0007 | Ô£à    | Nuri Syamsi
+A13  | 0.0966 | 0.0973 | 0.0007 | Ô£à    | Nurmaya
+A14  | 0.1827 | 0.1834 | 0.0007 | Ô£à    | Ramadhan Saputra
+A15  | 0.1149 | 0.1156 | 0.0007 | Ô£à    | Roza Nelita
+A16  | 0.1172 | 0.1178 | 0.0006 | Ô£à    | Sofia Wartini
+A17  | 0.1421 | 0.1354 | 0.0067 | ÔØî    | Sri Molna Yerti
+A18  | 0.1621 | 0.1428 | 0.0193 | ÔØî    | Sri Wahyuni (Marpoyan)
+A19  | 0.1217 | 0.1628 | 0.0411 | ÔØî    | Sri Wahyuni (Tenayan)
+A20  | 0.1348 | 0.1224 | 0.0124 | ÔØî    | Sri handini
+A21  | 0.1320 | 0.1327 | 0.0007 | Ô£à    | Sulistiawati
+A22  | 0.2667 | 0.2552 | 0.0115 | ÔØî    | Suriati
+A23  | 0.1401 | 0.1408 | 0.0007 | Ô£à    | Susi Anita
+A24  | 0.1196 | 0.1203 | 0.0007 | Ô£à    | Veni Rahmayani
+A25  | 0.1596 | 0.1603 | 0.0007 | Ô£à    | Wanda Febrian Hendri
+A26  | 0.1369 | 0.1376 | 0.0007 | Ô£à    | Yuliana
+A27  | 0.1376 | 0.1383 | 0.0007 | Ô£à    | Yusniar
+
+--- Detail for Mismatches (5 found) ---
+
+A17 (Sri Molna Yerti): System=0.1421, Doc=0.1354, Diff=0.0067
+  C1: avgNorm=0.2023, weighted=0.0202
+  C2: avgNorm=0.0791, weighted=0.0119
+  C3: avgNorm=0.0000, weighted=0.0000
+  C4: avgNorm=0.0660, weighted=0.0066
+  C5: avgNorm=0.1961, weighted=0.0392
+  C6: avgNorm=0.1958, weighted=0.0294
+  C7: avgNorm=0.2322, weighted=0.0348
+  Raw values: {"C1A":6,"C2A":8,"C2B":0,"C3A":0,"C3B":0,"C3C":0,"C4A":2,"C4B":0,"C4C":0,"C5A":12,"C5B":4,"C5C":2,"C6A":6,"C6B":9,"C6C":12,"C6D":10,"C7A":3,"C7B":2,"C7C":3}
+
+A18 (Sri Wahyuni (Marpoyan)): System=0.1621, Doc=0.1428, Diff=0.0193
+  C1: avgNorm=0.2023, weighted=0.0202
+  C2: avgNorm=0.0989, weighted=0.0148
+  C3: avgNorm=0.2168, weighted=0.0325
+  C4: avgNorm=0.0660, weighted=0.0066
+  C5: avgNorm=0.1961, weighted=0.0392
+  C6: avgNorm=0.2103, weighted=0.0315
+  C7: avgNorm=0.1144, weighted=0.0172
+  Raw values: {"C1A":6,"C2A":10,"C2B":0,"C3A":4,"C3B":4,"C3C":0,"C4A":2,"C4B":0,"C4C":0,"C5A":12,"C5B":4,"C5C":2,"C6A":12,"C6B":6,"C6C":12,"C6D":10,"C7A":0,"C7B":2,"C7C":3}
+
+A19 (Sri Wahyuni (Tenayan)): System=0.1217, Doc=0.1628, Diff=0.0411
+  C1: avgNorm=0.1348, weighted=0.0135
+  C2: avgNorm=0.0989, weighted=0.0148
+  C3: avgNorm=0.0000, weighted=0.0000
+  C4: avgNorm=0.0660, weighted=0.0066
+  C5: avgNorm=0.2262, weighted=0.0452
+  C6: avgNorm=0.1627, weighted=0.0244
+  C7: avgNorm=0.1144, weighted=0.0172
+  Raw values: {"C1A":4,"C2A":10,"C2B":0,"C3A":0,"C3B":0,"C3C":0,"C4A":2,"C4B":0,"C4C":0,"C5A":12,"C5B":6,"C5C":2,"C6A":6,"C6B":9,"C6C":6,"C6D":10,"C7A":0,"C7B":2,"C7C":3}
+
+A20 (Sri handini): System=0.1348, Doc=0.1224, Diff=0.0124
+  C1: avgNorm=0.2023, weighted=0.0202
+  C2: avgNorm=0.0989, weighted=0.0148
+  C3: avgNorm=0.0000, weighted=0.0000
+  C4: avgNorm=0.3381, weighted=0.0338
+  C5: avgNorm=0.0983, weighted=0.0197
+  C6: avgNorm=0.1939, weighted=0.0291
+  C7: avgNorm=0.1144, weighted=0.0172
+  Raw values: {"C1A":6,"C2A":10,"C2B":0,"C3A":0,"C3B":0,"C3C":0,"C4A":2,"C4B":1,"C4C":2,"C5A":6,"C5B":0,"C5C":2,"C6A":12,"C6B":9,"C6C":6,"C6D":10,"C7A":0,"C7B":2,"C7C":3}
+
+A22 (Suriati): System=0.2667, Doc=0.2552, Diff=0.0115
+  C1: avgNorm=0.2023, weighted=0.0202
+  C2: avgNorm=0.4769, weighted=0.0715
+  C3: avgNorm=0.0807, weighted=0.0121
+  C4: avgNorm=0.3381, weighted=0.0338
+  C5: avgNorm=0.3068, weighted=0.0614
+  C6: avgNorm=0.1627, weighted=0.0244
+  C7: avgNorm=0.2886, weighted=0.0433
+  Raw values: {"C1A":6,"C2A":10,"C2B":2,"C3A":4,"C3B":0,"C3C":0,"C4A":2,"C4B":1,"C4C":2,"C5A":20,"C5B":4,"C5C":4,"C6A":6,"C6B":9,"C6C":6,"C6D":10,"C7A":3,"C7B":4,"C7C":3}
+
+Summary: 22/27 match within 0.001 tolerance

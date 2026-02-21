@@ -1,0 +1,140 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    SQL SEED FILES - QUICK REFERENCE                          ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📁 LOKASI: backend/prisma/seeds/
+
+═══════════════════════════════════════════════════════════════════════════════
+🗂️  FILES YANG TERSEDIA
+═══════════════════════════════════════════════════════════════════════════════
+
+1. ✅ seed_mustahik.sql (3.9 KB)
+   → Seed 26 data Mustahik
+   
+2. ✅ seed_skor_mustahik.sql (14.6 KB)
+   → Seed skor untuk 10 mustahik (17-19 sub-kriteria per mustahik)
+   
+3. ✅ verify_scores.sql (204 B)
+   → Query verifikasi data
+   
+4. 📖 README.md (8.4 KB)
+   → Dokumentasi lengkap
+   
+5. 📋 SUMMARY.md (8.5 KB)
+   → Ringkasan & status
+
+═══════════════════════════════════════════════════════════════════════════════
+🚀 QUICK START (Copy-Paste)
+═══════════════════════════════════════════════════════════════════════════════
+
+# 1. Masuk ke folder backend
+cd backend
+
+# 2. Seed tabel Mustahik (26 records)
+npx prisma db execute --file prisma/seeds/seed_mustahik.sql --schema prisma/schema.prisma
+
+# 3. Seed skor Mustahik (10 mustahik × 19 kriteria)
+npx prisma db execute --file prisma/seeds/seed_skor_mustahik.sql --schema prisma/schema.prisma
+
+# 4. Verifikasi (optional)
+npx prisma db execute --file prisma/seeds/verify_scores.sql --schema prisma/schema.prisma
+
+# 5. Lihat data di Prisma Studio (optional)
+npx prisma studio
+
+═══════════════════════════════════════════════════════════════════════════════
+📊 DATA YANG DI-SEED
+═══════════════════════════════════════════════════════════════════════════════
+
+TABEL MUSTAHIK:
+  • Total: 26 records
+  • Kolom: NIK, nama, alamat, telepon, businessStatus, registeredDate
+  • Business Status: belum_usaha, rintisan, berkembang
+  
+TABEL SKOR MUSTAHIK:
+  • Total Mustahik: 10 (dapat di-extend ke 26)
+  • Sub-kriteria per mustahik: 17-19
+  • Total records: ~190 skor
+
+═══════════════════════════════════════════════════════════════════════════════
+🎯 KRITERIA PENILAIAN
+═══════════════════════════════════════════════════════════════════════════════
+
+C1 - PENDIDIKAN & LITERASI
+  • C1A: Pendidikan (0-9: Tidak Sekolah → PT)
+
+C2 - KESEHATAN
+  • C2A: Kondisi Fisik (0-10: Sangat Sakit → Sehat)
+  • C2B: Kondisi Keluarga (0-2: Tidak Ada → Sakit Berat)
+
+C3 - KONDISI TEMPAT TINGGAL
+  • C3A: Struktur Rumah (0-9: Tidak Layak → Permanen)
+  • C3B: Kepadatan (0-4: ≤2 orang → >4 orang)
+  • C3C: Fasilitas Dasar (0-5: Lengkap → Tanpa MCK)
+
+C4 - RELIGIUSITAS
+  • C4A: Shalat Wajib (0-2: Jarang → Rutin)
+  • C4B: Shalat Sunnah (0-2: Tidak Pernah → Rutin)
+  • C4C: Aktivitas Keagamaan (0-2: Tidak Aktif → Aktif)
+
+C5 - KONDISI EKONOMI
+  • C5A: Pendapatan (0-20: >100%UMR → <30%UMR)
+  • C5B: Sumber Penghasilan (0-6: Tetap → Tidak Tetap)
+  • C5C: Tanggungan (0-4: ≤2 → ≥5 orang)
+
+C6 - KESIAPAN BERUSAHA
+  • C6A: Keterampilan (0-12: Tidak Ada → Terampil)
+  • C6B: Pengalaman Usaha (0-9: Tidak Ada → ≥1 tahun)
+  • C6C: Rencana Usaha (0-12: Tidak Ada → Matang)
+  • C6D: Motivasi (0-10: Rendah → Tinggi)
+
+C7 - ASET & KEPEMILIKAN
+  • C7A: Status Rumah (0-5: Milik Sendiri → Menumpang)
+  • C7B: Kendaraan (0-4: Mobil → Tidak Ada)
+  • C7C: Aset Lain (0-6: Banyak → Tidak Punya)
+
+═══════════════════════════════════════════════════════════════════════════════
+🔍 QUERY VERIFIKASI CEPAT
+═══════════════════════════════════════════════════════════════════════════════
+
+-- Cek jumlah Mustahik
+SELECT COUNT(*) FROM app."Mustahik";  -- Expected: 26
+
+-- Cek skor per Mustahik
+SELECT m.name, COUNT(ms.id) as skor
+FROM app."Mustahik" m
+LEFT JOIN app."SkorMustahik" ms ON m.nik = ms."mustahikId"
+GROUP BY m.name
+ORDER BY skor DESC;
+
+-- Cek distribusi Business Status
+SELECT "businessStatus", COUNT(*) 
+FROM app."Mustahik" 
+GROUP BY "businessStatus";
+
+═══════════════════════════════════════════════════════════════════════════════
+⚠️  TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════════════
+
+ERROR: "relation SubKriteria does not exist"
+→ Jalankan: npx prisma migrate dev
+
+ERROR: "foreign key constraint"
+→ Pastikan urutan: Kriteria → SubKriteria → Mustahik → SkorMustahik
+
+ERROR: Data tidak muncul
+→ Cek schema: SET search_path TO app;
+
+═══════════════════════════════════════════════════════════════════════════════
+📞 SUPPORT
+═══════════════════════════════════════════════════════════════════════════════
+
+Dokumentasi Lengkap: Lihat README.md di folder yang sama
+Status & Summary: Lihat SUMMARY.md di folder yang sama
+
+═══════════════════════════════════════════════════════════════════════════════
+✅ STATUS: READY TO USE
+═══════════════════════════════════════════════════════════════════════════════
+Created: 2026-02-11
+Files: 5 (3 SQL, 2 Docs)
+Total Data: 26 Mustahik + ~190 Skor

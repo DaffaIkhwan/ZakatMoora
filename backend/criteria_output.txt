@@ -1,0 +1,239 @@
+
+=== C1: Pendidikan (weight: 0.1, type: benefit) ===
+  C1A | Tingkat Pendidikan | label: 'Tidak sekolah / buta huruf' | value: 0 | id: f207b714-57ee-4fa9-a7f5-587505248a4c
+  C1A | Tingkat Pendidikan | label: 'Tamat SD' | value: 2 | id: 437ac630-2c54-4506-960a-a0e0c853e488
+  C1A | Tingkat Pendidikan | label: 'Tamat SMP' | value: 4 | id: 585e7bc9-77be-42e0-ae96-11b2cef216c4
+  C1A | Tingkat Pendidikan | label: 'Tamat SMA' | value: 6 | id: 4e42a16e-b6aa-4620-ad1f-d4e5088ce7d8
+  C1A | Tingkat Pendidikan | label: 'Perguruan Tinggi' | value: 9 | id: f0064330-ae19-47a1-8da8-239e2b4471d2
+
+=== C2: Kesehatan (weight: 0.15, type: benefit) ===
+  C2A | Kondisi Fisik | label: 'Sangat sakit / tidak mampu bekerja' | value: 0 | id: 08bc71c4-ae9b-4436-a11f-feda699cc9ec
+  C2A | Kondisi Fisik | label: 'Sakit menahun' | value: 4 | id: 0bd9a361-9916-4ee3-98ef-be1ac51758bb
+  C2A | Kondisi Fisik | label: 'Sering sakit ringan' | value: 8 | id: 2c1d1885-b649-4918-9dca-f9ae185cccce
+  C2A | Kondisi Fisik | label: 'Sehat & produktif' | value: 10 | id: e6b29e7d-dc51-4cce-bc90-2226a6e30bbf
+  C2B | Kondisi Keluarga | label: 'Tidak ada anggota keluarga sakit' | value: 0 | id: a53c4899-b185-40ed-95bd-2243204a964a
+  C2B | Kondisi Keluarga | label: 'Ada anggota keluarga sering sakit' | value: 1 | id: 7eb00e3f-d32a-49d2-8ade-4c93381190a5
+  C2B | Kondisi Keluarga | label: 'Ada anggota keluarga sakit berat' | value: 2 | id: 141a2cbe-785a-4468-a9b1-17fbaa2c3ff6
+
+=== C3: Kelayakan Hunian (weight: 0.15, type: benefit) ===
+  C3A | Struktur Rumah | label: 'Tidak layak (bambu/tanah)' | value: 0 | id: 341581f6-d9f6-4425-8c27-0a9f2d1e5e91
+  C3A | Struktur Rumah | label: 'Semi permanen' | value: 4 | id: 1d98d870-d0c2-4136-85ce-32cbdecd0848
+  C3A | Struktur Rumah | label: 'Permanen sederhana' | value: 9 | id: 749568f1-b669-496d-bd4d-f06baa620992
+  C3B | Kepadatan | label: '≤ 2 orang/kamar' | value: 0 | id: 12dc0dcf-1fb2-4030-bdb3-d56de24b8256
+  C3B | Kepadatan | label: '> 4 orang/kamar' | value: 4 | id: 2086f506-f329-43ab-97cc-c0c1db5a99c9
+  C3C | Fasilitas Dasar | label: 'Fasilitas lengkap' | value: 0 | id: cf886d66-b822-450a-b9e1-406df619a2a6
+  C3C | Fasilitas Dasar | label: 'Tanpa MCK/air bersih' | value: 5 | id: 863f7b36-24bf-466d-8fbf-d5eb48ff120b
+
+=== C4: Spiritual (weight: 0.1, type: benefit) ===
+  C4A | Shalat Wajib | label: 'Jarang (<25x/minggu)' | value: 0 | id: 8d9d169f-dcb1-40bf-b34a-3f8adec74c82
+  C4A | Shalat Wajib | label: 'Kadang (25–34x/minggu)' | value: 1 | id: 205f1194-e025-44f5-b35a-b4c1ee46580b
+  C4A | Shalat Wajib | label: 'Rutin (≥35x/minggu)' | value: 2 | id: c0b10e75-670c-4e44-91b1-2603603d656e
+  C4B | Shalat Sunnah | label: 'Tidak pernah' | value: 0 | id: 7af96134-3dc2-4842-92c2-ea0049df300c
+  C4B | Shalat Sunnah | label: 'Kadang (1–4x/minggu)' | value: 1 | id: ea141a61-c060-490d-91fb-2827776710dc
+  C4B | Shalat Sunnah | label: 'Rutin (≥5x/minggu)' | value: 2 | id: 9978769d-2b9f-40db-80a3-35b23def8760
+  C4C | Aktivitas Keagamaan | label: 'Tidak aktif' | value: 0 | id: c7ab227f-addb-4005-9969-74594833a0ae
+  C4C | Aktivitas Keagamaan | label: 'Kadang (1–2x/bulan)' | value: 1 | id: 589b8c61-00b7-434a-bb99-07285b32fd8a
+  C4C | Aktivitas Keagamaan | label: 'Aktif (≥3x/bulan)' | value: 2 | id: 59796683-a87e-4fa6-8b29-d04fa9168c62
+
+=== C5: Pendapatan (weight: 0.2, type: benefit) ===
+  C5A | Pendapatan Bulanan | label: '< 30% UMR' | value: 20 | id: 091898ba-de93-4cbe-bc37-5150195ed3c9
+  C5A | Pendapatan Bulanan | label: '30–59% UMR' | value: 12 | id: 105bd542-faf6-4ebb-b876-99eff08bae9c
+  C5A | Pendapatan Bulanan | label: '60–100% UMR' | value: 6 | id: 5163cef0-b5e9-4658-aa95-0f398c309d82
+  C5A | Pendapatan Bulanan | label: '> 100% UMR' | value: 0 | id: e342c570-a364-438c-965f-7e7ed436ffad
+  C5B | Sumber Penghasilan | label: 'Pekerjaan tetap' | value: 0 | id: 759c1711-ab02-4b3a-b30e-096cc82e3f13
+  C5B | Sumber Penghasilan | label: 'Usaha kecil stabil' | value: 4 | id: b96e4f7e-a5ec-4293-9b46-cc46c6a84fd3
+  C5B | Sumber Penghasilan | label: 'Tidak tetap' | value: 6 | id: 287e60c8-ac3a-499a-9934-8e566b2cd1eb
+  C5C | Jumlah Tanggungan | label: '≤ 2 orang' | value: 0 | id: 03245e94-478f-43a8-bcc8-2c898d3ebefc
+  C5C | Jumlah Tanggungan | label: '3–4 orang' | value: 2 | id: bbaa2a49-ec13-4249-8e21-4040bed5e764
+  C5C | Jumlah Tanggungan | label: '> 5 orang' | value: 4 | id: e1b76a63-43ed-4168-844e-35b1497cb20f
+
+=== C6: Potensi Kemandirian (weight: 0.15, type: benefit) ===
+  C6A | Keterampilan | label: 'Tidak memiliki' | value: 0 | id: 3915451b-743c-4262-b609-d8faab509e1d
+  C6A | Keterampilan | label: 'Keterampilan dasar' | value: 6 | id: 23bdc816-1a59-40c2-b6c7-5afd938325e1
+  C6A | Keterampilan | label: 'Terampil & siap usaha' | value: 12 | id: 04ca233d-5ff0-435b-b506-30da249feda7
+  C6B | Pengalaman Usaha | label: 'Tidak ada' | value: 0 | id: 783e9e99-0da9-4c0e-8753-390259486940
+  C6B | Pengalaman Usaha | label: 'Pernah usaha kecil' | value: 6 | id: 760d8175-dbe0-4a94-86cd-7e9a93d55067
+  C6B | Pengalaman Usaha | label: 'Usaha ≥ 1 tahun' | value: 9 | id: bfad1d71-dd9e-4522-9082-7d2a756e66d5
+  C6C | Rencana Usaha | label: 'Tidak ada' | value: 0 | id: 9083c480-95e4-464f-8e4d-aad0745138f8
+  C6C | Rencana Usaha | label: 'Rencana sederhana' | value: 6 | id: 55de06fb-8506-4df8-8ea8-7d56b015d8fc
+  C6C | Rencana Usaha | label: 'Rencana matang & realistis' | value: 12 | id: 88c9fa71-f85c-49e9-bfa2-bba8a2ae2ddd
+  C6D | Motivasi | label: 'Rendah' | value: 0 | id: a8a1255d-b615-4ece-8cdf-33a80085b259
+  C6D | Motivasi | label: 'Tinggi & berkomitmen' | value: 10 | id: 111c2d63-999e-4a54-a725-04074b312441
+
+=== C7: Kepemilikan Aset (weight: 0.15, type: benefit) ===
+  C7A | Rumah | label: 'Milik sendiri' | value: 0 | id: 3e44188c-8dd7-49f4-9694-f0c13e35d8ad
+  C7A | Rumah | label: 'Kontrak' | value: 3 | id: 5190b241-5fc9-4c16-b48c-f222729e9624
+  C7A | Rumah | label: 'Menumpang' | value: 5 | id: 53463d1d-f6aa-4660-89a4-5de8067ccdac
+  C7B | Kendaraan | label: 'Mobil' | value: 0 | id: 35b71e55-c038-49cc-b4ce-b280e65a7a4f
+  C7B | Kendaraan | label: 'Motor' | value: 2 | id: 7a206cc7-0555-497c-abe0-cbbff459082e
+  C7B | Kendaraan | label: 'Tidak ada' | value: 4 | id: 373fd6c5-cf7d-4337-aa7c-520849573eec
+  C7C | Aset Lain | label: 'Aset banyak' | value: 0 | id: 70a6b900-1dbd-44cf-94d6-cd8e00c05bbe
+  C7C | Aset Lain | label: 'Aset sedikit' | value: 3 | id: f7a42cdc-cdc9-4be0-96d7-03dae65ea77c
+  C7C | Aset Lain | label: 'Tidak punya tabungan/lahan' | value: 6 | id: 5ae73264-997a-44c4-8073-7b0605bc3b75
+
+
+Total Mustahik in DB: 164
+  6433644030292755 - Humaira Kusmawati
+  32011768139472217 - Pak Budi Success
+  32011768139754517 - Pak Budi Success
+  5005871080461688 - Yuliana Hariyah
+  2928330021721778 - Kala Agustian
+  5686437297411590 - Najwa Maharani
+  4465723370384827 - Limar Wardana
+  2941473831743358 - Vicky Fernanda
+  7049823511307315 - Gina Fathina
+  1258619262356320 - Yance Ningrum
+  5899354214803819 - Septi Maharani
+  0026826278419830 - Belinda Safitri
+  5643203532612973 - Jatmiko Gunarto
+  6692090158371457 - Sari Maryati
+  2792592654644350 - Balapati Sihombing
+  1946647358024311 - Prayitna Mahardika
+  1917925309686232 - Warsita Saragih
+  9555104348918418 - Maman Kuswoyo
+  3095342231677113 - Darman Supriyanto
+  1022841213397325 - Hasna Widiastuti
+  7235996803817354 - Jarwa Himawan
+  6632174749887145 - Hani Aqila
+  7346050460885126 - Ganep Saefullah
+  1837275939111085 - Tina Kuswandari
+  3841937966021256 - Hairyanto Arifin
+  7683026743870861 - Karen Uyainah
+  4288507865174406 - Dasa Siregar
+  7089322622150655 - Cemani Nashiruddin
+  3786247509897558 - Ida Ananda
+  0322301130591155 - Zahra Pertiwi
+  1170279881264739 - Garda Lesmana
+  5570587738214692 - Slamet Widodo
+  4905339515122054 - Oni Damayanti
+  8344169265942976 - Azalea Prastuti
+  8679401115768149 - Gaduh Faresta
+  0555369785043385 - Halima Mahestri
+  8338769874235973 - Ina Rahayu
+  8442661056467872 - Zahra Halimah
+  7209158751715444 - Kacung Kuswoyo
+  8615284166765121 - Bagus Narpati
+  7071433750031538 - Margana Rajata
+  5099954180931758 - Jamal Thamrin
+  2428481163191839 - Anggabaya Handoko
+  5875482370508604 - Darmaji Pangestu
+  9683141844614949 - Ifa Winarsih
+  9150410483180703 - Mumpuni Prasasta
+  5416305393991954 - Nada Yuniar
+  5069030562912437 - Zelaya Fujiati
+  0097107458966296 - Ghaliyati Putri
+  6702050538321459 - Oliva Kusuma
+  3919847850450297 - Cemani Saragih
+  3931158339199519 - Zulfa Mulyani
+  2981304964226653 - Amalia Nurdiyanti
+  8492711042592732 - Embuh Damanik
+  9607230042742116 - Dono Najmudin
+  7180156731412846 - Jabal Budiyanto
+  4614141357570029 - Indra Herlambang
+  3912630909253509 - Sabri Suryono
+  5941649767258731 - Hasna Novitasari
+  5456098633058148 - Damar Wardana
+  4903900901226554 - Bakda Haikal
+  4597273200933972 - Rendy Iswahyudi
+  3380410237227356 - Ganjaran Yudhistira
+  7455346060983328 - Lalita Rahimah
+  6612484614230509 - Kirana Puspasari
+  9088966507512032 - Harsanto Mahendra
+  8489593864833428 - Tsabita Utami
+  4138902791915765 - Yunita Agustina
+  0826972957022538 - Jinawi Uwais
+  2430073411832957 - Eva Febrianti
+  0190069353562003 - Luhung Sabian
+  2008990437539413 - Saadat Kuswoyo
+  7486519603414195 - Jono Simanjuntak
+  8057706142424071 - Ade Usamah
+  9649082231900645 - Amalia Elvina
+  4495190037566589 - Amalia Salsabilla
+  0742840321859162 - Cakrabuana Siregar
+  3892407909868881 - Padmi Mulyani
+  5276831046073251 - Jarwi Sudrajat
+  3531154800449553 - Keisha Wastuti
+  2074714758219122 - Uli Aurelia
+  3371623626582417 - Titin Usamah
+  0413435384622419 - Balidin Najmudin
+  6759720661177377 - Tari Yuliarti
+  0465963306096526 - Betania Handayani
+  3190361872075516 - Tasnim Nainggolan
+  3513491402867626 - Prabowo Tarihoran
+  6118110389361059 - Mulya Maheswara
+  0643044478060192 - Yulia Zulaika
+  6608703768672550 - Aulia Kahyang
+  1357140884438008 - Gabriella Kuswandari
+  3761562144368689 - Keisha Jelita
+  8087571400604521 - Tasnim Prayoga
+  9774420013570881 - Latif Saragih
+  5666952722180332 - Jefri Alamsyah
+  4232181349627897 - Novi Usada
+  1529216767118458 - Bakidin Najmudin
+  3068996976885772 - Olivia Usada
+  6702210207625403 - Zulaikha Azizah
+  5238449790921545 - Hafshah Purwanti
+  5790400878701651 - Tania Zulaika
+  7616626017000198 - Yuliana Pertiwi
+  8025625322355791 - Paris Aryanti
+  8025334838570118 - Estiawan Tarihoran
+  0704207849272491 - Ozy Wicaksono
+  0774892464347536 - Emil Utama
+  5984164931213154 - Ani Zulaika
+  0416110967228071 - Zelaya Astuti
+  1225963317510517 - Yuliana Rachmawati
+  5761925478682733 - Mahesa Santoso
+  7865653415744960 - Estiawan Hidayanto
+  7956957823172046 - Jamil Marpaung
+  2814787508664082 - Darimin Manullang
+  0134717226804645 - Wani Jelita
+  0248833539301264 - Balamantri Mandala
+  4854095224958609 - Kardi Bagaskara
+  1274012149174889 - Tari Purnawati
+  9892627765845618 - Febrina Nasyidah
+  6654229212538087 - Nadia Ningrum
+  2971135739870469 - Novita Puspita
+  8145754696774893 - Warsa Antoni
+  7915365327897672 - Himawan Sabian
+  0964656002496427 - Cindy Agustina
+  8417379558916975 - Yani Utami
+  2270046794144068 - Eva Halimah
+  1294356185063304 - Dimas Darmawan
+  7096201701214317 - Sabri Sitorus
+  3099345742378543 - Prabowo Tampubolon
+  0908814633688104 - Yunita Nasyidah
+  4975997959276097 - Dyah Suryatmi
+  1019314193337778 - Natalia Aryanti
+  4800730945029419 - Gabriella Purwanti
+  1816754314621190 - Ira Astuti
+  7913921342972598 - Uchita Uyainah
+  4321308819724416 - Nurul Melinda
+  9721110943647502 - Alika Wulandari
+  7242295668837405 - Caket Zulkarnain
+  5754199120460170 - Ana Maryati
+  8627019918462191 - Banawa Prakasa
+  9757751142842306 - Eka Oktovian
+  0412020681542038 - Pangeran Nanda
+  1226807445101388 - Irfan Prayoga
+  1752108219193562 - Ana Nurlaela
+  1228906583459937 - Wulandari Fathina
+  0351474244028563 - Rosman Mahendra
+  7550604328337802 - Laksana Rendra
+  3433889241116636 - Daliman Najmudin
+  9619997385510976 - Kayun Manullang
+  7449219404221644 - Eva Amanta
+  8202206115729214 - Nasab Napitupulu
+  8680183483932620 - Gantar Mahendra
+  2193623330155398 - Saiful Sudrajat
+  6722430058554250 - Suci Usamah
+  8459940345295227 - Jarwi Nababan
+  4239524627742433 - Bakijan Yudhistira
+  8293323452138680 - Mujur Abiputra
+  1012153626304476 - Daryani Maheswara
+  7984908608799152 - Devi Salsabilla
+  4674148553010780 - Zulfa Ardiyanti
+  4708172255308044 - Tari Anandya
+  99991768638867975 - Debug User
+  11111768640170416 - User A
+  22221768640170416 - User B
+  6777777777777777 - coba
