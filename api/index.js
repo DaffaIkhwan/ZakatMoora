@@ -1,32 +1,39 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-
-// Load .env
-require('dotenv').config({ path: path.join(__dirname, '..', 'backend', '.env') });
+const { PrismaClient } = require('@prisma/client');
 
 const app = express();
 
-app.use(cors({ origin: true, credentials: true }));
+// CORS configuration
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 app.use(express.json());
 
-// ── Prisma Client (Singleton) ───────────────────────────────
-const { PrismaClient } = require('@prisma/client');
-const globalForPrisma = global;
-const prisma = globalForPrisma.__prisma || new PrismaClient({
-    datasources: { db: { url: process.env.DATABASE_URL } },
-    log: ['error', 'warn'],
+// ── Prisma Client Initialization ─────────────────────────────
+// We use a singleton pattern to prevent multiple connections in serverless environment
+const prisma = global.prisma || new PrismaClient({
+    datasources: {
+        db: {
+            // Append connection pooling options for serverless stability
+            url: process.env.DATABASE_URL ? (process.env.DATABASE_URL.includes('?') ? `${process.env.DATABASE_URL}&connection_limit=1` : `${process.env.DATABASE_URL}?connection_limit=1`) : undefined
+        }
+    }
 });
-if (process.env.NODE_ENV !== 'production') globalForPrisma.__prisma = prisma;
 
-// ── Middleware ───────────────────────────────────────────────
+if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
+
+// ── Shared Logic / Helpers ──────────────────────────────────
+const secret = process.env.JWT_SECRET || 'supersecretkey123';
+
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     if (!token) return res.sendStatus(401);
-    jwt.verify(token, process.env.JWT_SECRET || 'supersecretkey123', (err, user) => {
+    jwt.verify(token, secret, (err, user) => {
         if (err) return res.sendStatus(403);
         req.user = user;
         next();
@@ -38,47 +45,132 @@ const authorizeRole = (roles) => (req, res, next) => {
     next();
 };
 
-// ── Import Controllers from Backend ────────────────────────
-// Karena file controller aslimu menggunakan require('../prisma'), 
-// kita perlu sedikit trik atau mendefinisikan logic di sini untuk reliabilitas.
+// ── Health Check ─────────────────────────────────────────────
+app.get('/api/health', async (req, res) => {
+    try {
+        await prisma.$queryRaw`SELECT 1`;
+        res.json({ status: 'ok', message: 'API and Database are connected' });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
+});
 
-// REUSE LOGIC FROM CONTROLLERS
-const { login, register } = require('../backend/src/controllers/authController');
-const { getUsers, createUser, updateUser, deleteUser } = require('../backend/src/controllers/userController');
-const { getMustahik, createMustahik, updateMustahik, deleteMustahik } = require('../backend/src/controllers/mustahikController');
-const { getCriteria, updateCriteria } = require('../backend/src/controllers/criteriaController');
-const { getPrograms, createProgram, updateProgram, deleteProgram } = require('../backend/src/controllers/programController');
-const { getHistory, createHistory } = require('../backend/src/controllers/historyController');
-const { getMonitoring, createMonitoring } = require('../backend/src/controllers/monitoringController');
+// ── Auth Handlers ────────────────────────────────────────────
+app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await prisma.user.findFirst({
+            where: { OR: [{ email: email }, { username: email }] },
+        });
+        if (!user) return res.status(401).json({ error: 'User not found' });
+        const isValid = await bcrypt.compare(password, user.password);
+        if (!isValid) return res.status(401).json({ error: 'Invalid password' });
+        if (!user.isActive) return res.status(403).json({ error: 'Account is inactive' });
 
-// ── Routes ──────────────────────────────────────────────────
-app.post('/api/login', login);
-app.post('/api/register', register);
+        const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, secret, { expiresIn: '24h' });
+        const { password: _, ...userWithoutPassword } = user;
+        res.json({ token, user: userWithoutPassword });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-app.get('/api/users', authenticateToken, authorizeRole(['super_admin', 'manajer']), getUsers);
-app.post('/api/users', authenticateToken, authorizeRole(['super_admin', 'manajer']), createUser);
-app.put('/api/users/:id', authenticateToken, authorizeRole(['super_admin', 'manajer']), updateUser);
-app.delete('/api/users/:id', authenticateToken, authorizeRole(['super_admin', 'manajer']), deleteUser);
+// ── User Handlers ────────────────────────────────────────────
+app.get('/api/users', authenticateToken, authorizeRole(['super_admin', 'manajer']), async (req, res) => {
+    try {
+        const users = await prisma.user.findMany({
+            orderBy: { createdAt: 'desc' },
+            select: { id: true, username: true, name: true, email: true, role: true, isActive: true, createdAt: true }
+        });
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-app.get('/api/criteria', authenticateToken, getCriteria);
-app.put('/api/criteria', authenticateToken, authorizeRole(['super_admin', 'manajer']), updateCriteria);
+// ── Mustahik Handlers ────────────────────────────────────────
+app.get('/api/mustahik', authenticateToken, async (req, res) => {
+    try {
+        const { user } = req;
+        let where = {};
+        if (user && user.role === 'mustahik') where = { userId: user.id };
 
-app.get('/api/mustahik', authenticateToken, getMustahik);
-app.post('/api/mustahik', authenticateToken, createMustahik);
-app.put('/api/mustahik/:id', authenticateToken, updateMustahik);
-app.delete('/api/mustahik/:id', authenticateToken, deleteMustahik);
+        const mustahikList = await prisma.mustahik.findMany({
+            where,
+            include: { criteriaScores: { include: { subCriterion: true } } },
+            orderBy: { registeredDate: 'desc' }
+        });
 
-app.get('/api/programs', authenticateToken, getPrograms);
-app.post('/api/programs', authenticateToken, createProgram);
-app.put('/api/programs/:id', authenticateToken, updateProgram);
-app.delete('/api/programs/:id', authenticateToken, deleteProgram);
+        const mapped = mustahikList.map(m => {
+            const subCriteria = {};
+            m.criteriaScores.forEach(cs => {
+                if (cs.subCriterion) subCriteria[cs.subCriterion.aspect] = cs.subCriterion.value;
+            });
+            return { ...m, subCriteria };
+        });
+        res.json(mapped);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-app.get('/api/history', authenticateToken, getHistory);
-app.post('/api/history', authenticateToken, createHistory);
+// ── Criteria Handlers ────────────────────────────────────────
+app.get('/api/criteria', authenticateToken, async (req, res) => {
+    try {
+        const criteriaList = await prisma.criterion.findMany({
+            include: { subCriteria: true },
+            orderBy: { code: 'asc' }
+        });
 
-app.get('/api/monitoring', authenticateToken, getMonitoring);
-app.post('/api/monitoring', authenticateToken, createMonitoring);
+        const formatted = criteriaList.map(c => {
+            const aspectMap = new Map();
+            c.subCriteria.forEach(sc => {
+                if (!aspectMap.has(sc.aspect)) {
+                    aspectMap.set(sc.aspect, { code: sc.aspect, name: sc.name, options: [] });
+                }
+                aspectMap.get(sc.aspect).options.push({ label: sc.label, value: sc.value });
+            });
+            return { ...c, aspects: Array.from(aspectMap.values()) };
+        });
+        res.json(formatted);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-app.get('/api/health', (req, res) => res.json({ status: 'ok', database: 'connected' }));
+// ── Program Handlers ─────────────────────────────────────────
+app.get('/api/programs', authenticateToken, async (req, res) => {
+    try {
+        const programs = await prisma.aidProgram.findMany({ orderBy: { createdAt: 'desc' } });
+        res.json(programs.map(p => ({ ...p, totalBudget: Number(p.totalBudget), budgetPerRecipient: Number(p.budgetPerRecipient) })));
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ── History & Monitoring Handlers (Simplified for production stability) ────
+app.get('/api/history', authenticateToken, async (req, res) => {
+    try {
+        const history = await prisma.recipientHistory.findMany({
+            include: { mustahik: { select: { name: true } }, program: { select: { name: true } } },
+            orderBy: { receivedDate: 'desc' }
+        });
+        res.json(history.map(h => ({ ...h, amount: Number(h.amount), mustahikName: h.mustahik?.name, programName: h.program?.name })));
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get('/api/monitoring', authenticateToken, async (req, res) => {
+    try {
+        const monitoring = await prisma.monitoringData.findMany({
+            include: { mustahik: { select: { name: true } }, program: { select: { name: true } } },
+            orderBy: { monitoringDate: 'desc' }
+        });
+        res.json(monitoring.map(d => ({ ...d, mustahikName: d.mustahik?.name, programName: d.program?.name })));
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 module.exports = app;
