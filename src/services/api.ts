@@ -1,5 +1,8 @@
+// Menggunakan variabel dari .env jika ada, fallback ke URL yang sudah dideploy
+const ENV_API_URL = import.meta.env.VITE_API_URL;
 const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-export const API_URL = isDev ? 'http://localhost:5000/api' : '/api';
+
+export const API_URL = ENV_API_URL || (isDev ? 'http://localhost:5000/api' : 'https://zakat-moora.vercel.app/api');
 
 const getHeaders = () => {
     const token = localStorage.getItem('token');
