@@ -116,10 +116,23 @@ sequenceDiagram
         Manajer->>Sistem: Isi form (nama, deskripsi, anggaran, kuota, tanggal, status)
         Manajer->>Sistem: Klik "Simpan"
         Sistem->>Backend: POST /api/programs {name, description, totalBudget, quota, ...}
-        Backend->>DB: INSERT INTO Program
-        DB-->>Backend: Program baru
-        Backend-->>Sistem: 200 - data program baru
-        Sistem-->>Manajer: Tampilkan program baru di daftar
+        
+        Backend->>DB: Hitung Saldo Pool (Σ Zakat - Σ Alokasi)
+        DB-->>Backend: poolBalance
+        
+        alt poolBalance < totalBudget
+            Backend-->>Sistem: 400 - "Saldo Pool tidak mencukupi"
+            Sistem-->>Manajer: Tampilkan pesan error
+        else poolBalance >= totalBudget
+            Backend->>DB: BEGIN TRANSACTION
+            Backend->>DB: INSERT INTO Program
+            DB-->>Backend: newProgramId
+            Backend->>DB: INSERT INTO Donation (isAllocation=true, programId=newProgramId, amount=totalBudget, status='success')
+            Backend->>DB: COMMIT TRANSACTION
+            DB-->>Backend: Program & Alokasi tersimpan
+            Backend-->>Sistem: 200 - data program baru
+            Sistem-->>Manajer: Tampilkan program baru di daftar
+        end
 
     else Mengubah Program
         Manajer->>Sistem: Klik "Edit" pada program
@@ -548,6 +561,47 @@ sequenceDiagram
 
 ---
 
+## UC-12: Membayar Zakat (Muzakki)
+
+```mermaid
+sequenceDiagram
+    actor Muzakki
+    participant Sistem as Sistem (Frontend)
+    participant Backend as Backend (API)
+    participant Midtrans as Midtrans (Gateway)
+    participant DB as Database
+
+    Muzakki->>Sistem: Pilih "Salurkan Dana" / "Bayar Zakat"
+    Sistem-->>Muzakki: Tampilkan modal pembayaran
+    Muzakki->>Sistem: Masukkan nominal zakat, opsi anonim, pesan
+    Muzakki->>Sistem: Klik "Lanjut Pembayaran"
+
+    Sistem->>Backend: POST /api/donations {amount, isAnonymous, notes}
+    Backend->>DB: INSERT Donation (isAllocation=false, status='pending')
+    DB-->>Backend: donationId
+    
+    Backend->>Midtrans: Request Snap Token (amount, donationId)
+    Midtrans-->>Backend: snapToken
+    Backend->>DB: UPDATE Donation SET snapToken = ?
+    Backend-->>Sistem: 200 - {snapToken}
+
+    Sistem->>Midtrans: Tampilkan Popup Midtrans (window.snap.pay)
+    Muzakki->>Midtrans: Selesaikan pembayaran (Transfer/E-Wallet)
+    Midtrans-->>Sistem: onSuccess Callback
+
+    Midtrans->>Backend: POST /api/webhooks/midtrans (Notification)
+    Backend->>Backend: Verifikasi Signature Key
+    Backend->>DB: UPDATE Donation SET status = 'success'
+    DB-->>Backend: OK (Saldo Pool Otomatis Bertambah)
+    Backend-->>Midtrans: 200 OK
+
+    Sistem->>Backend: GET /api/donations/status/:id
+    Backend-->>Sistem: status = 'success'
+    Sistem-->>Muzakki: Tampilkan Sukses & Saldo Pool Bertambah
+```
+
+---
+
 *Dokumen Sequence Diagram — Mermaid*
 *Sistem: Dashboard Monitoring Penerima Zakat Produktif Berbasis SPK MOORA*
-*Tanggal: Februari 2026*
+*Tanggal: Diperbarui dengan Mekanisme Pool*

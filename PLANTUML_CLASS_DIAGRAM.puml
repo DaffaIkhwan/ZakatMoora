@@ -1,0 +1,326 @@
+@startuml ZakatMOORA_ClassDiagram
+title Class Diagram - Sistem Seleksi Zakat Produktif MOORA
+
+!theme plain
+
+' ─── Global ───
+skinparam backgroundColor      #FFFFFF
+skinparam shadowing            false
+skinparam roundCorner          6
+skinparam linetype             ortho
+skinparam arrowColor           #555555
+skinparam arrowThickness       1.5
+skinparam defaultFontName      Arial
+skinparam defaultFontSize      11
+
+' ─── Class boxes (salmon/pink) ───
+skinparam class {
+  BackgroundColor          #FFFFFF
+  BorderColor              #B04040
+  FontColor                #111111
+  FontStyle                Bold
+  AttributeFontColor       #222222
+  AttributeFontSize        10
+  StereotypeFontColor      #B04040
+  StereotypeFontSize       9
+  HeaderBackgroundColor    #F4A9A9
+}
+
+' ─── Enum boxes (kuning krim) ───
+skinparam enum {
+  BackgroundColor          #FFFDE7
+  BorderColor              #B8860B
+  FontColor                #111111
+  FontStyle                Bold
+  AttributeFontColor       #444400
+  HeaderBackgroundColor    #FFE082
+}
+
+' ─────────────────────────────────────────────
+'  ENUMERATIONS
+' ─────────────────────────────────────────────
+
+enum UserRole {
+  super_admin
+  manajer
+  surveyor
+  mustahik
+  muzakki
+}
+
+enum BusinessStatus {
+  belum_usaha
+  rintisan
+  berkembang
+  maju
+}
+
+enum ProgramStatus {
+  draft
+  active
+  completed
+}
+
+enum DonationStatus {
+  pending
+  success
+  failed
+  challenge
+}
+
+enum CriterionType {
+  benefit
+  cost
+}
+
+enum EkonomiStatus {
+  double_shock
+  memburuk
+  stabil
+  membaik
+}
+
+' ─────────────────────────────────────────────
+'  USER & AUTENTIKASI
+' ─────────────────────────────────────────────
+
+class User {
+  +id        : String    <<PK>>
+  +username  : String    <<unique>>
+  +password  : String
+  +name      : String
+  +email     : String
+  +role      : UserRole
+  +isActive  : Boolean
+  +createdAt : DateTime
+  --
+  +login(email, password) : String
+  +logout() : void
+  +isAuthorized(action) : Boolean
+}
+
+' ─────────────────────────────────────────────
+'  MUZAKKI (DONATUR)
+' ─────────────────────────────────────────────
+
+class Muzakki {
+  +id             : String   <<PK>>
+  +userId         : String   <<FK, nullable>>
+  +name           : String
+  +nik            : String
+  +address        : String
+  +phone          : String
+  +job            : String
+  +institution    : String
+  +registeredDate : DateTime
+  --
+  +bayarZakatKePool(amount, isAnonymous) : Donation
+  +getDonationHistory() : Donation[]
+  +getTotalDonated() : Decimal
+}
+
+' ─────────────────────────────────────────────
+'  DONATION — Entitas Kunci Mekanisme Pool
+' ─────────────────────────────────────────────
+
+class Donation {
+  +id            : String   <<PK>>
+  +muzakkiId     : String   <<FK>>
+  +programId     : String   <<FK, nullable>>
+  +amount        : Decimal
+  +notes         : String
+  +donationDate  : DateTime
+  +paymentMethod : String
+  +status        : DonationStatus
+  +isAnonymous   : Boolean
+  +isAllocation  : Boolean
+  +snapToken     : String
+  --
+  +isZakatKePool() : Boolean
+  +isAlokasiKeProgram() : Boolean
+}
+
+' ─────────────────────────────────────────────
+'  AID PROGRAM
+' ─────────────────────────────────────────────
+
+class AidProgram {
+  +id                 : String     <<PK>>
+  +name               : String
+  +description        : String
+  +totalBudget        : Decimal
+  +budgetPerRecipient : Decimal
+  +quota              : Integer
+  +startDate          : DateTime
+  +endDate            : DateTime
+  +status             : ProgramStatus
+  +selectedCandidates : Json
+  +createdAt          : DateTime
+  --
+  +buatProgram(budget) : void
+  +jalankanSeleksiMOORA() : CandidateWithScore[]
+  +tetapkanPenerima(mustahikIds[]) : RecipientHistory[]
+  +getAllocatedFunds() : Decimal
+}
+
+' ─────────────────────────────────────────────
+'  MUSTAHIK (CALON PENERIMA)
+' ─────────────────────────────────────────────
+
+class Mustahik {
+  +id             : String         <<PK>>
+  +userId         : String         <<FK, nullable>>
+  +name           : String
+  +address        : String
+  +phone          : String
+  +businessStatus : BusinessStatus
+  +registeredDate : DateTime
+  --
+  +hitungSkorMOORA(criteriaList) : Float
+  +getPeringkat() : Integer
+  +getRiwayatMonitoring() : MonitoringData[]
+}
+
+' ─────────────────────────────────────────────
+'  CRITERIA & SCORING (MOORA)
+' ─────────────────────────────────────────────
+
+class Criterion {
+  +id          : String        <<PK>>
+  +code        : String        <<unique>>
+  +name        : String
+  +weight      : Float
+  +type        : CriterionType
+  +description : String
+  +icon        : String
+  +color       : String
+  --
+  +updateBobot(weight) : void
+  +validateTotalBobot() : Boolean
+}
+
+class SubCriterion {
+  +id          : String  <<PK>>
+  +criterionId : String  <<FK>>
+  +aspect      : String
+  +name        : String
+  +label       : String
+  +value       : Integer
+  --
+  +getOptions() : AspectOption[]
+}
+
+class MustahikScore {
+  +id             : String  <<PK>>
+  +mustahikId     : String  <<FK>>
+  +subCriterionId : String  <<FK>>
+  ' UNIQUE(mustahikId, subCriterionId)
+  --
+  +getNilai() : Integer
+}
+
+' ─────────────────────────────────────────────
+'  RECIPIENT HISTORY
+' ─────────────────────────────────────────────
+
+class RecipientHistory {
+  +id           : String   <<PK>>
+  +mustahikId   : String   <<FK>>
+  +programId    : String   <<FK>>
+  +amount       : Decimal
+  +receivedDate : DateTime
+  +mooraScore   : Float
+  +rank         : Integer
+  +notes        : String
+  --
+  +getMustahikName() : String
+  +getProgramName() : String
+}
+
+' ─────────────────────────────────────────────
+'  MONITORING DATA
+' ─────────────────────────────────────────────
+
+class MonitoringData {
+  +id              : String    <<PK>>
+  +mustahikId      : String    <<FK>>
+  +programId       : String    <<FK>>
+  +monitoringDate  : DateTime
+
+  ' --- businessProgress ---
+  +businessType    : String
+  +revenue         : Decimal   <<O_t : Omzet Usaha>>
+  +operationalCost : Decimal   <<B_t : Biaya Operasional>>
+  +netIncome       : Decimal   <<Y_t : Pendapatan Bersih>>
+  +employeeCount   : Integer
+
+  ' --- socialEconomicCondition ---
+  +monthlyExpenditure : Decimal  <<C_t : Konsumsi Esensial>>
+  +monthlyIncome      : Decimal  <<Pendapatan Non-Usaha>>
+  +dependentCount     : Integer
+  +housingCondition   : String
+  +healthCondition    : String
+  +educationLevel     : String
+
+  ' --- Narasi ---
+  +challenges      : String
+  +achievements    : String
+  +nextPlan        : String
+  +surveyor        : String
+  +notes           : String
+  --
+  +hitungGrowthPendapatan(prev) : Float
+  +hitungGrowthKonsumsi(prev) : Float
+  +hitungStatusEkonomi() : EkonomiStatus
+}
+
+' ─────────────────────────────────────────────
+'  VALUE OBJECTS
+' ─────────────────────────────────────────────
+
+class CandidateWithScore {
+  +mustahikId          : String
+  +name                : String
+  +normalizedCriteria  : Map<String,Float>
+  +weightedNormalized  : Map<String,Float>
+  +mooraScore          : Float
+  +rank                : Integer
+}
+
+class PoolBalanceSummary {
+  +totalDonations   : Decimal
+  +totalAllocations : Decimal
+  +poolBalance      : Decimal
+}
+
+' ─────────────────────────────────────────────
+'  RELATIONSHIPS
+' ─────────────────────────────────────────────
+
+User       "1" --o "0..1" Muzakki          : memiliki akun >
+User       "1" --o "0..1" Mustahik         : memiliki akun >
+User            ..>        UserRole
+
+Muzakki    "1" --o "0..*" Donation          : membayar zakat ke Pool >
+AidProgram "1" --o "0..*" Donation          : menerima alokasi dana <
+
+Criterion  "1" --o "1..*" SubCriterion      : memiliki aspek >
+SubCriterion "1" --o "0..*" MustahikScore   : dinilai pada >
+Mustahik   "1" --o "0..*" MustahikScore     : memiliki skor >
+
+Mustahik   "1" --o "0..*" RecipientHistory  : tercatat sebagai penerima >
+AidProgram "1" --o "0..*" RecipientHistory  : menyalurkan ke penerima >
+
+Mustahik   "1" --o "0..*" MonitoringData    : dipantau melalui >
+AidProgram "1" --o "0..*" MonitoringData    : memiliki monitoring >
+
+AidProgram      ..>  ProgramStatus
+Donation        ..>  DonationStatus
+Mustahik        ..>  BusinessStatus
+Criterion       ..>  CriterionType
+MonitoringData  ..>  EkonomiStatus
+
+AidProgram     ..>  CandidateWithScore   : hasil seleksi MOORA >
+Donation       ..>  PoolBalanceSummary   : dikalkulasi menjadi >
+
+@enduml

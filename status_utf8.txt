@@ -1,0 +1,75 @@
+﻿On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	deleted:    .gitignore
+	deleted:    api/index.js
+	modified:   backend/package.json
+	modified:   backend/prisma/schema.prisma
+	modified:   backend/src/controllers/authController.js
+	modified:   backend/src/controllers/programController.js
+	modified:   backend/src/routes/api.js
+	modified:   package-lock.json
+	modified:   package.json
+	modified:   src/App.tsx
+	modified:   src/components/AidProgramForm.tsx
+	modified:   src/components/AidPrograms.tsx
+	modified:   src/components/CriteriaInfo.tsx
+	modified:   src/components/CriteriaManager.tsx
+	modified:   src/components/Dashboard.tsx
+	modified:   src/components/DashboardModule.tsx
+	modified:   src/components/Login.tsx
+	modified:   src/components/MonitoringForm.tsx
+	modified:   src/components/MonitoringModule.tsx
+	modified:   src/components/MustahikDatabase.tsx
+	modified:   src/components/MustahikForm.tsx
+	modified:   src/components/Navbar.tsx
+	modified:   src/components/ProgramCandidates.tsx
+	modified:   src/components/RecipientTracking.tsx
+	modified:   src/components/Register.tsx
+	modified:   src/components/UserManagement.tsx
+	modified:   src/components/mode-toggle.tsx
+	modified:   src/index.css
+	modified:   src/main.tsx
+	modified:   src/services/api.ts
+	modified:   src/types/index.ts
+	deleted:    vercel.json
+	modified:   vite.config.ts
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	backend/.env
+	backend/compare-output.txt
+	backend/debug-output.txt
+	backend/debug-sri.json
+	backend/debug2-out.txt
+	backend/debug2.txt
+	backend/debug3-out.txt
+	backend/fix-output.txt
+	backend/fix2-out.txt
+	backend/fix3-out.txt
+	backend/moora_lengkap_27.docx
+	backend/precision-out.txt
+	backend/revert-out.txt
+	backend/src/controllers/muzakkiController.js
+	backend/update_niks.js
+	backend/verify-output.txt
+	backend/verify2-out.txt
+	backend/verify3-out.txt
+	backend/verify4-out.txt
+	build/
+	build_error.txt
+	dump-to-mock.ts
+	mockup-version/
+	node_modules/
+	src/components/LandingPage.tsx
+	src/components/MuzakkiDashboard.tsx
+	src/components/MuzakkiManagement.tsx
+	src/index.css.bkp
+	status.txt
+	status_utf8.txt
+	tmp_new_landing.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")

@@ -41,14 +41,7 @@ const getHistory = async (req, res) => {
         res.json(mapped);
     } catch (error) {
         console.error('getHistory error:', error);
-        // RECOVERY: Mock History
-        console.log('RECOVERY MODE: Returning mock history data');
-        const mockHistory = [
-            { id: '1', mustahikId: '123', programId: '1', mustahikName: 'Pak Budi', programName: 'Program Modal', amount: 5000000, receivedDate: new Date(), mooraScore: 0.9, rank: 1, notes: 'Top' },
-            { id: '2', mustahikId: '124', programId: '1', mustahikName: 'Ibu Siti', programName: 'Program Modal', amount: 5000000, receivedDate: new Date(), mooraScore: 0.8, rank: 2, notes: 'Top' },
-        ];
-        res.json(mockHistory);
-        // res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 };
 

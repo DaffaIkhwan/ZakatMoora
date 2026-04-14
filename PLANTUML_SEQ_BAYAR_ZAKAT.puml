@@ -1,0 +1,36 @@
+@startuml UC-12_Membayar_Zakat
+title UC-12: Membayar Zakat
+
+actor Muzakki
+participant "Sistem (Frontend)" as Sistem
+participant "Backend (API)" as Backend
+participant "Midtrans (Gateway)" as Midtrans
+participant "Database" as DB
+
+Muzakki -> Sistem: Pilih "Salurkan Dana" / "Bayar Zakat"
+Sistem --> Muzakki: Tampilkan modal pembayaran
+Muzakki -> Sistem: Masukkan nominal zakat, opsi anonim, pesan\nKlik "Lanjut Pembayaran"
+
+Sistem -> Backend: POST /api/donations {amount, isAnonymous, notes}
+Backend -> DB: INSERT Donation (isAllocation=false, status='pending')
+DB --> Backend: donationId
+
+Backend -> Midtrans: Request Snap Token (amount, donationId)
+Midtrans --> Backend: snapToken
+Backend -> DB: UPDATE Donation SET snapToken = ?
+Backend --> Sistem: 200 - {snapToken}
+
+Sistem -> Midtrans: Tampilkan Popup Midtrans (window.snap.pay)
+Muzakki -> Midtrans: Selesaikan pembayaran (Transfer/E-Wallet)
+Midtrans --> Sistem: onSuccess Callback
+
+Midtrans -> Backend: POST /api/webhooks/midtrans (Notification)
+Backend -> Backend: Verifikasi Signature Key
+Backend -> DB: UPDATE Donation SET status = 'success'
+DB --> Backend: OK (Saldo Pool Otomatis Bertambah)
+Backend --> Midtrans: 200 OK
+
+Sistem -> Backend: GET /api/donations/status/:id
+Backend --> Sistem: status = 'success'
+Sistem --> Muzakki: Tampilkan Sukses & Saldo Pool Bertambah
+@enduml

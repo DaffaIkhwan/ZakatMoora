@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
+import { useConfirm } from '../hooks/use-confirm';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -40,6 +42,7 @@ export function MustahikDatabase({
   onAddMonitoring,
   userRole
 }: MustahikDatabaseProps) {
+  const { confirm } = useConfirm();
   const [searchTerm, setSearchTerm] = useState('');
   const [programFilter, setProgramFilter] = useState<string>('all');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -49,9 +52,9 @@ export function MustahikDatabase({
   const itemsPerPage = 10;
 
   // Role-based permissions
-  const canAdd = userRole === 'super_admin' || userRole === 'surveyor' || userRole === 'mustahik';
-  const canEdit = userRole === 'super_admin' || userRole === 'surveyor';
-  const canDelete = userRole === 'super_admin' || userRole === 'surveyor';
+  const canAdd = userRole === 'super_admin' || userRole === 'manajer' || userRole === 'surveyor' || userRole === 'mustahik';
+  const canEdit = userRole === 'super_admin' || userRole === 'manajer' || userRole === 'surveyor';
+  const canDelete = userRole === 'super_admin' || userRole === 'manajer' || userRole === 'surveyor';
   const canAddMonitoring = userRole === 'super_admin' || userRole === 'surveyor' || userRole === 'manajer';
 
   const getLatestProgramId = (mustahikId: string) => {
@@ -83,6 +86,23 @@ export function MustahikDatabase({
     return matchesSearch && matchesProgram;
   });
 
+  const isMustahikSurveyed = (m: Mustahik) => {
+    let sum = 0;
+    if (m.subCriteria) sum += Object.values(m.subCriteria).reduce((a, b) => a + (Number(b) || 0), 0);
+    if (m.criteria) sum += Object.values(m.criteria).reduce((a, b) => a + (Number(b) || 0), 0);
+    return sum > 0;
+  };
+
+  const sortedMustahik = [...filteredMustahik];
+  if (userRole === 'surveyor') {
+    sortedMustahik.sort((a, b) => {
+      const aSurveyed = isMustahikSurveyed(a);
+      const bSurveyed = isMustahikSurveyed(b);
+      if (aSurveyed === bSurveyed) return 0;
+      return aSurveyed ? 1 : -1; // false comes before true -> Belum comes first
+    });
+  }
+
   const getReceivedCount = (mustahikId: string) => {
     if (!recipientHistory) return 0;
     return recipientHistory.filter(h => h.mustahikId === mustahikId).length;
@@ -95,17 +115,46 @@ export function MustahikDatabase({
       .reduce((sum, h) => sum + (h.amount || 0), 0);
   };
 
-  const handleAdd = (mustahik: Mustahik) => {
-    onAdd(mustahik);
-    setIsAddDialogOpen(false);
+  const handleAdd = (data: Mustahik) => {
+    confirm({
+      title: 'Daftarkan Mustahik?',
+      description: `Apakah Anda yakin ingin menambahkan ${data.name} ke database?`,
+      confirmText: 'Ya, Tambahkan',
+      cancelText: 'Batal',
+      onConfirm: () => {
+        const toastId = toast.loading('Memverifikasi data mustahik baru...');
+        setTimeout(() => {
+          onAdd(data);
+          setIsAddDialogOpen(false);
+          toast.success('Pendaftaran Berhasil', {
+            id: toastId,
+            description: `${data.name} telah masuk dalam database.`
+          });
+        }, 800);
+      }
+    });
   };
 
-  const handleUpdate = (mustahik: Mustahik) => {
-    if (editingMustahik) {
-      onUpdate(editingMustahik.id, mustahik);
-      setEditingMustahik(null);
-    }
+  const handleUpdate = (data: Mustahik) => {
+    confirm({
+      title: 'Simpan Perubahan?',
+      description: `Simpan pembaruan profil untuk ${data.name}?`,
+      confirmText: 'Ya, Simpan',
+      cancelText: 'Tidak',
+      onConfirm: () => {
+        const toastId = toast.loading(`Sedang memperbarui profil ${data.name}...`);
+        setTimeout(() => {
+          onUpdate(data.id, data);
+          setEditingMustahik(null);
+          toast.success('Update Profil Berhasil', {
+            id: toastId
+          });
+        }, 800);
+      }
+    });
   };
+
+
 
   // Helper for Monitoring Form Submission
   const handleMonitoringSubmit = (data: Partial<MonitoringData>, mustahikId: string, programId?: string) => {
@@ -149,7 +198,7 @@ export function MustahikDatabase({
       {/* Header Actions */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Database Mustahik</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Database Mustahik</h2>
           <p className="text-slate-500">
             Kelola data calon penerima dan penerima zakat produktif
           </p>
@@ -158,7 +207,7 @@ export function MustahikDatabase({
           {/* Program Filter */}
           <div className="w-full md:w-48">
             <Select value={programFilter} onValueChange={setProgramFilter}>
-              <SelectTrigger className="bg-white">
+              <SelectTrigger className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                 <div className="flex items-center gap-2">
                   <Filter className="w-4 h-4 text-slate-500" />
                   <SelectValue placeholder="Filter Program" />
@@ -179,24 +228,29 @@ export function MustahikDatabase({
             placeholder="Cari mustahik..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full md:w-64 bg-white border-slate-200 focus:border-blue-500 transition-colors"
+            className="w-full md:w-64 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus:border-blue-500 transition-colors"
           />
           {canAdd && (
             <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
               <DialogTrigger asChild>
-                <Button className="gap-2 !bg-blue-600 hover:!bg-blue-700 !text-white !border-blue-600 shadow-md hover:shadow-lg transition-all">
+                <Button className="btn-green gap-2">
                   <UserPlus className="w-4 h-4" />
-                  Tambah
+                  Tambah Mustahik
                 </Button>
               </DialogTrigger>
-              <DialogContent className="!max-w-[calc(100vw-8rem)] max-h-[90vh] overflow-y-auto !bg-white !dark:bg-slate-900 !px-16 !pb-14">
-                <DialogHeader>
-                  <DialogTitle>Tambah Data Mustahik</DialogTitle>
-                  <DialogDescription>
-                    Lengkapi data pribadi dan penilaian kriteria mustahik
-                  </DialogDescription>
-                </DialogHeader>
-                <MustahikForm onSubmit={handleAdd} criteriaList={criteriaList} userRole={userRole} />
+              <DialogContent className="max-w-[580px] w-[95vw] h-[700px] max-h-[90vh] dialog-bg-navy dialog-border-navy border-0 shadow-2xl p-0 overflow-hidden flex flex-col">
+                <div className="bg-green-600 px-6 py-4 text-white relative shrink-0 overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+                  <DialogHeader className="pt-0">
+                    <DialogTitle className="text-xl font-bold text-white flex items-center gap-2">Tambah Data Mustahik</DialogTitle>
+                    <DialogDescription className="text-green-50/90 font-medium">
+                      Lengkapi data pribadi dan penilaian kriteria mustahik
+                    </DialogDescription>
+                  </DialogHeader>
+                </div>
+                <div className="flex-1 overflow-y-auto p-6">
+                  <MustahikForm onSubmit={handleAdd} criteriaList={criteriaList} userRole={userRole} />
+                </div>
               </DialogContent>
             </Dialog>
           )}
@@ -205,18 +259,18 @@ export function MustahikDatabase({
 
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500">Total Mustahik</CardTitle>
             <Database className="h-4 w-4 text-emerald-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900">{mustahikList.length}</div>
+            <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">{mustahikList.length}</div>
             <p className="text-xs text-slate-500 mt-1">Terdaftar dalam sistem</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500">Pernah Menerima</CardTitle>
             <div className="h-4 w-4 rounded-full bg-blue-100 flex items-center justify-center">
@@ -224,14 +278,14 @@ export function MustahikDatabase({
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900">
+            <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
               {mustahikList.filter(m => getReceivedCount(m.id) > 0).length}
             </div>
             <p className="text-xs text-slate-500 mt-1">Penerima bantuan aktif</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500">Belum Menerima</CardTitle>
             <div className="h-4 w-4 rounded-full bg-slate-100 flex items-center justify-center">
@@ -239,7 +293,7 @@ export function MustahikDatabase({
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900">
+            <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
               {mustahikList.filter(m => getReceivedCount(m.id) === 0).length}
             </div>
             <p className="text-xs text-slate-500 mt-1">Menunggu seleksi</p>
@@ -258,7 +312,7 @@ export function MustahikDatabase({
           </AlertDescription>
         </Alert>
       ) : (
-        <Card>
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
           <CardContent className="p-0">
             <div className="rounded-md border">
               <Table>
@@ -267,6 +321,7 @@ export function MustahikDatabase({
                     <TableHead>Nama</TableHead>
                     <TableHead>Alamat</TableHead>
                     <TableHead>No. Telepon</TableHead>
+                    {userRole === 'surveyor' && <TableHead className="text-center">Status Survei</TableHead>}
                     <TableHead className="text-center">Pernah Terima</TableHead>
                     <TableHead className="text-center">Total Diterima</TableHead>
                     <TableHead className="text-center">Monitoring</TableHead>
@@ -274,7 +329,7 @@ export function MustahikDatabase({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredMustahik
+                  {sortedMustahik
                     .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
                     .map((mustahik) => {
                       const receivedCount = getReceivedCount(mustahik.id);
@@ -284,10 +339,23 @@ export function MustahikDatabase({
                       return (
                         <TableRow key={mustahik.id}>
                           <TableCell>
-                            <div className="font-medium text-slate-900">{mustahik.name}</div>
+                            <div className="font-medium text-slate-900 dark:text-slate-100">{mustahik.name}</div>
                           </TableCell>
-                          <TableCell className="text-gray-600 max-w-xs truncate">{mustahik.address}</TableCell>
+                          <TableCell className="text-slate-600 dark:text-slate-400 max-w-xs truncate">{mustahik.address}</TableCell>
                           <TableCell>{mustahik.phone}</TableCell>
+                          {userRole === 'surveyor' && (
+                            <TableCell className="text-center">
+                              {isMustahikSurveyed(mustahik) ? (
+                                <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
+                                  Sudah
+                                </Badge>
+                              ) : (
+                                <Badge variant="destructive" className="bg-rose-50 text-rose-700 border-rose-200">
+                                  Belum
+                                </Badge>
+                              )}
+                            </TableCell>
+                          )}
                           <TableCell className="text-center">
                             {receivedCount > 0 ? (
                               <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 border-emerald-200">{receivedCount}x</Badge>
@@ -325,19 +393,23 @@ export function MustahikDatabase({
                                   <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="h-8 w-8 p-0 hover:bg-slate-100"
+                                    className="h-8 w-8 p-0 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-all active:scale-95"
                                     onClick={() => setViewingMustahik(mustahik)}
                                   >
                                     <Eye className="w-4 h-4 text-slate-500" />
                                   </Button>
                                 </DialogTrigger>
-                                <DialogContent className="!max-w-[calc(100vw-8rem)] max-h-[90vh] overflow-y-auto !bg-white !dark:bg-slate-900 !px-16 !pb-14">
-                                  <DialogHeader>
-                                    <DialogTitle>Detail Mustahik - {mustahik.name}</DialogTitle>
-                                    <DialogDescription>
-                                      Informasi lengkap mustahik
-                                    </DialogDescription>
-                                  </DialogHeader>
+                                <DialogContent className="max-w-[580px] w-[95vw] h-[700px] max-h-[90vh] dialog-bg-navy dialog-border-navy border-0 shadow-2xl p-0 overflow-hidden flex flex-col">
+                                  <div className="bg-green-600 px-6 py-4 text-white relative shrink-0 overflow-hidden">
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+                                    <DialogHeader className="pt-0">
+                                      <DialogTitle className="text-xl font-bold text-white flex items-center gap-2">Detail Mustahik - {mustahik.name}</DialogTitle>
+                                      <DialogDescription className="text-green-50/90 font-medium">
+                                        Informasi lengkap mustahik
+                                      </DialogDescription>
+                                    </DialogHeader>
+                                  </div>
+                                  <div className="flex-1 overflow-y-auto p-6">
                                   {viewingMustahik && (
                                     <div className="space-y-4">
                                       <div className="grid grid-cols-2 gap-4">
@@ -400,7 +472,7 @@ export function MustahikDatabase({
 
                                             if (!latestMonitoring) {
                                               return (
-                                                <div className="p-8 text-center border border-dashed border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                                                <div className="p-8 text-center border border-dashed border-slate-200 dark:border-slate-800 rounded-lg bg-slate-50 dark:bg-slate-900">
                                                   <p className="text-sm text-slate-500 dark:text-slate-400">Belum ada data monitoring usaha untuk mustahik ini.</p>
                                                 </div>
                                               );
@@ -409,7 +481,7 @@ export function MustahikDatabase({
                                             return (
                                               <div className="space-y-6">
                                                 {/* Metrics Grid */}
-                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
                                                   <div>
                                                     <p className="text-xs text-slate-500 dark:text-slate-400">Omzet Terakhir</p>
                                                     <p className="font-bold text-emerald-600 dark:text-emerald-400">
@@ -585,7 +657,7 @@ export function MustahikDatabase({
                                           return (
                                             <div className="space-y-6">
                                               {/* Grand Total - Summarized at the top */}
-                                              <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                                              <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                                                 <div>
                                                   <div className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Total Skor Keseluruhan</div>
                                                   <div className="flex items-baseline gap-2">
@@ -605,7 +677,7 @@ export function MustahikDatabase({
                                               {allSubDetails.length > 0 && (
                                                 <div className="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
                                                   <Table>
-                                                    <TableHeader className="bg-slate-50 dark:bg-slate-800/50">
+                                                    <TableHeader className="bg-slate-50 dark:bg-slate-900">
                                                       <TableRow>
                                                         <TableHead className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">Sub Kriteria</TableHead>
                                                         <TableHead className="w-[150px] text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100">Kriteria Utama</TableHead>
@@ -615,7 +687,7 @@ export function MustahikDatabase({
                                                     </TableHeader>
                                                     <TableBody>
                                                       {allSubDetails.map((detail, index) => (
-                                                        <TableRow key={`${detail.aspectCode}-${index}`} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
+                                                        <TableRow key={`${detail.aspectCode}-${index}`} className="hover:bg-slate-50/50 dark:hover:bg-slate-800 transition-colors">
                                                           <TableCell>
                                                             <div className="flex flex-col">
                                                               <span className="font-semibold text-sm text-slate-900 dark:text-slate-100">
@@ -656,6 +728,7 @@ export function MustahikDatabase({
                                       </div>
                                     </div>
                                   )}
+                                  </div>
                                 </DialogContent>
                               </Dialog>
 
@@ -672,19 +745,24 @@ export function MustahikDatabase({
                                       <Edit className="w-4 h-4" />
                                     </Button>
                                   </DialogTrigger>
-                                  <DialogContent className="!max-w-[calc(100vw-8rem)] max-h-[90vh] overflow-y-auto !bg-white !dark:bg-slate-900 !px-16 !pb-14">
-                                    <DialogHeader>
-                                      <DialogTitle>Edit Data Mustahik</DialogTitle>
-                                      <DialogDescription>
-                                        Perbarui data pribadi dan penilaian kriteria mustahik
-                                      </DialogDescription>
-                                    </DialogHeader>
-                                    <MustahikForm
-                                      initialData={editingMustahik || undefined}
-                                      onSubmit={handleUpdate}
-                                      criteriaList={criteriaList}
-                                      userRole={userRole}
-                                    />
+                                  <DialogContent className="max-w-[580px] w-[95vw] h-[700px] max-h-[90vh] dialog-bg-navy dialog-border-navy border-0 shadow-2xl p-0 overflow-hidden flex flex-col">
+                                    <div className="bg-green-600 px-6 py-4 text-white relative shrink-0 overflow-hidden">
+                                      <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+                                      <DialogHeader className="pt-0">
+                                        <DialogTitle className="text-xl font-bold text-white flex items-center gap-2">Edit Data Mustahik</DialogTitle>
+                                        <DialogDescription className="text-green-50/90 font-medium">
+                                          Perbarui data pribadi dan penilaian kriteria mustahik
+                                        </DialogDescription>
+                                      </DialogHeader>
+                                    </div>
+                                    <div className="flex-1 overflow-y-auto p-6">
+                                      <MustahikForm
+                                        initialData={editingMustahik || undefined}
+                                        onSubmit={handleUpdate}
+                                        criteriaList={criteriaList}
+                                        userRole={userRole}
+                                      />
+                                    </div>
                                   </DialogContent>
                                 </Dialog>
                               )}
@@ -696,9 +774,22 @@ export function MustahikDatabase({
                                   size="sm"
                                   className="h-8 w-8 p-0 hover:bg-rose-50 hover:text-rose-600"
                                   onClick={() => {
-                                    if (confirm(`Hapus data ${mustahik.name}?`)) {
-                                      onDelete(mustahik.id);
-                                    }
+                                    confirm({
+                                      title: 'Hapus Mustahik',
+                                      description: `Apakah Anda yakin ingin menghapus data ${mustahik.name}? Tindakan ini tidak dapat dibatalkan.`,
+                                      confirmText: 'Hapus Permanen',
+                                      variant: 'destructive',
+                                      onConfirm: () => {
+                                        const toastId = toast.loading(`Menghapus data ${mustahik.name}...`);
+                                        setTimeout(() => {
+                                          onDelete(mustahik.id);
+                                          toast.success('Mustahik Dihapus', {
+                                            id: toastId,
+                                            description: `Data ${mustahik.name} telah berhasil dihapus dari sistem.`
+                                          });
+                                        }, 800);
+                                      }
+                                    });
                                   }}
                                 >
                                   <Trash2 className="w-4 h-4" />
@@ -715,7 +806,7 @@ export function MustahikDatabase({
             <div className="mt-4 px-4 pb-4">
               <PaginationControls
                 currentPage={currentPage}
-                totalPages={Math.ceil(filteredMustahik.length / itemsPerPage)}
+                totalPages={Math.ceil(sortedMustahik.length / itemsPerPage)}
                 onPageChange={setCurrentPage}
               />
             </div>

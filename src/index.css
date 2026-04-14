@@ -290,7 +290,6 @@
   iframe,
   embed,
   object {
-    vertical-align: middle;
     display: block;
   }
 
@@ -691,6 +690,7 @@
 
   .line-clamp-1 {
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     -webkit-box-orient: vertical;
     display: -webkit-box;
     overflow: hidden;
@@ -2174,6 +2174,7 @@
 
   :is(.\*\:data-\[slot\=select-value\]\:line-clamp-1 > *)[data-slot="select-value"] {
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     -webkit-box-orient: vertical;
     display: -webkit-box;
     overflow: hidden;
@@ -2594,24 +2595,24 @@
 }
 
 .dark {
-  --background: oklch(.145 0 0);
+  --background: #050b14;
   --foreground: oklch(.985 0 0);
-  --card: oklch(.145 0 0);
+  --card: #0a1321;
   --card-foreground: oklch(.985 0 0);
-  --popover: oklch(.145 0 0);
+  --popover: #0a1321;
   --popover-foreground: oklch(.985 0 0);
   --primary: oklch(.985 0 0);
-  --primary-foreground: oklch(.205 0 0);
-  --secondary: oklch(.269 0 0);
+  --primary-foreground: #020813;
+  --secondary: #0d1a2c;
   --secondary-foreground: oklch(.985 0 0);
-  --muted: oklch(.269 0 0);
+  --muted: #0d1a2c;
   --muted-foreground: oklch(.708 0 0);
-  --accent: oklch(.269 0 0);
+  --accent: #0d1a2c;
   --accent-foreground: oklch(.985 0 0);
   --destructive: oklch(.396 .141 25.723);
   --destructive-foreground: oklch(.637 .237 25.331);
-  --border: oklch(.269 0 0);
-  --input: oklch(.269 0 0);
+  --border: #112038;
+  --input: #112038;
   --ring: oklch(.439 0 0);
   --font-weight-medium: 500;
   --font-weight-normal: 400;
@@ -2620,14 +2621,15 @@
   --chart-3: oklch(.769 .188 70.08);
   --chart-4: oklch(.627 .265 303.9);
   --chart-5: oklch(.645 .246 16.439);
-  --sidebar: oklch(.205 0 0);
+  --sidebar: #070e1a;
   --sidebar-foreground: oklch(.985 0 0);
   --sidebar-primary: oklch(.488 .243 264.376);
   --sidebar-primary-foreground: oklch(.985 0 0);
-  --sidebar-accent: oklch(.269 0 0);
+  --sidebar-accent: #0d1a2c;
   --sidebar-accent-foreground: oklch(.985 0 0);
-  --sidebar-border: oklch(.269 0 0);
+  --sidebar-border: #112038;
   --sidebar-ring: oklch(.439 0 0);
+  --input-background: #0a1321;
 }
 
 html {
@@ -2948,12 +2950,12 @@ html {
 /* Custom: Solid Navbar Background */
 nav.fixed {
   background-color: #ffffff !important;
-  z-index: 9999 !important;
+  z-index: 999 !important;
 }
 
 .dark nav.fixed {
-  background-color: #0f172a !important;
-  z-index: 9999 !important;
+  background-color: #050b14 !important;
+  z-index: 999 !important;
 }
 
 /* Custom: Page margin-top to avoid navbar overlap */
@@ -2975,4 +2977,416 @@ nav.fixed {
   position: relative !important;
   z-index: 0 !important;
   isolation: isolate !important;
+}
+
+/* ========================================
+   Global Dark Mode: Navy Container Overrides
+   Replace all dark:bg-slate-900 (black) with navy
+   ======================================== */
+
+/* dark:bg-slate-900 → navy */
+.dark .dark\:bg-slate-900 {
+  background-color: #0a1321 !important;
+}
+
+/* dark:!bg-slate-900 (important variant) → navy */
+.dark .dark\:\!bg-slate-900 {
+  background-color: #0a1321 !important;
+}
+
+/* dark:bg-slate-950 (page bg) → deep navy */
+.dark .dark\:bg-slate-950 {
+  background-color: #050b14 !important;
+}
+
+/* dark:bg-slate-900/50 → navy with opacity */
+.dark .dark\:bg-slate-900\/50 {
+  background-color: rgba(10, 19, 33, 0.5) !important;
+}
+
+/* dark:bg-slate-900/20 → navy with opacity */
+.dark .dark\:bg-slate-900\/20 {
+  background-color: rgba(10, 19, 33, 0.2) !important;
+}
+
+/* dark:bg-slate-900/40 → navy with opacity */
+.dark .dark\:bg-slate-900\/40 {
+  background-color: rgba(10, 19, 33, 0.4) !important;
+}
+
+/* dark:bg-slate-800 → lighter navy */
+.dark .dark\:bg-slate-800 {
+  background-color: #0d1a2c !important;
+}
+
+/* dark:bg-slate-800/50 → lighter navy with opacity */
+.dark .dark\:bg-slate-800\/50 {
+  background-color: rgba(13, 26, 44, 0.5) !important;
+}
+
+/* dark hover states → navy */
+.dark .dark\:hover\:bg-slate-800:hover {
+  background-color: #0d1a2c !important;
+}
+
+.dark .dark\:hover\:bg-slate-900:hover {
+  background-color: #0a1321 !important;
+}
+
+/* dark:bg-slate-800 group-hover */
+.dark .group:hover .dark\:group-hover\:bg-slate-900\/40 {
+  background-color: rgba(10, 19, 33, 0.4) !important;
+}
+
+/* dark border overrides for navy harmony */
+.dark .dark\:border-slate-800 {
+  border-color: #112038 !important;
+}
+
+.dark .dark\:border-slate-700 {
+  border-color: #172a4a !important;
+}
+
+/* ========================================
+   Navy Dialog System - Custom Colors
+   ======================================== */
+
+/* Dialog/Modal backgrounds */
+.dialog-bg-navy {
+  background-color: #ffffff;
+}
+.dark .dialog-bg-navy {
+  background-color: #050b14 !important;
+}
+
+/* Dialog inner content (slightly lighter navy) */
+.dialog-bg-navy-light {
+  background-color: #f8fafc; /* slate-50 */
+}
+.dark .dialog-bg-navy-light {
+  background-color: #0a1321 !important;
+}
+
+/* Dialog hover state */
+.dialog-bg-navy-hover:hover {
+  background-color: #f1f5f9; /* slate-100 */
+}
+.dark .dialog-bg-navy-hover:hover {
+  background-color: #0d1a2c !important;
+}
+
+/* Dialog border */
+.dialog-border-navy {
+  border-color: #e2e8f0; /* slate-200 */
+}
+.dark .dialog-border-navy {
+  border-color: #112038 !important;
+}
+
+/* Dialog border hover */
+.dialog-border-navy-hover:hover {
+  border-color: #cbd5e1; /* slate-300 */
+}
+.dark .dialog-border-navy-hover:hover {
+  background-color: #172a4a !important;
+}
+
+/* Dialog tab active state */
+.dialog-tab-active {
+  background-color: #ffffff;
+}
+.dark .dialog-tab-active {
+  background-color: #112038 !important;
+}
+
+/* Dialog circle/avatar border */
+.dialog-circle-border {
+  border-color: #e2e8f0; /* slate-200 */
+}
+.dark .dialog-circle-border {
+  border-color: rgba(34, 197, 94, 0.4) !important; /* green-500/40 */
+}
+
+/* Dialog overlay - dark + blur */
+.dialog-overlay-blur {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  isolation: isolate;
+  z-index: 9999 !important;
+}
+.dark .dialog-overlay-blur {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+/* Dialog content - above overlay */
+[data-slot="dialog-content"] {
+  z-index: 10000 !important;
+}
+
+/* Alert dialog content - above overlay */
+[data-slot="alert-dialog-content"] {
+  z-index: 10000 !important;
+}
+
+/* Fix Dropdown/Select inside Dialogs */
+[data-radix-popper-content-wrapper],
+[data-radix-portal] > * {
+  z-index: 10005 !important;
+}
+
+/* Base Tailwind utility backgrounds missing from compilation */
+html:not(.dark) .bg-white { background-color: #ffffff !important; }
+html:not(.dark) .bg-slate-50 { background-color: #f8fafc !important; }
+html:not(.dark) .bg-slate-100 { background-color: #f1f5f9 !important; }
+html:not(.dark) .bg-slate-200 { background-color: #e2e8f0 !important; }
+
+/* Light mode text colors that might be missing */
+html:not(.dark) .text-slate-500 { color: #64748b !important; }
+html:not(.dark) .text-slate-600 { color: #475569 !important; }
+html:not(.dark) .text-slate-700 { color: #334155 !important; }
+html:not(.dark) .text-slate-900 { color: #0f172a !important; }
+
+/* Dark mode text color overrides removed to prevent white-on-white text */
+
+/* Specific components to force solid white in light mode */
+html:not(.dark) .bg-card { background-color: var(--card, #ffffff) !important; }
+html:not(.dark) .bg-popover { background-color: var(--popover, #ffffff) !important; }
+
+/* Ensuring the navy specific colors for dark mode */
+.dark .dark\:bg-slate-900 { background-color: #0a1321 !important; }
+.dark .dark\:bg-slate-800 { background-color: #0d1a2c !important; }
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* GLOBAL BUTTON HOVER EFFECTS - Dramatic & Visible              */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* Green Button - Lift + Glow effect */
+.btn-green {
+  background-color: #16a34a;
+  color: #ffffff;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(22, 163, 74, 0.2);
+}
+.btn-green:hover:not(:disabled) {
+  background-color: #15803d;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(22, 163, 74, 0.5), 0 2px 8px rgba(22, 163, 74, 0.3);
+}
+.btn-green:active:not(:disabled) {
+  transform: translateY(0px) scale(0.97);
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.3);
+}
+
+/* Blue Button - Lift + Glow effect */
+.btn-blue {
+  background-color: #2563eb;
+  color: #ffffff;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2);
+}
+.btn-blue:hover:not(:disabled) {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.5), 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+.btn-blue:active:not(:disabled) {
+  transform: translateY(0px) scale(0.97);
+}
+
+/* Outline/Ghost secondary buttons */
+.btn-secondary {
+  transition: all 0.18s ease;
+}
+.btn-secondary:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.dark .btn-secondary:hover:not(:disabled) {
+  background-color: #1e293b;
+}
+.btn-secondary:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Ghost icon buttons */
+.btn-icon-blue:hover:not(:disabled) {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+.dark .btn-icon-blue:hover:not(:disabled) {
+  background-color: rgba(37, 99, 235, 0.15);
+  color: #93c5fd;
+}
+.btn-icon-red:hover:not(:disabled) {
+  background-color: #fff1f2;
+  color: #e11d48;
+}
+.dark .btn-icon-red:hover:not(:disabled) {
+  background-color: rgba(225, 29, 72, 0.15);
+  color: #fb7185;
+}
+
+/* Dialog Close Button (X) */
+.btn-close-dialog {
+  background-color: #16a34a; /* green-600 */
+  color: #ffffff;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.btn-close-dialog:hover {
+  background-color: #ef4444 !important; /* red-500 */
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4) !important;
+}
+.dark .btn-close-dialog:hover {
+  background-color: #dc2626 !important; /* red-600 */
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* DANA TERKUMPUL - Pool Info Box & Card Styles (Dark Mode Fix)  */
+/* ═══════════════════════════════════════════════════════════════ */
+
+/* Pool info box inside dialogs (MuzakkiDashboard, MuzakkiMgmt, AidPrograms alloc dialog) */
+.pool-info-box {
+  border-radius: 0.75rem;
+  border: 1px solid #a7f3d0; /* emerald-200 */
+  background-color: #ecfdf5; /* emerald-50 */
+  padding: 1rem;
+}
+.dark .pool-info-box {
+  border-color: rgba(4, 120, 87, 0.5); /* emerald-700/50 */
+  background-color: #022c22 !important; /* emerald-950 */
+}
+.pool-info-box .pool-icon-wrapper {
+  padding: 0.5rem;
+  background-color: #d1fae5; /* emerald-100 */
+  border-radius: 0.5rem;
+}
+.dark .pool-info-box .pool-icon-wrapper {
+  background-color: #065f46 !important; /* emerald-800 */
+}
+.pool-info-box .pool-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #059669; /* emerald-600 */
+}
+.dark .pool-info-box .pool-icon {
+  color: #34d399; /* emerald-400 */
+}
+.pool-info-box .pool-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #047857; /* emerald-700 */
+}
+.dark .pool-info-box .pool-label {
+  color: #6ee7b7 !important; /* emerald-300 */
+}
+.pool-info-box .pool-amount {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #059669; /* emerald-600 */
+}
+.dark .pool-info-box .pool-amount {
+  color: #34d399 !important; /* emerald-400 */
+}
+.pool-info-box .pool-desc {
+  font-size: 0.6875rem;
+  margin-top: 0.5rem;
+  color: rgba(5, 150, 105, 0.7); /* emerald-600/70 */
+}
+.dark .pool-info-box .pool-desc {
+  color: rgba(52, 211, 153, 0.6) !important; /* emerald-400/60 */
+}
+
+/* Pool balance card on AidPrograms page — matches stat cards */
+.pool-balance-card {
+  background-color: #ffffff;
+  border-color: #e2e8f0; /* slate-200 */
+  transition: all 0.2s ease;
+}
+.pool-balance-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+  border-color: #cbd5e1; /* slate-300 */
+}
+.dark .pool-balance-card {
+  background-color: #0a1321 !important; /* navy — same as dark:bg-slate-900 */
+  border-color: #112038 !important; /* same as dark:border-slate-800 */
+}
+.dark .pool-balance-card:hover {
+  border-color: #172a4a !important; /* dark:hover:border-slate-700 */
+}
+.pool-balance-card .pool-card-icon-wrapper {
+  padding: 0.75rem;
+  background-color: rgba(16, 185, 129, 0.15); /* emerald tint — matches stat card icon bg */
+  border-radius: 0.75rem;
+}
+.dark .pool-balance-card .pool-card-icon-wrapper {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+}
+.pool-balance-card .pool-card-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #10b981; /* emerald-500 */
+}
+.dark .pool-balance-card .pool-card-icon {
+  color: #10b981 !important; /* emerald-500 */
+}
+/* Pool card label — matches stat card CardTitle */
+.pool-balance-card .pool-label {
+  font-size: 0.875rem; /* text-sm — same as stat cards */
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #64748b; /* slate-500 */
+}
+.dark .pool-balance-card .pool-label {
+  color: #94a3b8 !important; /* slate-400 */
+}
+/* Pool card amount — matches stat card value */
+.pool-balance-card .pool-amount {
+  font-size: 1.5rem; /* text-2xl — same as stat cards */
+  font-weight: 700;
+  color: #0f172a; /* slate-900 */
+}
+.dark .pool-balance-card .pool-amount {
+  color: #f1f5f9 !important; /* slate-100 */
+}
+/* Pool card description — matches stat card subtext */
+.pool-balance-card .pool-desc {
+  font-size: 0.75rem; /* text-xs — same as stat cards */
+  margin-top: 0.25rem;
+  color: #64748b; /* slate-500 */
+}
+.dark .pool-balance-card .pool-desc {
+  color: #64748b !important; /* slate-500 */
+}
+
+/* Salurkan Dana button */
+.btn-salurkan-dana {
+  border: 1px solid #a7f3d0; /* emerald-200 */
+  background-color: #ecfdf5; /* emerald-50 */
+  color: #047857; /* emerald-700 */
+  transition: all 0.15s ease;
+}
+.dark .btn-salurkan-dana {
+  background-color: #064e3b !important; /* emerald-900 */
+  border-color: rgba(4, 120, 87, 0.5) !important;
+  color: #34d399 !important; /* emerald-400 */
+}
+.btn-salurkan-dana:hover {
+  background-color: #d1fae5; /* emerald-100 */
+  border-color: #6ee7b7; /* emerald-300 */
+}
+.dark .btn-salurkan-dana:hover {
+  background-color: #065f46 !important; /* emerald-800 */
 }

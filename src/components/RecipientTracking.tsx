@@ -20,23 +20,37 @@ export function RecipientTracking({ recipientHistory, mustahikList, aidPrograms 
   const [historyPage, setHistoryPage] = useState(1);
   const itemsPerPage = 10;
 
-  const filteredHistory = recipientHistory.filter(h =>
-    h.mustahikName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    h.programName.toLowerCase().includes(searchTerm.toLowerCase())
+  const uniqueHistory = useMemo(() => {
+    const seen = new Set<string>();
+    // Sort descending by date so we keep the most recent transaction
+    return [...recipientHistory]
+      .sort((a, b) => new Date(b.receivedDate).getTime() - new Date(a.receivedDate).getTime())
+      .filter((h) => {
+        if (!h.mustahikId || !h.programId) return false;
+        const key = `${h.mustahikId}_${h.programId}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+  }, [recipientHistory]);
+
+  const filteredHistory = uniqueHistory.filter(h =>
+    (h.mustahikName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (h.programName?.toLowerCase() || '').includes(searchTerm.toLowerCase())
   );
 
   const stats = useMemo(() => {
-    const totalRecipients = new Set(recipientHistory.map(h => h.mustahikId).filter(Boolean)).size;
-    const totalDistributed = recipientHistory.reduce((sum, h) => sum + (h.amount || 0), 0);
-    const totalPrograms = new Set(recipientHistory.map(h => h.programId).filter(Boolean)).size;
+    const totalRecipients = new Set(uniqueHistory.map(h => h.mustahikId).filter(Boolean)).size;
+    const totalDistributed = uniqueHistory.reduce((sum, h) => sum + (h.amount || 0), 0);
+    const totalPrograms = new Set(uniqueHistory.map(h => h.programId).filter(Boolean)).size;
 
     return {
       totalRecipients,
       totalDistributed,
       totalPrograms,
-      totalTransactions: recipientHistory.length,
+      totalTransactions: uniqueHistory.length,
     };
-  }, [recipientHistory]);
+  }, [uniqueHistory]);
 
   // Group history by mustahik
   const recipientSummary = useMemo(() => {
@@ -48,7 +62,7 @@ export function RecipientTracking({ recipientHistory, mustahikList, aidPrograms 
       lastReceived: string;
     }>();
 
-    recipientHistory.forEach(h => {
+    uniqueHistory.forEach(h => {
       const existing = summary.get(h.mustahikId);
       const mustahik = mustahikList.find(m => m.id === h.mustahikId);
 
@@ -73,14 +87,14 @@ export function RecipientTracking({ recipientHistory, mustahikList, aidPrograms 
     });
 
     return Array.from(summary.values()).sort((a, b) => b.count - a.count);
-  }, [recipientHistory, mustahikList]);
+  }, [uniqueHistory, mustahikList]);
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Tracking Penerima</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Tracking Penerima</h2>
           <p className="text-slate-500">
             Riwayat dan monitoring penerima zakat produktif
           </p>
@@ -90,32 +104,32 @@ export function RecipientTracking({ recipientHistory, mustahikList, aidPrograms 
             placeholder="Cari penerima atau program..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full md:w-64 bg-white border-slate-200 focus:border-blue-500 transition-colors"
+            className="w-full md:w-64 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 focus:border-blue-500 transition-colors"
           />
         </div>
       </div>
 
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-4">
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500">Total Penerima</CardTitle>
             <Users className="h-4 w-4 text-indigo-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900">{stats.totalRecipients}</div>
+            <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">{stats.totalRecipients}</div>
             <p className="text-xs text-slate-500 mt-1">Mustahik unik</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500">Total Disalurkan</CardTitle>
             <DollarSign className="h-4 w-4 text-emerald-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900">
-              Rp {(stats.totalDistributed / 1000000).toFixed(1)}<span className="text-sm font-normal text-slate-400">M</span>
+            <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              Rp {(stats.totalDistributed / 1000000).toFixed(1)} <span className="text-sm font-medium text-slate-500">juta</span>
             </div>
             <p className="text-xs text-slate-500 mt-1">
               Rp {stats.totalDistributed.toLocaleString('id-ID')}
@@ -123,24 +137,24 @@ export function RecipientTracking({ recipientHistory, mustahikList, aidPrograms 
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500">Total Transaksi</CardTitle>
             <TrendingUp className="h-4 w-4 text-amber-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900">{stats.totalTransactions}</div>
+            <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">{stats.totalTransactions}</div>
             <p className="text-xs text-slate-500 mt-1">Kali penyaluran</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-slate-500">Program Aktif</CardTitle>
             <Calendar className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900">{stats.totalPrograms}</div>
+            <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">{stats.totalPrograms}</div>
             <p className="text-xs text-slate-500 mt-1">Program berbeda</p>
           </CardContent>
         </Card>
@@ -148,7 +162,7 @@ export function RecipientTracking({ recipientHistory, mustahikList, aidPrograms 
 
       {/* Recipient Summary */}
       {recipientSummary.length > 0 && (
-        <Card>
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader>
             <CardTitle>Ringkasan Per Penerima</CardTitle>
             <CardDescription>
@@ -173,7 +187,7 @@ export function RecipientTracking({ recipientHistory, mustahikList, aidPrograms 
                     .map((summary, idx) => (
                       <TableRow key={idx}>
                         <TableCell>{summary.mustahik?.name || 'N/A'}</TableCell>
-                        <TableCell className="text-gray-600">
+                        <TableCell className="text-slate-600 dark:text-slate-400">
                           {summary.mustahik?.address || 'N/A'}
                         </TableCell>
                         <TableCell className="text-center">
@@ -208,13 +222,13 @@ export function RecipientTracking({ recipientHistory, mustahikList, aidPrograms 
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            {recipientHistory.length === 0
+            {uniqueHistory.length === 0
               ? 'Belum ada riwayat penerima. Tetapkan penerima dari program bantuan untuk mencatat riwayat.'
               : 'Tidak ada riwayat yang sesuai dengan pencarian.'}
           </AlertDescription>
         </Alert>
       ) : (
-        <Card>
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader>
             <CardTitle>Riwayat Penyaluran</CardTitle>
             <CardDescription>
@@ -249,7 +263,7 @@ export function RecipientTracking({ recipientHistory, mustahikList, aidPrograms 
                           }) : '-'}
                         </TableCell>
                         <TableCell>{history.mustahikName || 'Unknown'}</TableCell>
-                        <TableCell className="text-gray-600">{history.programName || 'Unknown'}</TableCell>
+                        <TableCell className="text-slate-600 dark:text-slate-400">{history.programName || 'Unknown'}</TableCell>
                         <TableCell className="text-center">
                           Rp {(history.amount || 0).toLocaleString('id-ID')}
                         </TableCell>
@@ -263,7 +277,7 @@ export function RecipientTracking({ recipientHistory, mustahikList, aidPrograms 
                             {(history.mooraScore || 0).toFixed(4)}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-sm text-gray-600">
+                        <TableCell className="text-sm text-slate-600 dark:text-slate-400">
                           {history.notes || '-'}
                         </TableCell>
                       </TableRow>

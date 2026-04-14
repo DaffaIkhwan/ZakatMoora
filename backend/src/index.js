@@ -1,10 +1,8 @@
+require('dotenv').config({ override: true });
 const express = require('express');
 const cors = require('cors');
 const { PrismaClient } = require('@prisma/client');
 const apiRoutes = require('./routes/api');
-const dotenv = require('dotenv');
-
-dotenv.config();
 
 const app = express();
 // Use singleton to share connection pool

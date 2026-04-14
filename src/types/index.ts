@@ -1,3 +1,19 @@
+export interface Muzakki {
+  id: string;
+  userId: string;
+  nik?: string;
+  name: string;
+  address?: string;
+  phone?: string;
+  job?: string;
+  institution?: string;
+  registeredDate: string;
+  user?: User;
+  _count?: {
+    donations: number;
+  };
+}
+
 export interface Mustahik {
   id: string;
   name: string;
@@ -24,6 +40,7 @@ export interface AidProgram {
   endDate: string;
   status: 'draft' | 'active' | 'completed';
   selectedCandidates: string[]; // Array of mustahik IDs
+  collectedDonations?: number; // Optional total collections
   createdAt: string;
 }
 
@@ -49,18 +66,20 @@ export interface MonitoringData {
   monitoringDate: string;
   businessProgress: {
     businessType: string;
-    revenue: number;
-    profit: number;
-    employeeCount: number;
-    businessStatus: 'naik' | 'stabil' | 'turun';
+    revenue: number; // Omzet (O_t)
+    operationalCost?: number; // Biaya Operasional (B_t)
+    netIncome?: number; // Pendapatan Bersih (Y_t)
+    profit?: number; // Legacy
+    employeeCount?: number;
+    businessStatus?: 'naik' | 'stabil' | 'turun';
   };
   socialEconomicCondition: {
-    monthlyIncome: number;
-    monthlyExpenditure: number;
-    dependentCount: number;
-    housingCondition: 'baik' | 'sedang' | 'buruk';
-    healthCondition: 'sehat' | 'sakit ringan' | 'sakit berat';
-    educationLevel: 'meningkat' | 'tetap' | 'menurun';
+    monthlyExpenditure: number; // Konsumsi Esensial (C_t)
+    monthlyIncome?: number;
+    dependentCount?: number;
+    housingCondition?: 'baik' | 'sedang' | 'buruk';
+    healthCondition?: 'sehat' | 'sakit ringan' | 'sakit berat';
+    educationLevel?: 'meningkat' | 'tetap' | 'menurun';
   };
   challenges: string;
   achievements: string;
@@ -79,7 +98,7 @@ export interface CandidateWithScore extends Mustahik {
   rank: number;
 }
 
-export type UserRole = 'super_admin' | 'manajer' | 'surveyor' | 'mustahik';
+export type UserRole = 'super_admin' | 'manajer' | 'surveyor' | 'mustahik' | 'muzakki';
 
 export interface User {
   id: string;
@@ -112,4 +131,46 @@ export interface Criterion {
   color: string;
   description: string;
   aspects: Aspect[];
+}
+
+export interface MuzakkiDashboardData {
+  muzakkiInfo: {
+    name: string;
+    address?: string;
+    phone?: string;
+    job?: string;
+    institution?: string;
+    registeredDate: string;
+  };
+  hasDonations: boolean;
+  poolBalance: number;
+  totalDonations: number;
+  personalStats: {
+    totalDonated: number;
+    donationCount: number;
+  } | null;
+  globalStats: {
+    totalDistributed: number;
+    totalPrograms: number;
+    totalRecipients: number;
+  };
+  allPrograms: {
+    id: string;
+    name: string;
+    description: string;
+    status: string;
+    totalBudget: number;
+    budgetPerRecipient: number;
+    quota: number;
+    startDate: string;
+    endDate: string;
+    allocatedFunds: number;
+    mustahiks: {
+      id: string;
+      name: string;
+      amountReceived: number;
+      receivedDate: string;
+      businessStatus: string;
+    }[];
+  }[];
 }

@@ -1,8 +1,4 @@
-// Menggunakan variabel dari .env jika ada, fallback ke URL yang sudah dideploy
-const ENV_API_URL = import.meta.env.VITE_API_URL;
-const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-
-export const API_URL = ENV_API_URL || (isDev ? 'http://localhost:5000/api' : 'https://zakat-moora.vercel.app/api');
+export const API_URL = 'http://localhost:5000/api';
 
 const getHeaders = () => {
     const token = localStorage.getItem('token');
@@ -180,6 +176,87 @@ export const api = {
             body: JSON.stringify(data)
         });
         if (!res.ok) throw new Error('Failed to create monitoring');
+        return res.json();
+    },
+
+    // Muzakki
+    getMuzakkis: async () => {
+        const res = await fetch(`${API_URL}/muzakkis`, { headers: getHeaders() });
+        if (!res.ok) throw new Error('Failed to fetch muzakkis');
+        return res.json();
+    },
+    createMuzakki: async (data: any) => {
+        const res = await fetch(`${API_URL}/muzakkis`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error('Failed to create muzakki');
+        return res.json();
+    },
+    updateMuzakki: async (id: string, data: any) => {
+        const res = await fetch(`${API_URL}/muzakkis/${id}`, {
+            method: 'PUT',
+            headers: getHeaders(),
+            body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error('Failed to update muzakki');
+        return res.json();
+    },
+    deleteMuzakki: async (id: string) => {
+        const res = await fetch(`${API_URL}/muzakkis/${id}`, {
+            method: 'DELETE',
+            headers: getHeaders()
+        });
+        if (!res.ok) throw new Error('Failed to delete muzakki');
+        return;
+    },
+    createDonation: async (data: any) => {
+        const res = await fetch(`${API_URL}/donations`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error('Failed to create donation');
+        return res.json();
+    },
+    getMuzakkiDashboard: async () => {
+        const res = await fetch(`${API_URL}/muzakki-dashboard`, { headers: getHeaders() });
+        if (!res.ok) throw new Error('Failed to fetch muzakki dashboard');
+        return res.json();
+    },
+    donate: async (data: { amount: number; isAnonymous?: boolean }) => {
+        const res = await fetch(`${API_URL}/donations/pay`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error('Failed to process donation');
+        return res.json();
+    },
+    verifyPayment: async (donationId: string) => {
+        const res = await fetch(`${API_URL}/donations/${donationId}/verify`, {
+            method: 'POST',
+            headers: getHeaders()
+        });
+        if (!res.ok) throw new Error('Failed to verify payment');
+        return res.json();
+    },
+    getPoolBalance: async () => {
+        const res = await fetch(`${API_URL}/donations/pool`, { headers: getHeaders() });
+        if (!res.ok) throw new Error('Failed to fetch pool balance');
+        return res.json();
+    },
+    allocateFunds: async (programId: string, amount: number, notes?: string) => {
+        const res = await fetch(`${API_URL}/programs/${programId}/allocate`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify({ amount, notes })
+        });
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || 'Failed to allocate funds');
+        }
         return res.json();
     }
 };

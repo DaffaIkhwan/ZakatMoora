@@ -105,45 +105,45 @@ export function Dashboard({ candidates, criteriaList, recipientHistory = [] }: D
     <div className="space-y-4">
       {/* Stats Overview */}
       <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="pb-1 p-4">
             <div className="flex items-center gap-2 text-slate-500">
               <Users className="w-3 h-3 text-blue-600" />
               <CardDescription className="text-slate-500 font-medium text-xs">Total Calon</CardDescription>
             </div>
-            <CardTitle className="text-xl font-bold text-slate-900">{candidates.length}</CardTitle>
+            <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">{candidates.length}</CardTitle>
           </CardHeader>
         </Card>
 
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="pb-1 p-4">
             <div className="flex items-center gap-2 text-slate-500">
               <Trophy className="w-3 h-3 text-amber-600" />
               <CardDescription className="text-slate-500 font-medium text-xs">Prioritas Tinggi</CardDescription>
             </div>
-            <CardTitle className="text-xl font-bold text-slate-900">{stats?.highPriority || 0}</CardTitle>
+            <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">{stats?.highPriority || 0}</CardTitle>
           </CardHeader>
         </Card>
 
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="pb-1 p-4">
             <div className="flex items-center gap-2 text-slate-500">
               <TrendingUp className="w-3 h-3 text-emerald-600" />
               <CardDescription className="text-slate-500 font-medium text-xs">Skor Tertinggi</CardDescription>
             </div>
-            <CardTitle className="text-xl font-bold text-slate-900">
+            <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">
               {stats?.topScore.toFixed(3) || '-'}
             </CardTitle>
           </CardHeader>
         </Card>
 
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="pb-1 p-4">
             <div className="flex items-center gap-2 text-slate-500">
               <BarChart3 className="w-3 h-3 text-violet-600" />
               <CardDescription className="text-slate-500 font-medium text-xs">Rata-rata Skor</CardDescription>
             </div>
-            <CardTitle className="text-xl font-bold text-slate-900">
+            <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">
               {stats?.avgScore.toFixed(3) || '-'}
             </CardTitle>
           </CardHeader>

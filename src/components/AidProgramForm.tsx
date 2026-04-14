@@ -6,6 +6,8 @@ import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Save } from 'lucide-react';
 import type { AidProgram } from '../types';
+import { toast } from 'sonner';
+import { useConfirm } from '../hooks/use-confirm';
 
 interface AidProgramFormProps {
   initialData?: AidProgram;
@@ -13,10 +15,10 @@ interface AidProgramFormProps {
 }
 
 export function AidProgramForm({ initialData, onSubmit }: AidProgramFormProps) {
+  const { confirm } = useConfirm();
   const [name, setName] = useState(initialData?.name || '');
   const [description, setDescription] = useState(initialData?.description || '');
   const [totalBudget, setTotalBudget] = useState(initialData?.totalBudget.toString() || '');
-  const [budgetPerRecipient, setBudgetPerRecipient] = useState(initialData?.budgetPerRecipient.toString() || '');
   const [quota, setQuota] = useState(initialData?.quota.toString() || '');
   const [startDate, setStartDate] = useState(
     initialData?.startDate ? initialData.startDate.split('T')[0] : ''
@@ -29,8 +31,10 @@ export function AidProgramForm({ initialData, onSubmit }: AidProgramFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name.trim() || !description.trim() || !totalBudget || !budgetPerRecipient || !quota || !startDate || !endDate) {
-      alert('Semua field harus diisi!');
+    if (!name.trim() || !description.trim() || !totalBudget || !quota || !startDate || !endDate) {
+      toast.error('Gagal validasi', {
+        description: 'Semua field bertanda bintang (*) harus diisi!'
+      });
       return;
     }
 
@@ -39,7 +43,7 @@ export function AidProgramForm({ initialData, onSubmit }: AidProgramFormProps) {
       name: name.trim(),
       description: description.trim(),
       totalBudget: parseFloat(totalBudget),
-      budgetPerRecipient: parseFloat(budgetPerRecipient),
+      budgetPerRecipient: parseFloat(totalBudget) / parseInt(quota),
       quota: parseInt(quota),
       startDate: new Date(startDate).toISOString(),
       endDate: new Date(endDate).toISOString(),
@@ -48,7 +52,26 @@ export function AidProgramForm({ initialData, onSubmit }: AidProgramFormProps) {
       createdAt: initialData?.createdAt || new Date().toISOString(),
     };
 
-    onSubmit(program);
+    confirm({
+      title: initialData ? 'Update Program?' : 'Terbitkan Program Baru?',
+      description: initialData 
+        ? `Simpan perubahan data untuk program "${program.name}"?`
+        : `Daftarkan program "${program.name}" ke sistem? Dana akan ditarik secara otomatis berdasarkan total anggaran.`,
+      confirmText: initialData ? 'Ya, Update' : 'Ya, Terbitkan',
+      cancelText: 'Periksa Kembali',
+      onConfirm: () => {
+        const actionLabel = initialData ? 'Memperbarui program...' : 'Memverifikasi ketersediaan dana...';
+        const toastId = toast.loading(actionLabel);
+
+        setTimeout(() => {
+          onSubmit(program);
+          toast.success(initialData ? 'Program Diperbaharui' : 'Program Berhasil Dibuat', {
+            id: toastId,
+            description: `Program "${program.name}" telah masuk tahap ${status === 'draft' ? 'Draft' : 'Aktif'}.`
+          });
+        }, 800);
+      }
+    });
   };
 
   return (
@@ -78,40 +101,38 @@ export function AidProgramForm({ initialData, onSubmit }: AidProgramFormProps) {
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="totalBudget">Total Anggaran (Rp) *</Label>
+          <Label htmlFor="totalBudget" className="flex items-center gap-2">
+            Total Anggaran (Rp) *
+            {initialData && <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase font-bold tracking-wider">Terkunci</span>}
+          </Label>
           <Input
             id="totalBudget"
             type="number"
             placeholder="10000000"
             value={totalBudget}
             onChange={(e) => setTotalBudget(e.target.value)}
+            disabled={!!initialData}
             required
+            className={initialData ? "bg-slate-50 text-slate-500 cursor-not-allowed" : ""}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="budgetPerRecipient">Anggaran per Penerima (Rp) *</Label>
+          <Label htmlFor="quota" className="flex items-center gap-2">
+            Kuota Penerima *
+            {initialData && <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase font-bold tracking-wider">Terkunci</span>}
+          </Label>
           <Input
-            id="budgetPerRecipient"
+            id="quota"
             type="number"
-            placeholder="2000000"
-            value={budgetPerRecipient}
-            onChange={(e) => setBudgetPerRecipient(e.target.value)}
+            placeholder="5"
+            value={quota}
+            onChange={(e) => setQuota(e.target.value)}
+            disabled={!!initialData}
             required
+            className={initialData ? "bg-slate-50 text-slate-500 cursor-not-allowed" : ""}
           />
         </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="quota">Kuota Penerima *</Label>
-        <Input
-          id="quota"
-          type="number"
-          placeholder="5"
-          value={quota}
-          onChange={(e) => setQuota(e.target.value)}
-          required
-        />
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -153,7 +174,7 @@ export function AidProgramForm({ initialData, onSubmit }: AidProgramFormProps) {
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button type="submit" className="gap-2">
+        <Button type="submit" className="btn-green gap-2 px-6">
           <Save className="w-4 h-4" />
           {initialData ? 'Simpan Perubahan' : 'Buat Program'}
         </Button>

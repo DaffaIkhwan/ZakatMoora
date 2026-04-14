@@ -51,13 +51,13 @@ export function SurveyorDashboard({ candidates, monitoringData, onNavigate }: Su
     return (
         <div className="space-y-6">
             {/* Header & Welcome Alert */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-4">
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Dashboard Surveyor</h2>
                     <p className="text-slate-500 dark:text-slate-400">Selamat bekerja, pantau progres survei Anda di sini.</p>
                 </div>
-                <Button onClick={() => onNavigate('mustahik')} className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all hover:scale-105">
-                    <FileText className="w-4 h-4 mr-2" />
+                <Button onClick={() => onNavigate('mustahik')} size="sm" className="btn-green gap-2 flex-shrink-0">
+                    <FileText className="w-4 h-4" />
                     Input Survei Baru
                 </Button>
             </div>
@@ -170,7 +170,7 @@ export function SurveyorDashboard({ candidates, monitoringData, onNavigate }: Su
             {/* Charts Section */}
             <div className="grid gap-4 md:grid-cols-2">
                 {/* Status Pie Chart */}
-                <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm">
+                <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
                     <CardHeader>
                         <div className="flex items-center gap-2">
                             <div className="p-1.5 bg-violet-100 dark:bg-violet-900/20 rounded-md">
@@ -226,13 +226,13 @@ export function SurveyorDashboard({ candidates, monitoringData, onNavigate }: Su
                 </Card>
 
                 {/* Income Monitoring Pie Chart */}
-                <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm">
+                <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
                     <CardHeader>
                         <div className="flex items-center gap-2">
                             <div className="p-1.5 bg-blue-100 dark:bg-blue-900/20 rounded-md">
                                 <Activity className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                             </div>
-                            <CardTitle className="text-base">Status Input Pendapatan</CardTitle>
+                            <CardTitle className="text-base">Status Input Monitoring</CardTitle>
                         </div>
                         <CardDescription>Periode: {new Date().toLocaleString('id-ID', { month: 'long', year: 'numeric' })}</CardDescription>
                     </CardHeader>

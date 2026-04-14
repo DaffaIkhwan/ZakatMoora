@@ -8,6 +8,7 @@ import { Separator } from './ui/separator';
 import { Save } from 'lucide-react';
 import type { Mustahik, Criterion, UserRole } from '../types';
 import { ICON_MAP } from './CriteriaInfo';
+import { toast } from 'sonner';
 
 interface SubCriteriaValues {
   [aspectCode: string]: number;
@@ -69,7 +70,9 @@ export function MustahikForm({ initialData, onSubmit, criteriaList, userRole }: 
     e.preventDefault();
 
     if (!name.trim() || !address.trim() || !phone.trim()) {
-      alert('Nama, alamat, dan nomor telepon harus diisi!');
+      toast.error('Gagal validasi', {
+        description: 'Nama, alamat, dan nomor telepon harus diisi!'
+      });
       return;
     }
 
@@ -208,8 +211,11 @@ export function MustahikForm({ initialData, onSubmit, criteriaList, userRole }: 
 
       {/* Submit Button */}
       <div className="flex justify-end">
-        <Button type="submit" size="lg" className="gap-2">
-          <Save className="w-4 h-4" />
+        <Button
+          type="submit"
+          className="btn-green gap-2 w-full sm:w-auto px-8"
+        >
+          <Save className="w-4 h-4 transition-transform group-hover:scale-110" />
           {initialData ? 'Simpan Perubahan' : 'Tambah Mustahik'}
         </Button>
       </div>

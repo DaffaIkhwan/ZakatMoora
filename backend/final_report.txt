@@ -1,0 +1,56 @@
+=== SENSITIVITY ANALYSIS (MOORA MODEL) ===
+
+Found 7 Criteria from DB.
+Total Base Weight: 1.0000
+Found 28 Mustahik from DB.
+
+--- BASELINE RESULTS (Urutan Saat Ini) ---
+1. Suriati                   | Score: 0.255332
+2. Mega Gustiana             | Score: 0.219786
+3. Ramadhan Saputra          | Score: 0.183552
+4. Hidayathul Asni           | Score: 0.169340
+5. Sri Wahyuni (Marpoyan)    | Score: 0.162885
+-------------------------------------------
+
+--- STARTING SENSITIVITY TESTING ---
+
+Testing Kriteria: Pendidikan (C1)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.255332 
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.231744 
+  > Jika Bobot 80%: Winner = Suriati              | Score: 0.214054 
+
+Testing Kriteria: Kesehatan (C2)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.242301 
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.346551 
+  > Jika Bobot 80%: Winner = Suriati              | Score: 0.424738 
+
+Testing Kriteria: Kelayakan Hunian (C3)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.265605 
+  > Jika Bobot 50%: Winner = Mega Gustiana        | Score: 0.397338 [PERUBAHAN!]
+  > Jika Bobot 80%: Winner = Mega Gustiana        | Score: 0.549526 [PERUBAHAN!]
+
+Testing Kriteria: Spiritual (C4)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.255332 
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.292111 
+  > Jika Bobot 80%: Winner = Nelda Wati           | Score: 0.379487 [PERUBAHAN!]
+
+Testing Kriteria: Pendapatan (C5)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.256092 
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.253053 
+  > Jika Bobot 80%: Winner = Hidayathul Asni      | Score: 0.251910 [PERUBAHAN!]
+
+Testing Kriteria: Potensi Kemandirian (C6)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.260733 
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.217527 
+  > Jika Bobot 80%: Winner = Ramadhan Saputra     | Score: 0.217641 [PERUBAHAN!]
+
+Testing Kriteria: Kepemilikan Aset (C7)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.253377 
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.269016 
+  > Jika Bobot 80%: Winner = Hidayathul Asni      | Score: 0.304884 [PERUBAHAN!]
+
+=== ANALISIS SELESAI ===
+Interpretasi untuk Skripsi:
+1. Jika pemenang berubah saat bobot diubah (PERUBAHAN!), berarti kriteria tersebut SENSITIF.
+2. Jika kriteria sensitif, pastikan nilai input untuk kriteria tersebut dikumpulkan dengan sangat akurat.
+3. Kriteria yang tidak mengubah pemenang meskipun bobot diubah drastis disebut KOKOH/ROBUST.

@@ -1,0 +1,190 @@
+@startuml ZakatMOORA_ERD
+title Entity Relationship Diagram - Sistem Seleksi Zakat Produktif MOORA
+
+!theme plain
+
+' ─── Global ───
+skinparam backgroundColor     #FFFFFF
+skinparam shadowing           false
+skinparam roundCorner         4
+skinparam linetype            ortho
+skinparam arrowColor          #3A6A8A
+skinparam arrowThickness      1.5
+skinparam defaultFontName     Arial
+skinparam defaultFontSize     11
+
+' ─── Entity boxes (biru baja terang) ───
+skinparam entity {
+  BackgroundColor         #FFFFFF
+  BorderColor             #4A88AA
+  FontColor               #FFFFFF
+  FontStyle               Bold
+  FontSize                12
+  AttributeFontColor      #111111
+  AttributeFontSize       10
+  HeaderBackgroundColor   #7BADD0
+}
+
+' ────────────────────────────────────────────────────────
+'  ENTITIES
+' ────────────────────────────────────────────────────────
+
+entity "**User**" as User {
+  * id            : VARCHAR(36)   <<PK>>
+  --
+  * username      : VARCHAR       <<UNIQUE>>
+  * password      : VARCHAR
+  * name          : VARCHAR
+    email         : VARCHAR
+  * role          : ENUM(super_admin, manajer, surveyor, mustahik, muzakki)
+  * isActive      : BOOLEAN       = true
+  * createdAt     : TIMESTAMP     = now()
+}
+
+entity "**Muzakki**\n(Donatur Zakat)" as Muzakki {
+  * id             : VARCHAR(36)  <<PK>>
+  --
+    userId         : VARCHAR(36)  <<FK, UNIQUE, nullable>>
+  * name           : VARCHAR
+    nik            : VARCHAR
+    address        : VARCHAR
+    phone          : VARCHAR
+    job            : VARCHAR
+    institution    : VARCHAR
+  * registeredDate : TIMESTAMP    = now()
+}
+
+entity "**Donation**\n(Transaksi / Alokasi Dana)" as Donation {
+  * id            : VARCHAR(36)   <<PK>>
+  --
+  * muzakkiId     : VARCHAR(36)   <<FK>>
+    programId     : VARCHAR(36)   <<FK, nullable>>
+  * amount        : DECIMAL(15,2)
+    notes         : TEXT
+    donationDate  : TIMESTAMP
+    paymentMethod : VARCHAR
+  * status        : ENUM(pending, success, failed, challenge)
+  * isAnonymous   : BOOLEAN       = false
+  * isAllocation  : BOOLEAN       = false
+    snapToken     : VARCHAR
+}
+
+entity "**AidProgram**\n(Program Bantuan Zakat)" as AidProgram {
+  * id                 : VARCHAR(36)   <<PK>>
+  --
+  * name               : VARCHAR
+  * description        : TEXT
+  * totalBudget        : DECIMAL(15,2)
+  * budgetPerRecipient : DECIMAL(15,2)
+  * quota              : INTEGER
+  * startDate          : DATE
+  * endDate            : DATE
+  * status             : ENUM(draft, active, completed)
+    selectedCandidates : JSON
+  * createdAt          : TIMESTAMP     = now()
+}
+
+entity "**Mustahik**\n(Calon Penerima Bantuan)" as Mustahik {
+  * id             : VARCHAR(36)   <<PK>>
+  --
+    userId         : VARCHAR(36)   <<FK, UNIQUE, nullable>>
+  * name           : VARCHAR
+  * address        : TEXT
+  * phone          : VARCHAR
+  * businessStatus : ENUM(belum_usaha, rintisan, berkembang, maju)
+  * registeredDate : TIMESTAMP     = now()
+}
+
+entity "**Kriteria**\n(Criterion MOORA)" as Criterion {
+  * id          : VARCHAR(36)  <<PK>>
+  --
+  * code        : VARCHAR      <<UNIQUE>>
+  * name        : VARCHAR
+  * weight      : FLOAT
+  * type        : ENUM(benefit, cost)
+    description : TEXT
+    icon        : VARCHAR
+    color       : VARCHAR
+}
+
+entity "**SubKriteria**\n(Aspek Penilaian)" as SubCriterion {
+  * id          : VARCHAR(36)  <<PK>>
+  --
+  * criterionId : VARCHAR(36)  <<FK>>
+  * aspect      : VARCHAR
+  * name        : VARCHAR
+  * label       : VARCHAR
+  * value       : INTEGER
+}
+
+entity "**SkorMustahik**\n(Nilai Aspek per Mustahik)" as MustahikScore {
+  * id             : VARCHAR(36)  <<PK>>
+  --
+  * mustahikId     : VARCHAR(36)  <<FK>>
+  * subCriterionId : VARCHAR(36)  <<FK>>
+  ' UNIQUE(mustahikId, subCriterionId)
+}
+
+entity "**RiwayatMenerima**\n(Recipient History)" as RecipientHistory {
+  * id           : VARCHAR(36)   <<PK>>
+  --
+  * mustahikId   : VARCHAR(36)   <<FK>>
+  * programId    : VARCHAR(36)   <<FK>>
+  * amount       : DECIMAL(15,2)
+  * receivedDate : TIMESTAMP
+  * mooraScore   : FLOAT
+    rank         : INTEGER
+    notes        : TEXT
+}
+
+entity "**MonitoringData**\n(Pemantauan Ekonomi Mustahik)" as MonitoringData {
+  * id                   : VARCHAR(36)   <<PK>>
+  --
+  * mustahikId           : VARCHAR(36)   <<FK>>
+  * programId            : VARCHAR(36)   <<FK>>
+  * monitoringDate       : TIMESTAMP
+
+  ' === businessProgress ===
+  * businessType         : VARCHAR
+  * revenue              : DECIMAL(15,2)  <<O_t : Omzet Usaha>>
+  * operationalCost      : DECIMAL(15,2)  <<B_t : Biaya Operasional>>
+  * netIncome            : DECIMAL(15,2)  <<Y_t : Pendapatan Bersih>>
+    employeeCount        : INTEGER
+
+  ' === socialEconomicCondition ===
+  * monthlyExpenditure   : DECIMAL(15,2)  <<C_t : Konsumsi Esensial>>
+    monthlyIncome        : DECIMAL(15,2)  <<Pendapatan Non-Usaha>>
+    dependentCount       : INTEGER
+    housingCondition     : ENUM(baik, sedang, buruk)
+    healthCondition      : ENUM(sehat, sakit_ringan, sakit_berat)
+    educationLevel       : ENUM(meningkat, tetap, menurun)
+
+  ' === Narasi ===
+    challenges           : TEXT
+    achievements         : TEXT
+    nextPlan             : TEXT
+  * surveyor             : VARCHAR
+    notes                : TEXT
+}
+
+' ────────────────────────────────────────────────────────
+'  RELATIONSHIPS
+' ────────────────────────────────────────────────────────
+
+User         ||--o|   Muzakki
+User         ||--o|   Mustahik
+
+Muzakki      ||--o{   Donation
+AidProgram   ||--o{   Donation
+
+Criterion    ||--|{   SubCriterion
+SubCriterion ||--o{   MustahikScore
+Mustahik     ||--o{   MustahikScore
+
+Mustahik     ||--o{   RecipientHistory
+AidProgram   ||--o{   RecipientHistory
+
+Mustahik     ||--o{   MonitoringData
+AidProgram   ||--o{   MonitoringData
+
+@enduml

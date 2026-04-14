@@ -3,9 +3,8 @@ const { PrismaClient } = require('@prisma/client');
 // Ensure single instance of PrismaClient (singleton pattern)
 const globalForPrisma = global;
 
-// CRITICAL: Use very small connection pool to avoid "too many connections" error
-// The database role has a low connection limit, so we need to be conservative
-const connectionUrl = process.env.DATABASE_URL + '&connection_limit=1&pool_timeout=45';
+// Rely on connection limit from .env to prevent timeout on concurrent requests
+const connectionUrl = process.env.DATABASE_URL;
 
 const prisma = globalForPrisma.prisma || new PrismaClient({
     datasources: {

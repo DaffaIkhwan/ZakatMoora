@@ -1,0 +1,776 @@
+=== SENSITIVITY ANALYSIS (MOORA MODEL) ===
+
+Found 7 Criteria from DB.
+Total Base Weight: 1.0000
+Found 27 Mustahik from DB.
+
+--- BASELINE STEP-BY-STEP CALCULATION (Sampel Top 15) ---
+
+Step 1: Matriks Keputusan (15 Sampel Pertama):
+Mustahik | C1A | C2A | C2B | C3B | C3A | C3C | C4A | C4B | C4C | C5C | C5A | C5B | C6A | C6B | C6C | C6D | C7A | C7B | C7C
+Anis mayanti         |    6 |   10 |    0 |    0 |    0 |    0 |    2 |    0 |    0 |    2 |    0 |    0 |   12 |    9 |   12 |   10 |    3 |    2 |    3
+Delvi Efriwarty      |    6 |   10 |    0 |    4 |    4 |    0 |    2 |    0 |    0 |    2 |   12 |    6 |    6 |    9 |    6 |   10 |    0 |    2 |    3
+Desi Safitri         |    6 |    8 |    1 |    0 |    0 |    0 |    1 |    0 |    0 |    2 |   20 |    6 |    6 |    6 |    6 |   10 |    0 |    2 |    3
+Desi Yuliani         |    6 |   10 |    0 |    4 |    4 |    0 |    2 |    0 |    0 |    2 |    6 |    4 |   12 |    9 |    6 |   10 |    0 |    2 |    3
+Harni Yanti          |    4 |   10 |    0 |    0 |    0 |    0 |    2 |    2 |    2 |    2 |    0 |    4 |   12 |    9 |   12 |   10 |    0 |    2 |    3
+Henti Anti           |    6 |   10 |    0 |    0 |    4 |    0 |    2 |    0 |    0 |    2 |   12 |    4 |    0 |    9 |    6 |   10 |    0 |    2 |    3
+Hidayathul Asni      |    6 |   10 |    0 |    0 |    0 |    0 |    2 |    0 |    0 |    2 |   20 |    6 |    0 |    9 |    6 |   10 |    3 |    4 |    6
+Liza Yeni            |    6 |    8 |    0 |    4 |    4 |    0 |    2 |    0 |    0 |    2 |    6 |    4 |   12 |    9 |    6 |   10 |    0 |    2 |    3
+Maijesti             |    6 |   10 |    1 |    0 |    4 |    0 |    2 |    0 |    0 |    2 |    6 |    4 |   12 |    9 |    6 |   10 |    0 |    2 |    3
+Mega Gustiana        |    2 |   10 |    0 |    4 |    9 |    5 |    1 |    0 |    0 |    2 |    6 |    6 |    6 |    9 |    6 |   10 |    0 |    4 |    6
+Nelda Wati           |    6 |    8 |    0 |    0 |    0 |    0 |    2 |    2 |    2 |    2 |   12 |    4 |    6 |    6 |    6 |   10 |    0 |    2 |    3
+Nuri Syamsi          |    6 |   10 |    0 |    0 |    4 |    0 |    2 |    0 |    0 |    2 |    0 |    4 |   12 |    9 |   12 |   10 |    0 |    2 |    3
+Nurmaya              |    6 |   10 |    0 |    0 |    0 |    0 |    2 |    0 |    0 |    2 |    0 |    0 |   12 |    9 |   12 |   10 |    0 |    0 |    3
+Ramadhan Saputra     |    6 |   10 |    1 |    0 |    4 |    0 |    2 |    0 |    0 |    2 |    6 |    4 |   12 |    9 |   12 |   10 |    3 |    2 |    3
+Roza Nelita          |    6 |   10 |    0 |    0 |    0 |    0 |    2 |    0 |    0 |    2 |    6 |    4 |    6 |    9 |    6 |   10 |    0 |    2 |    3
+
+Step 2: Pembagi (Denominators):
+C1A: 29.664794
+C2A: 50.556899
+C2B: 2.645751
+C3B: 9.797959
+C3A: 16.522712
+C3C: 5.000000
+C4A: 10.099505
+C4B: 3.162278
+C4C: 4.000000
+C5C: 10.392305
+C5A: 53.441557
+C5B: 22.090722
+C6A: 47.623524
+C6B: 44.294469
+C6C: 45.299007
+C6D: 51.961524
+C7A: 8.485281
+C7B: 11.832160
+C7C: 17.233688
+
+Step 3: Matriks Ternormalisasi (15 Sampel Pertama):
+Anis mayanti         | 0.202260 | 0.197797 | 0.000000 | 0.000000 | 0.000000 | 0.000000 | 0.198030 | 0.000000 | 0.000000 | 0.192450 | 0.000000 | 0.000000 | 0.251976 | 0.203186 | 0.264906 | 0.192450 | 0.353553 | 0.169031 | 0.174078
+Delvi Efriwarty      | 0.202260 | 0.197797 | 0.000000 | 0.408248 | 0.242091 | 0.000000 | 0.198030 | 0.000000 | 0.000000 | 0.192450 | 0.224544 | 0.271607 | 0.125988 | 0.203186 | 0.132453 | 0.192450 | 0.000000 | 0.169031 | 0.174078
+Desi Safitri         | 0.202260 | 0.158238 | 0.377964 | 0.000000 | 0.000000 | 0.000000 | 0.099015 | 0.000000 | 0.000000 | 0.192450 | 0.374241 | 0.271607 | 0.125988 | 0.135457 | 0.132453 | 0.192450 | 0.000000 | 0.169031 | 0.174078
+Desi Yuliani         | 0.202260 | 0.197797 | 0.000000 | 0.408248 | 0.242091 | 0.000000 | 0.198030 | 0.000000 | 0.000000 | 0.192450 | 0.112272 | 0.181071 | 0.251976 | 0.203186 | 0.132453 | 0.192450 | 0.000000 | 0.169031 | 0.174078
+Harni Yanti          | 0.134840 | 0.197797 | 0.000000 | 0.000000 | 0.000000 | 0.000000 | 0.198030 | 0.632456 | 0.500000 | 0.192450 | 0.000000 | 0.181071 | 0.251976 | 0.203186 | 0.264906 | 0.192450 | 0.000000 | 0.169031 | 0.174078
+Henti Anti           | 0.202260 | 0.197797 | 0.000000 | 0.000000 | 0.242091 | 0.000000 | 0.198030 | 0.000000 | 0.000000 | 0.192450 | 0.224544 | 0.181071 | 0.000000 | 0.203186 | 0.132453 | 0.192450 | 0.000000 | 0.169031 | 0.174078
+Hidayathul Asni      | 0.202260 | 0.197797 | 0.000000 | 0.000000 | 0.000000 | 0.000000 | 0.198030 | 0.000000 | 0.000000 | 0.192450 | 0.374241 | 0.271607 | 0.000000 | 0.203186 | 0.132453 | 0.192450 | 0.353553 | 0.338062 | 0.348155
+Liza Yeni            | 0.202260 | 0.158238 | 0.000000 | 0.408248 | 0.242091 | 0.000000 | 0.198030 | 0.000000 | 0.000000 | 0.192450 | 0.112272 | 0.181071 | 0.251976 | 0.203186 | 0.132453 | 0.192450 | 0.000000 | 0.169031 | 0.174078
+Maijesti             | 0.202260 | 0.197797 | 0.377964 | 0.000000 | 0.242091 | 0.000000 | 0.198030 | 0.000000 | 0.000000 | 0.192450 | 0.112272 | 0.181071 | 0.251976 | 0.203186 | 0.132453 | 0.192450 | 0.000000 | 0.169031 | 0.174078
+Mega Gustiana        | 0.067420 | 0.197797 | 0.000000 | 0.408248 | 0.544705 | 1.000000 | 0.099015 | 0.000000 | 0.000000 | 0.192450 | 0.112272 | 0.271607 | 0.125988 | 0.203186 | 0.132453 | 0.192450 | 0.000000 | 0.338062 | 0.348155
+Nelda Wati           | 0.202260 | 0.158238 | 0.000000 | 0.000000 | 0.000000 | 0.000000 | 0.198030 | 0.632456 | 0.500000 | 0.192450 | 0.224544 | 0.181071 | 0.125988 | 0.135457 | 0.132453 | 0.192450 | 0.000000 | 0.169031 | 0.174078
+Nuri Syamsi          | 0.202260 | 0.197797 | 0.000000 | 0.000000 | 0.242091 | 0.000000 | 0.198030 | 0.000000 | 0.000000 | 0.192450 | 0.000000 | 0.181071 | 0.251976 | 0.203186 | 0.264906 | 0.192450 | 0.000000 | 0.169031 | 0.174078
+Nurmaya              | 0.202260 | 0.197797 | 0.000000 | 0.000000 | 0.000000 | 0.000000 | 0.198030 | 0.000000 | 0.000000 | 0.192450 | 0.000000 | 0.000000 | 0.251976 | 0.203186 | 0.264906 | 0.192450 | 0.000000 | 0.000000 | 0.174078
+Ramadhan Saputra     | 0.202260 | 0.197797 | 0.377964 | 0.000000 | 0.242091 | 0.000000 | 0.198030 | 0.000000 | 0.000000 | 0.192450 | 0.112272 | 0.181071 | 0.251976 | 0.203186 | 0.264906 | 0.192450 | 0.353553 | 0.169031 | 0.174078
+Roza Nelita          | 0.202260 | 0.197797 | 0.000000 | 0.000000 | 0.000000 | 0.000000 | 0.198030 | 0.000000 | 0.000000 | 0.192450 | 0.112272 | 0.181071 | 0.125988 | 0.203186 | 0.132453 | 0.192450 | 0.000000 | 0.169031 | 0.174078
+
+Step 4: Matriks Terbobot (Baseline - Lengkap):
+Mustahik | C1 | C2 | C3 | C4 | C5 | C6 | C7
+Anis mayanti              | 0.020226 | 0.014835 | 0.000000 | 0.006601 | 0.012830 | 0.034219 | 0.034833
+Delvi Efriwarty           | 0.020226 | 0.014835 | 0.032517 | 0.006601 | 0.045907 | 0.024528 | 0.017155
+Desi Safitri              | 0.020226 | 0.040215 | 0.000000 | 0.003300 | 0.055887 | 0.021988 | 0.017155
+Desi Yuliani              | 0.020226 | 0.014835 | 0.032517 | 0.006601 | 0.032386 | 0.029252 | 0.017155
+Harni Yanti               | 0.013484 | 0.014835 | 0.000000 | 0.044350 | 0.024901 | 0.034219 | 0.017155
+Henti Anti                | 0.020226 | 0.014835 | 0.012105 | 0.006601 | 0.039871 | 0.019803 | 0.017155
+Hidayathul Asni           | 0.020226 | 0.014835 | 0.000000 | 0.006601 | 0.055887 | 0.019803 | 0.051989
+Liza Yeni                 | 0.020226 | 0.011868 | 0.032517 | 0.006601 | 0.032386 | 0.029252 | 0.017155
+Maijesti                  | 0.020226 | 0.043182 | 0.012105 | 0.006601 | 0.032386 | 0.029252 | 0.017155
+Mega Gustiana             | 0.006742 | 0.014835 | 0.097648 | 0.003300 | 0.038422 | 0.024528 | 0.034311
+Nelda Wati                | 0.020226 | 0.011868 | 0.000000 | 0.044350 | 0.039871 | 0.021988 | 0.017155
+Nuri Syamsi               | 0.020226 | 0.014835 | 0.012105 | 0.006601 | 0.024901 | 0.034219 | 0.017155
+Nurmaya                   | 0.020226 | 0.014835 | 0.000000 | 0.006601 | 0.012830 | 0.034219 | 0.008704
+Ramadhan Saputra          | 0.020226 | 0.043182 | 0.012105 | 0.006601 | 0.032386 | 0.034219 | 0.034833
+Roza Nelita               | 0.020226 | 0.014835 | 0.000000 | 0.006601 | 0.032386 | 0.024528 | 0.017155
+Sofia Wartini             | 0.020226 | 0.014835 | 0.012105 | 0.006601 | 0.012830 | 0.034219 | 0.017155
+Sri Molna Yerti           | 0.020226 | 0.011868 | 0.000000 | 0.033809 | 0.020315 | 0.019803 | 0.034833
+Sri Wahyuni (Marpoyan)    | 0.020226 | 0.014835 | 0.032517 | 0.006601 | 0.039871 | 0.031680 | 0.017155
+Sri Wahyuni (Tenayan)     | 0.013484 | 0.014835 | 0.000000 | 0.006601 | 0.039871 | 0.031680 | 0.017155
+Sri handini               | 0.020226 | 0.014835 | 0.000000 | 0.006601 | 0.045907 | 0.024528 | 0.017155
+Sulistiawati              | 0.020226 | 0.014835 | 0.012105 | 0.006601 | 0.032386 | 0.029495 | 0.017155
+Suriati                   | 0.020226 | 0.071529 | 0.012105 | 0.033809 | 0.049851 | 0.024528 | 0.043285
+Susi Anita                | 0.020226 | 0.014835 | 0.000000 | 0.006601 | 0.039871 | 0.024528 | 0.034833
+Veni Rahmayani            | 0.020226 | 0.014835 | 0.000000 | 0.006601 | 0.032386 | 0.029252 | 0.017155
+Wanda Febrian Hendri      | 0.020226 | 0.014835 | 0.032517 | 0.006601 | 0.039871 | 0.029252 | 0.017155
+Yuliana                   | 0.013484 | 0.014835 | 0.000000 | 0.006601 | 0.045907 | 0.021988 | 0.034833
+Yusniar                   | 0.020226 | 0.014835 | 0.000000 | 0.006601 | 0.032386 | 0.029495 | 0.034833
+
+-------------------------------------------
+Baseline Full Summary (27 Mustahik):
+1. Suriati                        | Score: 0.255332
+2. Mega Gustiana                  | Score: 0.219786
+3. Ramadhan Saputra               | Score: 0.183552
+4. Hidayathul Asni                | Score: 0.169340
+5. Sri Wahyuni (Marpoyan)         | Score: 0.162885
+6. Delvi Efriwarty                | Score: 0.161769
+7. Maijesti                       | Score: 0.160908
+8. Wanda Febrian Hendri           | Score: 0.160458
+9. Desi Safitri                   | Score: 0.158772
+10. Nelda Wati                     | Score: 0.155458
+11. Desi Yuliani                   | Score: 0.152973
+12. Liza Yeni                      | Score: 0.150006
+13. Harni Yanti                    | Score: 0.148945
+14. Susi Anita                     | Score: 0.140894
+15. Sri Molna Yerti                | Score: 0.140854
+16. Yusniar                        | Score: 0.138376
+17. Yuliana                        | Score: 0.137648
+18. Sulistiawati                   | Score: 0.132803
+19. Henti Anti                     | Score: 0.130596
+20. Nuri Syamsi                    | Score: 0.130043
+21. Sri handini                    | Score: 0.129252
+22. Sri Wahyuni (Tenayan)          | Score: 0.123626
+23. Anis mayanti                   | Score: 0.123544
+24. Veni Rahmayani                 | Score: 0.120456
+25. Sofia Wartini                  | Score: 0.117971
+26. Roza Nelita                    | Score: 0.115731
+27. Nurmaya                        | Score: 0.097415
+-------------------------------------------
+
+--- STARTING SENSITIVITY TESTING ---
+
+Testing Kriteria: Pendidikan (C1)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.255332 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.255332
+    2. Mega Gustiana                  | Yi: 0.219786
+    3. Ramadhan Saputra               | Yi: 0.183552
+    4. Hidayathul Asni                | Yi: 0.169340
+    5. Sri Wahyuni (Marpoyan)         | Yi: 0.162885
+    6. Delvi Efriwarty                | Yi: 0.161769
+    7. Maijesti                       | Yi: 0.160908
+    8. Wanda Febrian Hendri           | Yi: 0.160458
+    9. Desi Safitri                   | Yi: 0.158772
+    10. Nelda Wati                     | Yi: 0.155458
+    11. Desi Yuliani                   | Yi: 0.152973
+    12. Liza Yeni                      | Yi: 0.150006
+    13. Harni Yanti                    | Yi: 0.148945
+    14. Susi Anita                     | Yi: 0.140894
+    15. Sri Molna Yerti                | Yi: 0.140854
+    16. Yusniar                        | Yi: 0.138376
+    17. Yuliana                        | Yi: 0.137648
+    18. Sulistiawati                   | Yi: 0.132803
+    19. Henti Anti                     | Yi: 0.130596
+    20. Nuri Syamsi                    | Yi: 0.130043
+    21. Sri handini                    | Yi: 0.129252
+    22. Sri Wahyuni (Tenayan)          | Yi: 0.123626
+    23. Anis mayanti                   | Yi: 0.123544
+    24. Veni Rahmayani                 | Yi: 0.120456
+    25. Sofia Wartini                  | Yi: 0.117971
+    26. Roza Nelita                    | Yi: 0.115731
+    27. Nurmaya                        | Yi: 0.097415
+
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.231744 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.231744
+    2. Ramadhan Saputra               | Yi: 0.191867
+    3. Hidayathul Asni                | Yi: 0.183971
+    4. Sri Wahyuni (Marpoyan)         | Yi: 0.180385
+    5. Delvi Efriwarty                | Yi: 0.179765
+    6. Maijesti                       | Yi: 0.179287
+    7. Wanda Febrian Hendri           | Yi: 0.179036
+    8. Desi Safitri                   | Yi: 0.178100
+    9. Nelda Wati                     | Yi: 0.176259
+    10. Desi Yuliani                   | Yi: 0.174878
+    11. Liza Yeni                      | Yi: 0.173230
+    12. Susi Anita                     | Yi: 0.168168
+    13. Sri Molna Yerti                | Yi: 0.168145
+    14. Yusniar                        | Yi: 0.166769
+    15. Sulistiawati                   | Yi: 0.163673
+    16. Henti Anti                     | Yi: 0.162447
+    17. Nuri Syamsi                    | Yi: 0.162139
+    18. Sri handini                    | Yi: 0.161700
+    19. Anis mayanti                   | Yi: 0.158529
+    20. Veni Rahmayani                 | Yi: 0.156813
+    21. Sofia Wartini                  | Yi: 0.155433
+    22. Roza Nelita                    | Yi: 0.154188
+    23. Mega Gustiana                  | Yi: 0.152068
+    24. Nurmaya                        | Yi: 0.144013
+    25. Harni Yanti                    | Yi: 0.142676
+    26. Yuliana                        | Yi: 0.136400
+    27. Sri Wahyuni (Tenayan)          | Yi: 0.128610
+
+  > Jika Bobot 80%: Winner = Suriati              | Score: 0.214054 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.214054
+    2. Ramadhan Saputra               | Yi: 0.198103
+    3. Hidayathul Asni                | Yi: 0.194944
+    4. Sri Wahyuni (Marpoyan)         | Yi: 0.193510
+    5. Delvi Efriwarty                | Yi: 0.193262
+    6. Maijesti                       | Yi: 0.193071
+    7. Wanda Febrian Hendri           | Yi: 0.192971
+    8. Desi Safitri                   | Yi: 0.192596
+    9. Nelda Wati                     | Yi: 0.191859
+    10. Desi Yuliani                   | Yi: 0.191307
+    11. Liza Yeni                      | Yi: 0.190648
+    12. Susi Anita                     | Yi: 0.188623
+    13. Sri Molna Yerti                | Yi: 0.188614
+    14. Yusniar                        | Yi: 0.188064
+    15. Sulistiawati                   | Yi: 0.186825
+    16. Henti Anti                     | Yi: 0.186335
+    17. Nuri Syamsi                    | Yi: 0.186212
+    18. Sri handini                    | Yi: 0.186036
+    19. Anis mayanti                   | Yi: 0.184768
+    20. Veni Rahmayani                 | Yi: 0.184081
+    21. Sofia Wartini                  | Yi: 0.183529
+    22. Roza Nelita                    | Yi: 0.183031
+    23. Nurmaya                        | Yi: 0.178961
+    24. Harni Yanti                    | Yi: 0.137974
+    25. Yuliana                        | Yi: 0.135464
+    26. Sri Wahyuni (Tenayan)          | Yi: 0.132348
+    27. Mega Gustiana                  | Yi: 0.101279
+
+
+Testing Kriteria: Kesehatan (C2)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.242301 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.242301
+    2. Mega Gustiana                  | Yi: 0.226897
+    3. Ramadhan Saputra               | Yi: 0.177415
+    4. Hidayathul Asni                | Yi: 0.173484
+    5. Sri Wahyuni (Marpoyan)         | Yi: 0.166649
+    6. Delvi Efriwarty                | Yi: 0.165467
+    7. Wanda Febrian Hendri           | Yi: 0.164079
+    8. Nelda Wati                     | Yi: 0.159948
+    9. Desi Yuliani                   | Yi: 0.156154
+    10. Liza Yeni                      | Yi: 0.154176
+    11. Maijesti                       | Yi: 0.153439
+    12. Desi Safitri                   | Yi: 0.152341
+    13. Harni Yanti                    | Yi: 0.151888
+    14. Sri Molna Yerti                | Yi: 0.144485
+    15. Susi Anita                     | Yi: 0.143364
+    16. Yusniar                        | Yi: 0.140698
+    17. Yuliana                        | Yi: 0.139927
+    18. Sulistiawati                   | Yi: 0.134797
+    19. Henti Anti                     | Yi: 0.132461
+    20. Nuri Syamsi                    | Yi: 0.131875
+    21. Sri handini                    | Yi: 0.131037
+    22. Sri Wahyuni (Tenayan)          | Yi: 0.125080
+    23. Anis mayanti                   | Yi: 0.124994
+    24. Veni Rahmayani                 | Yi: 0.121724
+    25. Sofia Wartini                  | Yi: 0.119093
+    26. Roza Nelita                    | Yi: 0.116721
+    27. Nurmaya                        | Yi: 0.097328
+
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.346551 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.346551
+    2. Ramadhan Saputra               | Yi: 0.226511
+    3. Maijesti                       | Yi: 0.213191
+    4. Desi Safitri                   | Yi: 0.203790
+    5. Mega Gustiana                  | Yi: 0.170009
+    6. Hidayathul Asni                | Yi: 0.140335
+    7. Sri Wahyuni (Marpoyan)         | Yi: 0.136538
+    8. Delvi Efriwarty                | Yi: 0.135881
+    9. Wanda Febrian Hendri           | Yi: 0.135110
+    10. Desi Yuliani                   | Yi: 0.130707
+    11. Harni Yanti                    | Yi: 0.128337
+    12. Nelda Wati                     | Yi: 0.124024
+    13. Susi Anita                     | Yi: 0.123602
+    14. Yusniar                        | Yi: 0.122121
+    15. Yuliana                        | Yi: 0.121692
+    16. Liza Yeni                      | Yi: 0.120817
+    17. Sulistiawati                   | Yi: 0.118842
+    18. Henti Anti                     | Yi: 0.117544
+    19. Nuri Syamsi                    | Yi: 0.117219
+    20. Sri handini                    | Yi: 0.116753
+    21. Sri Molna Yerti                | Yi: 0.115433
+    22. Sri Wahyuni (Tenayan)          | Yi: 0.113444
+    23. Anis mayanti                   | Yi: 0.113396
+    24. Veni Rahmayani                 | Yi: 0.111579
+    25. Sofia Wartini                  | Yi: 0.110118
+    26. Roza Nelita                    | Yi: 0.108800
+    27. Nurmaya                        | Yi: 0.098026
+
+  > Jika Bobot 80%: Winner = Suriati              | Score: 0.424738 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.424738
+    2. Ramadhan Saputra               | Yi: 0.263333
+    3. Maijesti                       | Yi: 0.258005
+    4. Desi Safitri                   | Yi: 0.242376
+    5. Mega Gustiana                  | Yi: 0.127343
+    6. Hidayathul Asni                | Yi: 0.115473
+    7. Sri Wahyuni (Marpoyan)         | Yi: 0.113954
+    8. Delvi Efriwarty                | Yi: 0.113691
+    9. Wanda Febrian Hendri           | Yi: 0.113383
+    10. Desi Yuliani                   | Yi: 0.111622
+    11. Harni Yanti                    | Yi: 0.110674
+    12. Susi Anita                     | Yi: 0.108780
+    13. Yusniar                        | Yi: 0.108187
+    14. Yuliana                        | Yi: 0.108016
+    15. Sulistiawati                   | Yi: 0.106876
+    16. Henti Anti                     | Yi: 0.106357
+    17. Nuri Syamsi                    | Yi: 0.106227
+    18. Sri handini                    | Yi: 0.106040
+    19. Sri Wahyuni (Tenayan)          | Yi: 0.104717
+    20. Anis mayanti                   | Yi: 0.104697
+    21. Veni Rahmayani                 | Yi: 0.103971
+    22. Sofia Wartini                  | Yi: 0.103386
+    23. Roza Nelita                    | Yi: 0.102859
+    24. Nurmaya                        | Yi: 0.098549
+    25. Nelda Wati                     | Yi: 0.097081
+    26. Liza Yeni                      | Yi: 0.095798
+    27. Sri Molna Yerti                | Yi: 0.093645
+
+
+Testing Kriteria: Kelayakan Hunian (C3)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.265605 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.265605
+    2. Mega Gustiana                  | Yi: 0.194421
+    3. Ramadhan Saputra               | Yi: 0.189603
+    4. Hidayathul Asni                | Yi: 0.179301
+    5. Desi Safitri                   | Yi: 0.168111
+    6. Maijesti                       | Yi: 0.165626
+    7. Nelda Wati                     | Yi: 0.164602
+    8. Sri Wahyuni (Marpoyan)         | Yi: 0.159715
+    9. Delvi Efriwarty                | Yi: 0.158533
+    10. Harni Yanti                    | Yi: 0.157706
+    11. Wanda Febrian Hendri           | Yi: 0.157145
+    12. Desi Yuliani                   | Yi: 0.149219
+    13. Susi Anita                     | Yi: 0.149182
+    14. Sri Molna Yerti                | Yi: 0.149139
+    15. Yusniar                        | Yi: 0.146516
+    16. Liza Yeni                      | Yi: 0.146078
+    17. Yuliana                        | Yi: 0.145745
+    18. Sri handini                    | Yi: 0.136855
+    19. Sulistiawati                   | Yi: 0.135868
+    20. Henti Anti                     | Yi: 0.133531
+    21. Nuri Syamsi                    | Yi: 0.132945
+    22. Sri Wahyuni (Tenayan)          | Yi: 0.130898
+    23. Anis mayanti                   | Yi: 0.130812
+    24. Veni Rahmayani                 | Yi: 0.127542
+    25. Roza Nelita                    | Yi: 0.122539
+    26. Sofia Wartini                  | Yi: 0.120164
+    27. Nurmaya                        | Yi: 0.103145
+
+  > Jika Bobot 50%: Winner = Mega Gustiana        | Score: 0.397338 [PERUBAHAN!]
+    Peringkat Lengkap (27 Mustahik):
+    1. Mega Gustiana                  | Yi: 0.397338
+    2. Sri Wahyuni (Marpoyan)         | Yi: 0.185077
+    3. Delvi Efriwarty                | Yi: 0.184420
+    4. Wanda Febrian Hendri           | Yi: 0.183649
+    5. Suriati                        | Yi: 0.183423
+    6. Desi Yuliani                   | Yi: 0.179246
+    7. Liza Yeni                      | Yi: 0.177501
+    8. Ramadhan Saputra               | Yi: 0.141200
+    9. Maijesti                       | Yi: 0.127880
+    10. Sulistiawati                   | Yi: 0.111348
+    11. Henti Anti                     | Yi: 0.110049
+    12. Nuri Syamsi                    | Yi: 0.109724
+    13. Sofia Wartini                  | Yi: 0.102623
+    14. Hidayathul Asni                | Yi: 0.099612
+    15. Desi Safitri                   | Yi: 0.093395
+    16. Nelda Wati                     | Yi: 0.091446
+    17. Harni Yanti                    | Yi: 0.087614
+    18. Susi Anita                     | Yi: 0.082879
+    19. Sri Molna Yerti                | Yi: 0.082855
+    20. Yusniar                        | Yi: 0.081398
+    21. Yuliana                        | Yi: 0.080969
+    22. Sri handini                    | Yi: 0.076030
+    23. Sri Wahyuni (Tenayan)          | Yi: 0.072721
+    24. Anis mayanti                   | Yi: 0.072673
+    25. Veni Rahmayani                 | Yi: 0.070856
+    26. Roza Nelita                    | Yi: 0.068077
+    27. Nurmaya                        | Yi: 0.057303
+
+  > Jika Bobot 80%: Winner = Mega Gustiana        | Score: 0.549526 [PERUBAHAN!]
+    Peringkat Lengkap (27 Mustahik):
+    1. Mega Gustiana                  | Yi: 0.549526
+    2. Sri Wahyuni (Marpoyan)         | Yi: 0.204099
+    3. Delvi Efriwarty                | Yi: 0.203836
+    4. Wanda Febrian Hendri           | Yi: 0.203528
+    5. Desi Yuliani                   | Yi: 0.201766
+    6. Liza Yeni                      | Yi: 0.201068
+    7. Suriati                        | Yi: 0.121788
+    8. Ramadhan Saputra               | Yi: 0.104898
+    9. Maijesti                       | Yi: 0.099570
+    10. Sulistiawati                   | Yi: 0.092957
+    11. Henti Anti                     | Yi: 0.092438
+    12. Nuri Syamsi                    | Yi: 0.092308
+    13. Sofia Wartini                  | Yi: 0.089467
+    14. Hidayathul Asni                | Yi: 0.039845
+    15. Desi Safitri                   | Yi: 0.037358
+    16. Nelda Wati                     | Yi: 0.036578
+    17. Harni Yanti                    | Yi: 0.035046
+    18. Susi Anita                     | Yi: 0.033151
+    19. Sri Molna Yerti                | Yi: 0.033142
+    20. Yusniar                        | Yi: 0.032559
+    21. Yuliana                        | Yi: 0.032388
+    22. Sri handini                    | Yi: 0.030412
+    23. Sri Wahyuni (Tenayan)          | Yi: 0.029088
+    24. Anis mayanti                   | Yi: 0.029069
+    25. Veni Rahmayani                 | Yi: 0.028343
+    26. Roza Nelita                    | Yi: 0.027231
+    27. Nurmaya                        | Yi: 0.022921
+
+
+Testing Kriteria: Spiritual (C4)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.255332 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.255332
+    2. Mega Gustiana                  | Yi: 0.219786
+    3. Ramadhan Saputra               | Yi: 0.183552
+    4. Hidayathul Asni                | Yi: 0.169340
+    5. Sri Wahyuni (Marpoyan)         | Yi: 0.162885
+    6. Delvi Efriwarty                | Yi: 0.161769
+    7. Maijesti                       | Yi: 0.160908
+    8. Wanda Febrian Hendri           | Yi: 0.160458
+    9. Desi Safitri                   | Yi: 0.158772
+    10. Nelda Wati                     | Yi: 0.155458
+    11. Desi Yuliani                   | Yi: 0.152973
+    12. Liza Yeni                      | Yi: 0.150006
+    13. Harni Yanti                    | Yi: 0.148945
+    14. Susi Anita                     | Yi: 0.140894
+    15. Sri Molna Yerti                | Yi: 0.140854
+    16. Yusniar                        | Yi: 0.138376
+    17. Yuliana                        | Yi: 0.137648
+    18. Sulistiawati                   | Yi: 0.132803
+    19. Henti Anti                     | Yi: 0.130596
+    20. Nuri Syamsi                    | Yi: 0.130043
+    21. Sri handini                    | Yi: 0.129252
+    22. Sri Wahyuni (Tenayan)          | Yi: 0.123626
+    23. Anis mayanti                   | Yi: 0.123544
+    24. Veni Rahmayani                 | Yi: 0.120456
+    25. Sofia Wartini                  | Yi: 0.117971
+    26. Roza Nelita                    | Yi: 0.115731
+    27. Nurmaya                        | Yi: 0.097415
+
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.292111 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.292111
+    2. Nelda Wati                     | Yi: 0.283474
+    3. Harni Yanti                    | Yi: 0.279856
+    4. Sri Molna Yerti                | Yi: 0.228512
+    5. Mega Gustiana                  | Yi: 0.136772
+    6. Ramadhan Saputra               | Yi: 0.131311
+    7. Hidayathul Asni                | Yi: 0.123416
+    8. Sri Wahyuni (Marpoyan)         | Yi: 0.119829
+    9. Delvi Efriwarty                | Yi: 0.119209
+    10. Maijesti                       | Yi: 0.118731
+    11. Wanda Febrian Hendri           | Yi: 0.118481
+    12. Desi Yuliani                   | Yi: 0.114323
+    13. Liza Yeni                      | Yi: 0.112674
+    14. Susi Anita                     | Yi: 0.107612
+    15. Yusniar                        | Yi: 0.106213
+    16. Yuliana                        | Yi: 0.105809
+    17. Sulistiawati                   | Yi: 0.103117
+    18. Desi Safitri                   | Yi: 0.102875
+    19. Henti Anti                     | Yi: 0.101891
+    20. Nuri Syamsi                    | Yi: 0.101584
+    21. Sri handini                    | Yi: 0.101144
+    22. Sri Wahyuni (Tenayan)          | Yi: 0.098019
+    23. Anis mayanti                   | Yi: 0.097973
+    24. Veni Rahmayani                 | Yi: 0.096258
+    25. Sofia Wartini                  | Yi: 0.094877
+    26. Roza Nelita                    | Yi: 0.093633
+    27. Nurmaya                        | Yi: 0.083457
+
+  > Jika Bobot 80%: Winner = Nelda Wati           | Score: 0.379487 [PERUBAHAN!]
+    Peringkat Lengkap (27 Mustahik):
+    1. Nelda Wati                     | Yi: 0.379487
+    2. Harni Yanti                    | Yi: 0.378039
+    3. Suriati                        | Yi: 0.319696
+    4. Sri Molna Yerti                | Yi: 0.294256
+    5. Ramadhan Saputra               | Yi: 0.092130
+    6. Hidayathul Asni                | Yi: 0.088972
+    7. Sri Wahyuni (Marpoyan)         | Yi: 0.087538
+    8. Delvi Efriwarty                | Yi: 0.087290
+    9. Maijesti                       | Yi: 0.087098
+    10. Wanda Febrian Hendri           | Yi: 0.086998
+    11. Desi Yuliani                   | Yi: 0.085335
+    12. Liza Yeni                      | Yi: 0.084676
+    13. Susi Anita                     | Yi: 0.082651
+    14. Yusniar                        | Yi: 0.082091
+    15. Yuliana                        | Yi: 0.081929
+    16. Sulistiawati                   | Yi: 0.080853
+    17. Henti Anti                     | Yi: 0.080362
+    18. Nuri Syamsi                    | Yi: 0.080239
+    19. Sri handini                    | Yi: 0.080064
+    20. Sri Wahyuni (Tenayan)          | Yi: 0.078813
+    21. Anis mayanti                   | Yi: 0.078795
+    22. Veni Rahmayani                 | Yi: 0.078109
+    23. Sofia Wartini                  | Yi: 0.077557
+    24. Roza Nelita                    | Yi: 0.077059
+    25. Mega Gustiana                  | Yi: 0.074512
+    26. Nurmaya                        | Yi: 0.072989
+    27. Desi Safitri                   | Yi: 0.060953
+
+
+Testing Kriteria: Pendapatan (C5)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.256092 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.256092
+    2. Mega Gustiana                  | Yi: 0.223245
+    3. Ramadhan Saputra               | Yi: 0.186255
+    4. Maijesti                       | Yi: 0.160780
+    5. Sri Wahyuni (Marpoyan)         | Yi: 0.158326
+    6. Wanda Febrian Hendri           | Yi: 0.155595
+    7. Hidayathul Asni                | Yi: 0.155579
+    8. Delvi Efriwarty                | Yi: 0.153298
+    9. Harni Yanti                    | Yi: 0.151999
+    10. Desi Yuliani                   | Yi: 0.151853
+    11. Nelda Wati                     | Yi: 0.149971
+    12. Liza Yeni                      | Yi: 0.148515
+    13. Sri Molna Yerti                | Yi: 0.145764
+    14. Desi Safitri                   | Yi: 0.143689
+    15. Yusniar                        | Yi: 0.135432
+    16. Susi Anita                     | Yi: 0.133586
+    17. Anis mayanti                   | Yi: 0.130969
+    18. Nuri Syamsi                    | Yi: 0.130735
+    19. Sulistiawati                   | Yi: 0.129162
+    20. Yuliana                        | Yi: 0.126162
+    21. Sofia Wartini                  | Yi: 0.124699
+    22. Henti Anti                     | Yi: 0.122001
+    23. Sri handini                    | Yi: 0.116717
+    24. Veni Rahmayani                 | Yi: 0.115271
+    25. Sri Wahyuni (Tenayan)          | Yi: 0.114160
+    26. Roza Nelita                    | Yi: 0.109956
+    27. Nurmaya                        | Yi: 0.101573
+
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.253053 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.253053
+    2. Hidayathul Asni                | Yi: 0.210625
+    3. Mega Gustiana                  | Yi: 0.209407
+    4. Desi Safitri                   | Yi: 0.204020
+    5. Delvi Efriwarty                | Yi: 0.187181
+    6. Sri Wahyuni (Marpoyan)         | Yi: 0.176561
+    7. Ramadhan Saputra               | Yi: 0.175444
+    8. Wanda Febrian Hendri           | Yi: 0.175044
+    9. Yuliana                        | Yi: 0.172105
+    10. Nelda Wati                     | Yi: 0.171919
+    11. Sri handini                    | Yi: 0.166858
+    12. Susi Anita                     | Yi: 0.162817
+    13. Maijesti                       | Yi: 0.161292
+    14. Henti Anti                     | Yi: 0.156381
+    15. Desi Yuliani                   | Yi: 0.156332
+    16. Liza Yeni                      | Yi: 0.154478
+    17. Sri Wahyuni (Tenayan)          | Yi: 0.152024
+    18. Yusniar                        | Yi: 0.147209
+    19. Sulistiawati                   | Yi: 0.143726
+    20. Harni Yanti                    | Yi: 0.139781
+    21. Veni Rahmayani                 | Yi: 0.136009
+    22. Roza Nelita                    | Yi: 0.133056
+    23. Nuri Syamsi                    | Yi: 0.127967
+    24. Sri Molna Yerti                | Yi: 0.126124
+    25. Anis mayanti                   | Yi: 0.101271
+    26. Sofia Wartini                  | Yi: 0.097788
+    27. Nurmaya                        | Yi: 0.084941
+
+  > Jika Bobot 80%: Winner = Hidayathul Asni      | Score: 0.251910 [PERUBAHAN!]
+    Peringkat Lengkap (27 Mustahik):
+    1. Hidayathul Asni                | Yi: 0.251910
+    2. Suriati                        | Yi: 0.250774
+    3. Desi Safitri                   | Yi: 0.249267
+    4. Delvi Efriwarty                | Yi: 0.212593
+    5. Yuliana                        | Yi: 0.206562
+    6. Sri handini                    | Yi: 0.204463
+    7. Mega Gustiana                  | Yi: 0.199029
+    8. Sri Wahyuni (Marpoyan)         | Yi: 0.190238
+    9. Wanda Febrian Hendri           | Yi: 0.189631
+    10. Nelda Wati                     | Yi: 0.188381
+    11. Susi Anita                     | Yi: 0.184740
+    12. Henti Anti                     | Yi: 0.182166
+    13. Sri Wahyuni (Tenayan)          | Yi: 0.180423
+    14. Ramadhan Saputra               | Yi: 0.167337
+    15. Maijesti                       | Yi: 0.161675
+    16. Desi Yuliani                   | Yi: 0.159692
+    17. Liza Yeni                      | Yi: 0.158950
+    18. Yusniar                        | Yi: 0.156042
+    19. Sulistiawati                   | Yi: 0.154649
+    20. Veni Rahmayani                 | Yi: 0.151562
+    21. Roza Nelita                    | Yi: 0.150381
+    22. Harni Yanti                    | Yi: 0.130617
+    23. Nuri Syamsi                    | Yi: 0.125891
+    24. Sri Molna Yerti                | Yi: 0.111394
+    25. Anis mayanti                   | Yi: 0.078999
+    26. Sofia Wartini                  | Yi: 0.077605
+    27. Nurmaya                        | Yi: 0.072466
+
+
+Testing Kriteria: Potensi Kemandirian (C6)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.260733 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.260733
+    2. Mega Gustiana                  | Yi: 0.223095
+    3. Ramadhan Saputra               | Yi: 0.180930
+    4. Hidayathul Asni                | Yi: 0.171535
+    5. Delvi Efriwarty                | Yi: 0.161666
+    6. Sri Wahyuni (Marpoyan)         | Yi: 0.160043
+    7. Desi Safitri                   | Yi: 0.159488
+    8. Maijesti                       | Yi: 0.158901
+    9. Wanda Febrian Hendri           | Yi: 0.158425
+    10. Nelda Wati                     | Yi: 0.155980
+    11. Desi Yuliani                   | Yi: 0.150500
+    12. Liza Yeni                      | Yi: 0.147358
+    13. Harni Yanti                    | Yi: 0.144287
+    14. Sri Molna Yerti                | Yi: 0.141373
+    15. Susi Anita                     | Yi: 0.139563
+    16. Yuliana                        | Yi: 0.137122
+    17. Yusniar                        | Yi: 0.134949
+    18. Henti Anti                     | Yi: 0.130512
+    19. Sulistiawati                   | Yi: 0.129048
+    20. Sri handini                    | Yi: 0.127236
+    21. Nuri Syamsi                    | Yi: 0.124273
+    22. Sri Wahyuni (Tenayan)          | Yi: 0.118475
+    23. Anis mayanti                   | Yi: 0.117392
+    24. Veni Rahmayani                 | Yi: 0.116070
+    25. Roza Nelita                    | Yi: 0.112920
+    26. Sofia Wartini                  | Yi: 0.111491
+    27. Nurmaya                        | Yi: 0.089726
+
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.217527 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.217527
+    2. Ramadhan Saputra               | Yi: 0.201908
+    3. Mega Gustiana                  | Yi: 0.196617
+    4. Sri Wahyuni (Marpoyan)         | Yi: 0.182778
+    5. Harni Yanti                    | Yi: 0.181550
+    6. Maijesti                       | Yi: 0.174952
+    7. Wanda Febrian Hendri           | Yi: 0.174688
+    8. Nuri Syamsi                    | Yi: 0.170431
+    9. Desi Yuliani                   | Yi: 0.170285
+    10. Liza Yeni                      | Yi: 0.168540
+    11. Anis mayanti                   | Yi: 0.166609
+    12. Sofia Wartini                  | Yi: 0.163331
+    13. Delvi Efriwarty                | Yi: 0.162490
+    14. Yusniar                        | Yi: 0.162364
+    15. Sri Wahyuni (Tenayan)          | Yi: 0.159685
+    16. Sulistiawati                   | Yi: 0.159086
+    17. Hidayathul Asni                | Yi: 0.153974
+    18. Desi Safitri                   | Yi: 0.153755
+    19. Nelda Wati                     | Yi: 0.151805
+    20. Nurmaya                        | Yi: 0.151239
+    21. Veni Rahmayani                 | Yi: 0.151157
+    22. Susi Anita                     | Yi: 0.150210
+    23. Sri handini                    | Yi: 0.143362
+    24. Yuliana                        | Yi: 0.141329
+    25. Sri Molna Yerti                | Yi: 0.137217
+    26. Roza Nelita                    | Yi: 0.135409
+    27. Henti Anti                     | Yi: 0.131183
+
+  > Jika Bobot 80%: Winner = Ramadhan Saputra     | Score: 0.217641 [PERUBAHAN!]
+    Peringkat Lengkap (27 Mustahik):
+    1. Ramadhan Saputra               | Yi: 0.217641
+    2. Harni Yanti                    | Yi: 0.209498
+    3. Nuri Syamsi                    | Yi: 0.205050
+    4. Anis mayanti                   | Yi: 0.203521
+    5. Sofia Wartini                  | Yi: 0.202210
+    6. Sri Wahyuni (Marpoyan)         | Yi: 0.199830
+    7. Nurmaya                        | Yi: 0.197373
+    8. Sri Wahyuni (Tenayan)          | Yi: 0.190592
+    9. Maijesti                       | Yi: 0.186991
+    10. Wanda Febrian Hendri           | Yi: 0.186885
+    11. Desi Yuliani                   | Yi: 0.185124
+    12. Suriati                        | Yi: 0.185122
+    13. Liza Yeni                      | Yi: 0.184426
+    14. Yusniar                        | Yi: 0.182925
+    15. Sulistiawati                   | Yi: 0.181614
+    16. Veni Rahmayani                 | Yi: 0.177473
+    17. Mega Gustiana                  | Yi: 0.176758
+    18. Delvi Efriwarty                | Yi: 0.163107
+    19. Susi Anita                     | Yi: 0.158196
+    20. Sri handini                    | Yi: 0.155456
+    21. Roza Nelita                    | Yi: 0.152275
+    22. Desi Safitri                   | Yi: 0.149454
+    23. Nelda Wati                     | Yi: 0.148674
+    24. Yuliana                        | Yi: 0.144484
+    25. Hidayathul Asni                | Yi: 0.140803
+    26. Sri Molna Yerti                | Yi: 0.134100
+    27. Henti Anti                     | Yi: 0.131687
+
+
+Testing Kriteria: Kepemilikan Aset (C7)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.253377 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.253377
+    2. Mega Gustiana                  | Yi: 0.219259
+    3. Ramadhan Saputra               | Yi: 0.180690
+    4. Sri Wahyuni (Marpoyan)         | Yi: 0.165739
+    5. Delvi Efriwarty                | Yi: 0.164557
+    6. Maijesti                       | Yi: 0.163645
+    7. Wanda Febrian Hendri           | Yi: 0.163169
+    8. Desi Safitri                   | Yi: 0.161384
+    9. Hidayathul Asni                | Yi: 0.158914
+    10. Nelda Wati                     | Yi: 0.157875
+    11. Desi Yuliani                   | Yi: 0.155244
+    12. Liza Yeni                      | Yi: 0.152102
+    13. Harni Yanti                    | Yi: 0.150978
+    14. Susi Anita                     | Yi: 0.135522
+    15. Sri Molna Yerti                | Yi: 0.135479
+    16. Sulistiawati                   | Yi: 0.133887
+    17. Yusniar                        | Yi: 0.132856
+    18. Yuliana                        | Yi: 0.132085
+    19. Henti Anti                     | Yi: 0.131551
+    20. Nuri Syamsi                    | Yi: 0.130965
+    21. Sri handini                    | Yi: 0.130127
+    22. Sri Wahyuni (Tenayan)          | Yi: 0.124170
+    23. Veni Rahmayani                 | Yi: 0.120814
+    24. Sofia Wartini                  | Yi: 0.118183
+    25. Anis mayanti                   | Yi: 0.117152
+    26. Roza Nelita                    | Yi: 0.115811
+    27. Nurmaya                        | Yi: 0.099732
+
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.269016 
+    Peringkat Lengkap (27 Mustahik):
+    1. Suriati                        | Yi: 0.269016
+    2. Hidayathul Asni                | Yi: 0.242325
+    3. Mega Gustiana                  | Yi: 0.223472
+    4. Ramadhan Saputra               | Yi: 0.203592
+    5. Susi Anita                     | Yi: 0.178499
+    6. Sri Molna Yerti                | Yi: 0.178475
+    7. Yusniar                        | Yi: 0.177018
+    8. Yuliana                        | Yi: 0.176589
+    9. Anis mayanti                   | Yi: 0.168293
+    10. Sri Wahyuni (Marpoyan)         | Yi: 0.142908
+    11. Delvi Efriwarty                | Yi: 0.142251
+    12. Maijesti                       | Yi: 0.141745
+    13. Wanda Febrian Hendri           | Yi: 0.141480
+    14. Desi Safitri                   | Yi: 0.140488
+    15. Nelda Wati                     | Yi: 0.138539
+    16. Desi Yuliani                   | Yi: 0.137077
+    17. Liza Yeni                      | Yi: 0.135332
+    18. Harni Yanti                    | Yi: 0.134708
+    19. Sulistiawati                   | Yi: 0.125213
+    20. Henti Anti                     | Yi: 0.123915
+    21. Nuri Syamsi                    | Yi: 0.123589
+    22. Sri handini                    | Yi: 0.123124
+    23. Sri Wahyuni (Tenayan)          | Yi: 0.119814
+    24. Veni Rahmayani                 | Yi: 0.117950
+    25. Sofia Wartini                  | Yi: 0.116488
+    26. Roza Nelita                    | Yi: 0.115171
+    27. Nurmaya                        | Yi: 0.081196
+
+  > Jika Bobot 80%: Winner = Hidayathul Asni      | Score: 0.304884 [PERUBAHAN!]
+    Peringkat Lengkap (27 Mustahik):
+    1. Hidayathul Asni                | Yi: 0.304884
+    2. Suriati                        | Yi: 0.280745
+    3. Mega Gustiana                  | Yi: 0.226632
+    4. Ramadhan Saputra               | Yi: 0.220769
+    5. Susi Anita                     | Yi: 0.210732
+    6. Sri Molna Yerti                | Yi: 0.210723
+    7. Yusniar                        | Yi: 0.210140
+    8. Yuliana                        | Yi: 0.209968
+    9. Anis mayanti                   | Yi: 0.206650
+    10. Sri Wahyuni (Marpoyan)         | Yi: 0.125785
+    11. Delvi Efriwarty                | Yi: 0.125522
+    12. Maijesti                       | Yi: 0.125320
+    13. Wanda Febrian Hendri           | Yi: 0.125214
+    14. Desi Safitri                   | Yi: 0.124817
+    15. Nelda Wati                     | Yi: 0.124037
+    16. Desi Yuliani                   | Yi: 0.123453
+    17. Liza Yeni                      | Yi: 0.122755
+    18. Harni Yanti                    | Yi: 0.122505
+    19. Sulistiawati                   | Yi: 0.118707
+    20. Henti Anti                     | Yi: 0.118188
+    21. Nuri Syamsi                    | Yi: 0.118057
+    22. Sri handini                    | Yi: 0.117871
+    23. Sri Wahyuni (Tenayan)          | Yi: 0.116547
+    24. Veni Rahmayani                 | Yi: 0.115802
+    25. Sofia Wartini                  | Yi: 0.115217
+    26. Roza Nelita                    | Yi: 0.114690
+    27. Nurmaya                        | Yi: 0.067294
+
+
+=== ANALISIS SELESAI ===
+Interpretasi untuk Skripsi:
+1. Jika pemenang berubah saat bobot diubah (PERUBAHAN!), berarti kriteria tersebut SENSITIF.
+2. Jika kriteria sensitif, pastikan nilai input untuk kriteria tersebut dikumpulkan dengan sangat akurat.
+3. Kriteria yang tidak mengubah pemenang meskipun bobot diubah drastis disebut KOKOH/ROBUST.

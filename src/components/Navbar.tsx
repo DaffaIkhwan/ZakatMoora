@@ -3,7 +3,7 @@ import { cn } from './ui/utils';
 import { Button } from './ui/button';
 import { ModeToggle } from './mode-toggle';
 import { useTheme } from './theme-provider';
-import { LogOut, Calculator, User as UserIcon } from 'lucide-react';
+import { LogOut, Calculator, User as UserIcon, Menu, X } from 'lucide-react';
 import { Badge } from './ui/badge';
 import type { User } from '../types';
 
@@ -21,95 +21,342 @@ interface NavbarProps {
     onLogout: () => void;
 }
 
+// Hook to detect screen width
+function useIsDesktop(breakpoint = 768) {
+    const [isDesktop, setIsDesktop] = useState(() =>
+        typeof window !== 'undefined' ? window.innerWidth >= breakpoint : true
+    );
+
+    useEffect(() => {
+        const handleResize = () => setIsDesktop(window.innerWidth >= breakpoint);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [breakpoint]);
+
+    return isDesktop;
+}
+
 export function Navbar({ tabs, activeTab, setActiveTab, currentUser, onLogout }: NavbarProps) {
     const { theme } = useTheme();
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const isDesktop = useIsDesktop();
 
-    // Determine if dark mode is active
-    const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    useEffect(() => {
+        setMobileOpen(false);
+    }, [activeTab]);
 
-    // Different colors for light and dark mode
-    const activeTabBgColor = isDark ? '#1e293b' : '#0d6f4eb1'; // slate-800 for dark, green for light
+    // Close mobile menu when switching to desktop
+    useEffect(() => {
+        if (isDesktop) setMobileOpen(false);
+    }, [isDesktop]);
 
     const getRoleBadge = () => {
         if (!currentUser) return null;
+        // All badges use white bg + colored text for visibility on the green navbar
         const variants: Record<string, string> = {
-            super_admin: 'bg-indigo-100 text-indigo-700 border border-indigo-200 dark:bg-indigo-900/50 dark:text-indigo-300 dark:border-indigo-700',
-            manajer: 'bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600',
-            surveyor: 'bg-emerald-100 text-emerald-700 border border-emerald-200 dark:bg-emerald-900/50 dark:text-emerald-300 dark:border-emerald-700',
-            mustahik: 'bg-blue-100 text-blue-700 border border-blue-200 dark:bg-blue-900/50 dark:text-blue-300 dark:border-blue-700',
+            super_admin: 'bg-white text-emerald-700 border border-white/50',
+            manajer: 'bg-white text-slate-700 border border-white/50',
+            surveyor: 'bg-white text-emerald-700 border border-white/50',
+            mustahik: 'bg-white text-emerald-700 border border-white/50',
+            muzakki: 'bg-white text-emerald-700 border border-white/50',
         };
         const labels: Record<string, string> = {
             super_admin: 'Admin',
             manajer: 'Manajer',
             surveyor: 'Surveyor',
             mustahik: 'Mustahik',
+            muzakki: 'Muzakki',
         };
         const role = currentUser.role || 'mustahik';
-        const variant = variants[role] || 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200';
+        const variant = variants[role] || 'bg-white text-slate-700 border border-white/50';
         const label = labels[role] || role;
-        return <Badge className={`font-medium shadow-sm text-xs ${variant}`}>{label}</Badge>;
+        return (
+            <Badge
+                style={{
+                    backgroundColor: 'white',
+                    color: '#15803d',
+                    borderColor: 'rgba(255,255,255,0.4)',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                }}
+                className="shadow-sm"
+            >
+                {label}
+            </Badge>
+        );
     };
 
     return (
-        <nav className="fixed z-50 w-full shadow-lg min-h-16 h-auto flex items-center justify-between px-4 sm:px-8 py-2 top-0 left-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+        <>
+            {/* ===== NAVBAR ===== */}
+            <nav
+                style={{
+                    backgroundColor: '#16a34a',
+                    position: 'fixed',
+                    zIndex: 9999,
+                    width: '100%',
+                    top: 0,
+                    left: 0,
+                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)',
+                    borderBottom: '1px solid rgba(34, 197, 94, 0.3)',
+                }}
+            >
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        minHeight: '64px',
+                        padding: isDesktop ? '8px 32px' : '8px 16px',
+                    }}
+                >
+                    {/* LEFT: Brand */}
+                    <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <span style={{ fontSize: isDesktop ? 'clamp(1rem, 2vw, 1.2rem)' : '0.875rem', fontWeight: 700, color: 'white' }}>
+                            {isDesktop ? 'SPK Penerima Zakat Produktif' : 'SPK Zakat'}
+                        </span>
+                    </div>
 
-            {/* Left: Brand Icon */}
-            <div className="flex items-center gap-3 shrink-0">
-                <span className="text-[clamp(1rem,2vw,1.2rem)] font-bold text-slate-900 dark:text-slate-100 hidden sm:block">
-                    SPK Penerima Zakat Produktif berbasis MOORA
-                </span>
-            </div>
-
-            {/* Center: Menu Items (Always Visible, Horizontal Scroll) */}
-            <div className="flex items-center justify-start md:justify-center gap-1 lg:gap-2 flex-1 px-4 flex-wrap mx-2">
-                {tabs.map((tab) => {
-                    const Icon = tab.icon;
-                    const isActive = activeTab === tab.value;
-                    return (
-                        <button
-                            key={tab.value}
-                            onClick={() => setActiveTab(tab.value)}
-                            className={cn(
-                                "flex items-center justify-center gap-2 px-3 lg:px-4 py-1.5 rounded-full transition-all duration-300",
-                                "text-sm font-medium whitespace-nowrap shrink-0",
-                                isActive
-                                    ? "text-white shadow-md transform scale-105"
-                                    : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105"
-                            )}
-                            style={isActive ? { backgroundColor: activeTabBgColor } : {}}
+                    {/* CENTER: Desktop Menu — horizontal row, ONLY on desktop */}
+                    {isDesktop && (
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '4px',
+                                flex: 1,
+                                padding: '0 16px',
+                                flexWrap: 'nowrap',
+                            }}
                         >
-                            <Icon className="w-4 h-4" />
-                            {tab.label}
-                        </button>
-                    );
-                })}
-            </div>
-
-            {/* Right: Login/User Info */}
-            <div className="flex items-center gap-3 shrink-0">
-                <div className="hidden md:flex items-center gap-3">
-                    <div className="flex flex-col items-end mr-2">
-                        <span className="text-sm font-bold text-slate-900 dark:text-slate-100">{currentUser.name}</span>
-                        <div className="flex items-center gap-2">
-                            {getRoleBadge()}
+                            {tabs.map((tab) => {
+                                const Icon = tab.icon;
+                                const isActive = activeTab === tab.value;
+                                return (
+                                    <button
+                                        key={tab.value}
+                                        onClick={() => setActiveTab(tab.value)}
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '8px',
+                                            padding: '6px 16px',
+                                            borderRadius: '9999px',
+                                            fontSize: '0.875rem',
+                                            fontWeight: isActive ? 700 : 500,
+                                            whiteSpace: 'nowrap',
+                                            cursor: 'pointer',
+                                            border: 'none',
+                                            transition: 'all 0.3s ease',
+                                            backgroundColor: isActive ? '#ffffff' : 'transparent',
+                                            color: isActive ? '#15803d' : 'white',
+                                            opacity: isActive ? 1 : 0.9,
+                                            boxShadow: isActive ? '0 4px 6px -1px rgba(0,0,0,0.1)' : 'none',
+                                            transform: isActive ? 'scale(1.05)' : 'none',
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            if (!isActive) {
+                                                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)';
+                                                e.currentTarget.style.opacity = '1';
+                                            }
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            if (!isActive) {
+                                                e.currentTarget.style.backgroundColor = 'transparent';
+                                                e.currentTarget.style.opacity = '0.9';
+                                            }
+                                        }}
+                                    >
+                                        <Icon className="w-4 h-4" style={{ color: isActive ? '#15803d' : 'white' }} />
+                                        {tab.label}
+                                    </button>
+                                );
+                            })}
                         </div>
+                    )}
+
+                    {/* RIGHT: User info + controls */}
+                    <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        {/* User info — desktop only */}
+                        {isDesktop && (
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '8px' }}>
+                                <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'white' }}>{currentUser.name}</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    {getRoleBadge()}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Toggle & logout */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <ModeToggle />
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={onLogout}
+                                style={{ color: 'white' }}
+                                className="rounded-full h-9 w-9 hover:bg-white/20"
+                            >
+                                <LogOut className="w-4 h-4" />
+                            </Button>
+                        </div>
+
+                        {/* Hamburger — mobile only */}
+                        {!isDesktop && (
+                            <button
+                                onClick={() => setMobileOpen(!mobileOpen)}
+                                style={{
+                                    color: 'white',
+                                    background: 'none',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '36px',
+                                    height: '36px',
+                                    borderRadius: '8px',
+                                }}
+                                className="hover:bg-white/20"
+                                aria-label="Menu"
+                            >
+                                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                            </button>
+                        )}
                     </div>
                 </div>
+            </nav>
 
-                {/* Always visible toggle & logout */}
-                <div className="flex items-center gap-2">
-                    <ModeToggle />
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={onLogout}
-                        className="rounded-full h-9 w-9 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:text-red-400 text-slate-500 dark:text-slate-400"
+            {/* ===== MOBILE DROPDOWN ===== */}
+            {!isDesktop && mobileOpen && (
+                <>
+                    <div
+                        style={{
+                            position: 'fixed',
+                            inset: 0,
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            zIndex: 9997,
+                        }}
+                        onClick={() => setMobileOpen(false)}
+                    />
+                    <div
+                        style={{
+                            position: 'fixed',
+                            top: '64px',
+                            left: 0,
+                            right: 0,
+                            zIndex: 9998,
+                            maxHeight: 'calc(100vh - 64px)',
+                            overflowY: 'auto',
+                            backgroundColor: theme === 'dark' ? '#0f172a' : '#ffffff',
+                            borderBottom: `1px solid ${theme === 'dark' ? '#334155' : '#e2e8f0'}`,
+                            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
+                        }}
                     >
-                        <LogOut className="w-4 h-4" />
-                    </Button>
-                </div>
-            </div>
+                        {/* User info header */}
+                        <div
+                            style={{
+                                padding: '12px 16px',
+                                borderBottom: `1px solid ${theme === 'dark' ? '#1e293b' : '#f1f5f9'}`,
+                                backgroundColor: theme === 'dark' ? '#1e293b80' : '#f8fafc',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px',
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    borderRadius: '50%',
+                                    backgroundColor: '#16a34a',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: 'white',
+                                    fontWeight: 700,
+                                    fontSize: '1.125rem',
+                                    flexShrink: 0,
+                                }}
+                            >
+                                {currentUser.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div style={{ minWidth: 0 }}>
+                                <div style={{ fontWeight: 600, color: theme === 'dark' ? '#ffffff' : '#0f172a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                    {currentUser.name}
+                                </div>
+                                <div style={{ marginTop: '2px' }}>{getRoleBadge()}</div>
+                            </div>
+                        </div>
 
-        </nav>
+                        {/* Nav items */}
+                        <div style={{ padding: '8px' }}>
+                            {tabs.map((tab) => {
+                                const Icon = tab.icon;
+                                const isActive = activeTab === tab.value;
+                                return (
+                                    <button
+                                        key={tab.value}
+                                        onClick={() => setActiveTab(tab.value)}
+                                        style={{
+                                            width: '100%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '12px',
+                                            padding: '12px',
+                                            borderRadius: '12px',
+                                            border: 'none',
+                                            cursor: 'pointer',
+                                            textAlign: 'left',
+                                            marginBottom: '4px',
+                                            transition: 'all 0.2s ease',
+                                            backgroundColor: isActive
+                                                ? (theme === 'dark' ? 'rgba(22,163,74,0.15)' : '#f0fdf4')
+                                                : 'transparent',
+                                            color: isActive
+                                                ? (theme === 'dark' ? '#4ade80' : '#15803d')
+                                                : (theme === 'dark' ? '#cbd5e1' : '#475569'),
+                                            fontWeight: isActive ? 700 : 500,
+                                            fontSize: '0.875rem',
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                width: '36px',
+                                                height: '36px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                borderRadius: '8px',
+                                                flexShrink: 0,
+                                                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                                                backgroundColor: isActive
+                                                    ? '#16a34a'
+                                                    : (theme === 'dark' ? '#1e293b' : '#ffffff'),
+                                                color: isActive
+                                                    ? '#ffffff'
+                                                    : (theme === 'dark' ? '#94a3b8' : '#64748b'),
+                                                border: isActive
+                                                    ? 'none'
+                                                    : `1px solid ${theme === 'dark' ? '#334155' : '#e2e8f0'}`,
+                                            }}
+                                        >
+                                            <Icon style={{ width: '16px', height: '16px' }} />
+                                        </div>
+                                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                            {tab.label}
+                                        </span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </>
+            )}
+        </>
     );
 }

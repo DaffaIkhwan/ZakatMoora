@@ -1,0 +1,97 @@
+{
+  "totalPrograms": 2,
+  "runningPrograms": 1,
+  "completedPrograms": 0,
+  "totalMustahik": 28,
+  "totalMustahikStabil": 6,
+  "totalMustahikBerkembang": 7,
+  "totalDonasi": 5605000,
+  "totalDisalurkan": 25000000,
+  "programs": [
+    {
+      "id": "21ff401d-25af-4e8a-9796-2682a3c235cc",
+      "name": "Bantuan Modal Usaha Tahap 2 (2025)",
+      "description": "Program bantuan modal usaha mikro untuk pengentasan kemiskinan.",
+      "status": "active",
+      "budget": 25000000,
+      "totalDonasi": 5605000,
+      "totalPenerima": 5,
+      "programDonors": [
+        {
+          "muzakkiName": "muzakki2",
+          "amount": 500000,
+          "date": "2026-03-15T00:00:00.000Z"
+        },
+        {
+          "muzakkiName": "muzakki2",
+          "amount": 100000,
+          "date": "2026-03-16T14:53:39.793Z"
+        },
+        {
+          "muzakkiName": "muzakki2",
+          "amount": 5000,
+          "date": "2026-03-16T15:14:44.836Z"
+        },
+        {
+          "muzakkiName": "muzakki2",
+          "amount": 5000000,
+          "date": "2026-03-16T15:28:46.908Z"
+        }
+      ],
+      "startDate": "2026-02-17T16:31:35.434Z"
+    },
+    {
+      "id": "b711ea91-8493-4058-bbc6-de35cbec88e8",
+      "name": "coba program",
+      "description": "coba",
+      "status": "draft",
+      "budget": 10000000,
+      "totalDonasi": 0,
+      "totalPenerima": 0,
+      "programDonors": [],
+      "startDate": "2026-03-09T00:00:00.000Z"
+    }
+  ],
+  "recentRecipients": [
+    {
+      "id": "3fe9751f-299b-4c88-b8ad-0b72411d70ef",
+      "mustahikName": "Sri Wahyuni (Marpoyan)",
+      "mustahikAddress": "Jl. Proklamasi No. 10",
+      "programName": "Bantuan Modal Usaha Tahap 2 (2025)",
+      "amount": 5000000,
+      "receivedDate": "2026-02-17T16:43:11.278Z"
+    },
+    {
+      "id": "b75851e5-7871-4d40-a9b2-91bc25a1c495",
+      "mustahikName": "Hidayathul Asni",
+      "mustahikAddress": "Jl. Pemuda No. 22",
+      "programName": "Bantuan Modal Usaha Tahap 2 (2025)",
+      "amount": 5000000,
+      "receivedDate": "2026-02-17T16:43:11.025Z"
+    },
+    {
+      "id": "123dd35d-5ba2-488d-aed6-1ccaddffce50",
+      "mustahikName": "Ramadhan Saputra",
+      "mustahikAddress": "Jl. Diponegoro No. 3",
+      "programName": "Bantuan Modal Usaha Tahap 2 (2025)",
+      "amount": 5000000,
+      "receivedDate": "2026-02-17T16:43:10.769Z"
+    },
+    {
+      "id": "2d742294-f43a-48ce-98bf-675d13182b7a",
+      "mustahikName": "Mega Gustiana",
+      "mustahikAddress": "Jl. S. Parman No. 7",
+      "programName": "Bantuan Modal Usaha Tahap 2 (2025)",
+      "amount": 5000000,
+      "receivedDate": "2026-02-17T16:43:10.516Z"
+    },
+    {
+      "id": "306bd864-ec0b-4d20-a410-f604e97ac449",
+      "mustahikName": "Suriati",
+      "mustahikAddress": "Jl. Ahmad Yani No. 5",
+      "programName": "Bantuan Modal Usaha Tahap 2 (2025)",
+      "amount": 5000000,
+      "receivedDate": "2026-02-17T16:43:09.993Z"
+    }
+  ]
+}

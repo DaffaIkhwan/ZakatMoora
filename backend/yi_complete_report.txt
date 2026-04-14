@@ -1,0 +1,203 @@
+=== SENSITIVITY ANALYSIS (MOORA MODEL) ===
+
+Found 7 Criteria from DB.
+Total Base Weight: 1.0000
+Found 28 Mustahik from DB.
+
+--- BASELINE RESULTS (Urutan Saat Ini) ---
+1. Suriati                   | Score: 0.255332
+2. Mega Gustiana             | Score: 0.219786
+3. Ramadhan Saputra          | Score: 0.183552
+4. Hidayathul Asni           | Score: 0.169340
+5. Sri Wahyuni (Marpoyan)    | Score: 0.162885
+-------------------------------------------
+
+--- STARTING SENSITIVITY TESTING ---
+
+Testing Kriteria: Pendidikan (C1)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.255332 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.255332
+    2. Mega Gustiana             | Yi: 0.219786
+    3. Ramadhan Saputra          | Yi: 0.183552
+    4. Hidayathul Asni           | Yi: 0.169340
+    5. Sri Wahyuni (Marpoyan)    | Yi: 0.162885
+
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.231744 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.231744
+    2. Ramadhan Saputra          | Yi: 0.191867
+    3. Hidayathul Asni           | Yi: 0.183971
+    4. Sri Wahyuni (Marpoyan)    | Yi: 0.180385
+    5. Delvi Efriwarty           | Yi: 0.179765
+
+  > Jika Bobot 80%: Winner = Suriati              | Score: 0.214054 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.214054
+    2. Ramadhan Saputra          | Yi: 0.198103
+    3. Hidayathul Asni           | Yi: 0.194944
+    4. Sri Wahyuni (Marpoyan)    | Yi: 0.193510
+    5. Delvi Efriwarty           | Yi: 0.193262
+
+
+Testing Kriteria: Kesehatan (C2)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.242301 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.242301
+    2. Mega Gustiana             | Yi: 0.226897
+    3. Ramadhan Saputra          | Yi: 0.177415
+    4. Hidayathul Asni           | Yi: 0.173484
+    5. Sri Wahyuni (Marpoyan)    | Yi: 0.166649
+
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.346551 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.346551
+    2. Ramadhan Saputra          | Yi: 0.226511
+    3. Maijesti                  | Yi: 0.213191
+    4. Desi Safitri              | Yi: 0.203790
+    5. Mega Gustiana             | Yi: 0.170009
+
+  > Jika Bobot 80%: Winner = Suriati              | Score: 0.424738 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.424738
+    2. Ramadhan Saputra          | Yi: 0.263333
+    3. Maijesti                  | Yi: 0.258005
+    4. Desi Safitri              | Yi: 0.242376
+    5. Mega Gustiana             | Yi: 0.127343
+
+
+Testing Kriteria: Kelayakan Hunian (C3)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.265605 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.265605
+    2. Mega Gustiana             | Yi: 0.194421
+    3. Ramadhan Saputra          | Yi: 0.189603
+    4. Hidayathul Asni           | Yi: 0.179301
+    5. Desi Safitri              | Yi: 0.168111
+
+  > Jika Bobot 50%: Winner = Mega Gustiana        | Score: 0.397338 [PERUBAHAN!]
+    Top 5 Peringkat:
+    1. Mega Gustiana             | Yi: 0.397338
+    2. Sri Wahyuni (Marpoyan)    | Yi: 0.185077
+    3. Delvi Efriwarty           | Yi: 0.184420
+    4. Wanda Febrian Hendri      | Yi: 0.183649
+    5. Suriati                   | Yi: 0.183423
+
+  > Jika Bobot 80%: Winner = Mega Gustiana        | Score: 0.549526 [PERUBAHAN!]
+    Top 5 Peringkat:
+    1. Mega Gustiana             | Yi: 0.549526
+    2. Sri Wahyuni (Marpoyan)    | Yi: 0.204099
+    3. Delvi Efriwarty           | Yi: 0.203836
+    4. Wanda Febrian Hendri      | Yi: 0.203528
+    5. Desi Yuliani              | Yi: 0.201766
+
+
+Testing Kriteria: Spiritual (C4)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.255332 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.255332
+    2. Mega Gustiana             | Yi: 0.219786
+    3. Ramadhan Saputra          | Yi: 0.183552
+    4. Hidayathul Asni           | Yi: 0.169340
+    5. Sri Wahyuni (Marpoyan)    | Yi: 0.162885
+
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.292111 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.292111
+    2. Nelda Wati                | Yi: 0.283474
+    3. Harni Yanti               | Yi: 0.279856
+    4. Sri Molna Yerti           | Yi: 0.228512
+    5. Mega Gustiana             | Yi: 0.136772
+
+  > Jika Bobot 80%: Winner = Nelda Wati           | Score: 0.379487 [PERUBAHAN!]
+    Top 5 Peringkat:
+    1. Nelda Wati                | Yi: 0.379487
+    2. Harni Yanti               | Yi: 0.378039
+    3. Suriati                   | Yi: 0.319696
+    4. Sri Molna Yerti           | Yi: 0.294256
+    5. Ramadhan Saputra          | Yi: 0.092130
+
+
+Testing Kriteria: Pendapatan (C5)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.256092 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.256092
+    2. Mega Gustiana             | Yi: 0.223245
+    3. Ramadhan Saputra          | Yi: 0.186255
+    4. Maijesti                  | Yi: 0.160780
+    5. Sri Wahyuni (Marpoyan)    | Yi: 0.158326
+
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.253053 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.253053
+    2. Hidayathul Asni           | Yi: 0.210625
+    3. Mega Gustiana             | Yi: 0.209407
+    4. Desi Safitri              | Yi: 0.204020
+    5. Delvi Efriwarty           | Yi: 0.187181
+
+  > Jika Bobot 80%: Winner = Hidayathul Asni      | Score: 0.251910 [PERUBAHAN!]
+    Top 5 Peringkat:
+    1. Hidayathul Asni           | Yi: 0.251910
+    2. Suriati                   | Yi: 0.250774
+    3. Desi Safitri              | Yi: 0.249267
+    4. Delvi Efriwarty           | Yi: 0.212593
+    5. Yuliana                   | Yi: 0.206562
+
+
+Testing Kriteria: Potensi Kemandirian (C6)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.260733 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.260733
+    2. Mega Gustiana             | Yi: 0.223095
+    3. Ramadhan Saputra          | Yi: 0.180930
+    4. Hidayathul Asni           | Yi: 0.171535
+    5. Delvi Efriwarty           | Yi: 0.161666
+
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.217527 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.217527
+    2. Ramadhan Saputra          | Yi: 0.201908
+    3. Mega Gustiana             | Yi: 0.196617
+    4. Sri Wahyuni (Marpoyan)    | Yi: 0.182778
+    5. Harni Yanti               | Yi: 0.181550
+
+  > Jika Bobot 80%: Winner = Ramadhan Saputra     | Score: 0.217641 [PERUBAHAN!]
+    Top 5 Peringkat:
+    1. Ramadhan Saputra          | Yi: 0.217641
+    2. Harni Yanti               | Yi: 0.209498
+    3. Nuri Syamsi               | Yi: 0.205050
+    4. Anis mayanti              | Yi: 0.203521
+    5. Sofia Wartini             | Yi: 0.202210
+
+
+Testing Kriteria: Kepemilikan Aset (C7)
+  > Jika Bobot 10%: Winner = Suriati              | Score: 0.253377 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.253377
+    2. Mega Gustiana             | Yi: 0.219259
+    3. Ramadhan Saputra          | Yi: 0.180690
+    4. Sri Wahyuni (Marpoyan)    | Yi: 0.165739
+    5. Delvi Efriwarty           | Yi: 0.164557
+
+  > Jika Bobot 50%: Winner = Suriati              | Score: 0.269016 
+    Top 5 Peringkat:
+    1. Suriati                   | Yi: 0.269016
+    2. Hidayathul Asni           | Yi: 0.242325
+    3. Mega Gustiana             | Yi: 0.223472
+    4. Ramadhan Saputra          | Yi: 0.203592
+    5. Susi Anita                | Yi: 0.178499
+
+  > Jika Bobot 80%: Winner = Hidayathul Asni      | Score: 0.304884 [PERUBAHAN!]
+    Top 5 Peringkat:
+    1. Hidayathul Asni           | Yi: 0.304884
+    2. Suriati                   | Yi: 0.280745
+    3. Mega Gustiana             | Yi: 0.226632
+    4. Ramadhan Saputra          | Yi: 0.220769
+    5. Susi Anita                | Yi: 0.210732
+
+
+=== ANALISIS SELESAI ===
+Interpretasi untuk Skripsi:
+1. Jika pemenang berubah saat bobot diubah (PERUBAHAN!), berarti kriteria tersebut SENSITIF.
+2. Jika kriteria sensitif, pastikan nilai input untuk kriteria tersebut dikumpulkan dengan sangat akurat.
+3. Kriteria yang tidak mengubah pemenang meskipun bobot diubah drastis disebut KOKOH/ROBUST.

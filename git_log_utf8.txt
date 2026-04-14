@@ -1,0 +1,5 @@
+﻿02eea6c HEAD@{0}: reset: moving to HEAD
+02eea6c HEAD@{1}: commit: fix: restore login recovery mode and stable prisma config
+7ce8254 HEAD@{2}: commit: fix: add prisma schema to root and update build command
+457b59a HEAD@{3}: commit: fix: make serverless function self-contained and stable
+ac2f682 HEAD@{4}: commit: feat: setup dynamic environment variables for API URL

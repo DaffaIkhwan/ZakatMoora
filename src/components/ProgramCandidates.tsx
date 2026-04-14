@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -6,7 +6,7 @@ import { Checkbox } from './ui/checkbox';
 import { Input } from './ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
-import { Trophy, Medal, Award, AlertCircle, CheckCircle, Calculator, Search, Filter, Save, Users, BarChart3, Gift } from 'lucide-react';
+import { Trophy, Medal, Award, AlertCircle, CheckCircle, Calculator, Search, Filter, Save, Users, BarChart3, Gift, CheckSquare } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
@@ -14,6 +14,7 @@ import { PaginationControls } from './ui/pagination-controls';
 import { MonitoringForm } from './MonitoringForm';
 import type { AidProgram, Mustahik, RecipientHistory, CandidateWithScore, MonitoringData, Criterion } from '../types';
 import { calculateMOORA, getSubCriteriaWeights } from './mooraCalculations';
+import { toast } from 'sonner';
 
 interface ProgramCandidatesProps {
   program: AidProgram;
@@ -62,6 +63,17 @@ export function ProgramCandidates({
     return calculateMOORA(candidates, criteriaList);
   }, [candidates, criteriaList]);
 
+  // Track manually finalized candidates (allows manager to override MOORA recommendations)
+  const [finalizedCandidateIds, setFinalizedCandidateIds] = useState<string[]>([]);
+  
+  // Pre-select top candidates based on quota for the manager
+  useEffect(() => {
+    if (results.length > 0 && finalizedCandidateIds.length === 0) {
+      const topN = results.slice(0, program.quota).map(r => r.id);
+      setFinalizedCandidateIds(topN);
+    }
+  }, [results, program.quota, finalizedCandidateIds.length]);
+
   // Calculate MOORA for ALL mustahik (for sorting)
   const allMooraResults = useMemo(() => {
     if (mustahikList.length === 0) return [];
@@ -102,9 +114,18 @@ export function ProgramCandidates({
     return filtered;
   }, [mustahikList, searchTerm, sortFilter, allMooraResults, receivedMustahikIds]);
 
-  // Get finalized recipients for this program
+  // Get finalized recipients for this program (with deduplication for past bugs)
   const programRecipients = useMemo(() => {
-    return recipientHistory.filter(h => h.programId === program.id);
+    const history = recipientHistory.filter(h => h.programId === program.id);
+    const unique = [];
+    const seen = new Set();
+    for (const h of history) {
+      if (!seen.has(h.mustahikId)) {
+        seen.add(h.mustahikId);
+        unique.push(h);
+      }
+    }
+    return unique;
   }, [recipientHistory, program.id]);
 
   const subCriteriaWeights = useMemo(() => getSubCriteriaWeights(criteriaList), [criteriaList]);
@@ -126,21 +147,47 @@ export function ProgramCandidates({
       selectedCandidates: selectedMustahikIds,
     };
     onUpdateProgram(program.id, updatedProgram);
-    alert('Calon penerima berhasil disimpan!');
+    toast.success('Pilihan Disimpan', {
+      description: `${selectedMustahikIds.length} calon penerima telah diperbarui.`
+    });
   };
 
   const [isSaving, setIsSaving] = useState(false);
 
+  // Check if mustahik has received from this program
+  const hasReceivedFromProgram = (mustahikId: string) => {
+    return programRecipients.some(h => h.mustahikId === mustahikId);
+  };
+
   const handleFinalizeRecipients = async () => {
     if (results.length === 0) {
-      alert('Tidak ada calon penerima yang dipilih!');
+      toast.warning('Aksi Dibatalkan', {
+        description: 'Tidak ada calon penerima yang diproses!'
+      });
       return;
     }
 
     setIsSaving(true);
     try {
-      // Take top N recipients based on quota
-      const recipients = results.slice(0, program.quota);
+      // Take manually selected recipients and explicitly remove any that already exist
+      const recipients = results.filter(r => finalizedCandidateIds.includes(r.id) && !hasReceivedFromProgram(r.id));
+      
+      if (recipients.length === 0) {
+        toast.warning('Seleksi Kosong', {
+          description: 'Silakan centang minimal satu penerima baru!'
+        });
+        setIsSaving(false);
+        return;
+      }
+
+      // Check strict quota
+      if (programRecipients.length + recipients.length > program.quota) {
+        toast.error('Melebihi Kuota', {
+          description: `Total penerima tidak boleh melebihi kuota program (${program.quota} orang). Tersisa ${Math.max(0, program.quota - programRecipients.length)} kuota.`
+        });
+        setIsSaving(false);
+        return;
+      }
 
       // Add to recipient history sequentially or in parallel
       const promises = recipients.map((recipient) => {
@@ -162,16 +209,22 @@ export function ProgramCandidates({
       await Promise.all(promises);
 
       // Update program status
+      const isNowFull = programRecipients.length + recipients.length >= program.quota;
       const updatedProgram = {
         ...program,
-        status: 'completed' as const,
+        status: isNowFull ? 'completed' : program.status,
       };
-      onUpdateProgram(program.id, updatedProgram);
-
-      alert(`${recipients.length} penerima berhasil ditetapkan!`);
+      
+      onUpdateProgram(program.id, updatedProgram as AidProgram);
+      
+      toast.success('Penerima Ditetapkan', {
+        description: `${recipients.length} penerima berhasil ditetapkan ke program ini.`
+      });
     } catch (error) {
       console.error('Failed to finalize recipients:', error);
-      alert('Gagal menetapkan penerima. Silakan coba lagi.');
+      toast.error('Gagal menetapkan penerima', {
+        description: 'Terjadi kesalahan sistem, silakan coba lagi.'
+      });
     } finally {
       setIsSaving(false);
     }
@@ -236,11 +289,6 @@ export function ProgramCandidates({
     return <Badge variant="outline">Rank {rank}</Badge>;
   };
 
-  // Check if mustahik has received from this program
-  const hasReceivedFromProgram = (mustahikId: string) => {
-    return recipientHistory.some(h => h.mustahikId === mustahikId && h.programId === program.id);
-  };
-
   return (
     <Tabs defaultValue="selection" className="space-y-4">
       {/* Tab Header - All 4 buttons in one row */}
@@ -253,6 +301,13 @@ export function ProgramCandidates({
             <Users className="w-4 h-4" />
             <span>Pilih Calon</span>
             <span className="ml-1 text-xs opacity-80">({selectedMustahikIds.length})</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="calculations"
+            className="gap-2 px-4 py-2 rounded-lg border-0 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 data-[state=active]:bg-indigo-600 data-[state=active]:text-white transition-all"
+          >
+            <Calculator className="w-4 h-4" />
+            <span>Detail MOORA</span>
           </TabsTrigger>
           <TabsTrigger
             value="results"
@@ -272,18 +327,27 @@ export function ProgramCandidates({
         </TabsList>
 
         {/* Save Button - Same row, at the end */}
-        <Button
-          onClick={handleSaveCandidates}
-          className="gap-2 ml-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all"
-        >
-          <Save className="w-4 h-4" />
-          Simpan Pilihan ({selectedMustahikIds.length})
-        </Button>
+        {(() => {
+          const isSelectionUnchanged = 
+            selectedMustahikIds.length === (program.selectedCandidates?.length || 0) &&
+            selectedMustahikIds.every(id => program.selectedCandidates?.includes(id));
+          
+          return (
+            <Button
+              onClick={handleSaveCandidates}
+              disabled={isSelectionUnchanged}
+              className={`btn-green gap-2 ml-auto px-4 py-2 rounded-lg transition-all ${isSelectionUnchanged ? 'opacity-70 bg-emerald-700' : ''}`}
+            >
+              {isSelectionUnchanged ? <CheckCircle className="w-4 h-4" /> : <Save className="w-4 h-4" />}
+              {isSelectionUnchanged ? 'Tersimpan' : `Simpan Pilihan (${selectedMustahikIds.length})`}
+            </Button>
+          );
+        })()}
       </div>
 
       {/* Selection Tab */}
       <TabsContent value="selection" className="space-y-4">
-        <Card>
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader>
             <CardTitle>Pilih Calon Penerima dari Database Mustahik</CardTitle>
             <CardDescription>
@@ -322,6 +386,25 @@ export function ProgramCandidates({
                       <SelectItem value="never_received_highest">Belum Terima + MOORA Tertinggi</SelectItem>
                     </SelectContent>
                   </Select>
+                  <Button 
+                    variant="outline" 
+                    className="shrink-0 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
+                    onClick={() => {
+                      const availableIds = filteredMustahik.filter(m => !hasReceivedFromProgram(m.id)).map(m => m.id);
+                      const isAllSelected = availableIds.length > 0 && availableIds.every(id => selectedMustahikIds.includes(id));
+                      
+                      if (isAllSelected) {
+                        setSelectedMustahikIds(prev => prev.filter(id => !availableIds.includes(id)));
+                      } else {
+                        setSelectedMustahikIds(prev => Array.from(new Set([...prev, ...availableIds])));
+                      }
+                    }}
+                  >
+                    <CheckSquare className="w-4 h-4 mr-2" />
+                    {filteredMustahik.length > 0 && filteredMustahik.filter(m => !hasReceivedFromProgram(m.id)).every(m => selectedMustahikIds.includes(m.id))
+                      ? 'Batal Pilih Semua'
+                      : 'Pilih Semua'}
+                  </Button>
                 </div>
 
                 <div className="rounded-md border">
@@ -417,19 +500,19 @@ export function ProgramCandidates({
           <>
             {/* Summary Cards */}
             <div className="grid gap-4 md:grid-cols-3">
-              <Card>
+              <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
                 <CardHeader className="pb-3">
                   <CardDescription>Total Calon</CardDescription>
                   <CardTitle className="text-3xl">{results.length}</CardTitle>
                 </CardHeader>
               </Card>
-              <Card>
+              <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
                 <CardHeader className="pb-3">
                   <CardDescription>Akan Ditetapkan</CardDescription>
                   <CardTitle className="text-3xl">{Math.min(program.quota, results.length)}</CardTitle>
                 </CardHeader>
               </Card>
-              <Card>
+              <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
                 <CardHeader className="pb-3">
                   <CardDescription>Skor Tertinggi</CardDescription>
                   <CardTitle className="text-3xl">{results[0]?.mooraScore.toFixed(4)}</CardTitle>
@@ -438,7 +521,7 @@ export function ProgramCandidates({
             </div>
 
             {/* Results Table */}
-            <Card>
+            <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
               <CardHeader>
                 <CardTitle>Hasil Perangkingan MOORA</CardTitle>
                 <CardDescription>
@@ -450,19 +533,51 @@ export function ProgramCandidates({
                   <Table>
                     <TableHeader>
                       <TableRow>
+                        <TableHead className="w-12"><Checkbox disabled /></TableHead>
                         <TableHead>Rank</TableHead>
                         <TableHead>Nama</TableHead>
                         <TableHead className="text-center">Skor MOORA</TableHead>
+                        <TableHead className="text-center">Status</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {results.map((result) => {
-                        const willReceive = result.rank <= program.quota;
+                        const hasReceived = hasReceivedFromProgram(result.id);
+                        const newSelectionsCount = finalizedCandidateIds.filter(id => !hasReceivedFromProgram(id)).length;
+                        const isQuotaFull = programRecipients.length + newSelectionsCount >= program.quota;
+                        const isWillReceive = finalizedCandidateIds.includes(result.id) || hasReceived;
+                        const isDisabled = program.status === 'completed' || hasReceived || (isQuotaFull && !finalizedCandidateIds.includes(result.id) && !hasReceived);
+
                         return (
-                          <TableRow key={result.id}>
+                          <TableRow key={result.id} className={isWillReceive ? 'bg-amber-50/50 dark:bg-amber-900/10' : ''}>
+                            <TableCell>
+                              <Checkbox
+                                disabled={isDisabled}
+                                checked={isWillReceive}
+                                onCheckedChange={() => {
+                                  setFinalizedCandidateIds(prev => 
+                                    prev.includes(result.id) 
+                                      ? prev.filter(id => id !== result.id) 
+                                      : [...prev, result.id]
+                                  );
+                                }}
+                              />
+                            </TableCell>
                             <TableCell>{getRankBadge(result.rank)}</TableCell>
                             <TableCell className="font-medium">{result.name}</TableCell>
                             <TableCell className="text-center">{result.mooraScore.toFixed(4)}</TableCell>
+                            <TableCell className="text-center">
+                              {hasReceived ? (
+                                <Badge className="bg-emerald-500 hover:bg-emerald-600 gap-1">
+                                  <CheckCircle className="w-3 h-3" />
+                                  Sudah Terima
+                                </Badge>
+                              ) : isWillReceive ? (
+                                <Badge className="bg-amber-500 hover:bg-amber-600">Terpilih</Badge>
+                              ) : (
+                                <Badge variant="outline" className="text-slate-400">Tidak Terpilih</Badge>
+                              )}
+                            </TableCell>
                           </TableRow>
                         );
                       })}
@@ -474,7 +589,7 @@ export function ProgramCandidates({
                   <Button
                     onClick={handleFinalizeRecipients}
                     disabled={program.status === 'completed' || isSaving}
-                    className="gap-2"
+                    className="btn-green gap-2"
                   >
                     {program.status === 'completed' ? (
                       <>
@@ -482,15 +597,28 @@ export function ProgramCandidates({
                         Sudah Ditetapkan
                       </>
                     ) : (
-                      <>{isSaving ? 'Menyimpan...' : `Tetapkan ${Math.min(program.quota, results.length)} Penerima`}</>
+                      <>{isSaving ? 'Menyimpan...' : `Tetapkan ${finalizedCandidateIds.length} Penerima`}</>
                     )}
                   </Button>
                 </div>
               </CardContent>
             </Card>
+          </>
+        )}
+      </TabsContent>
 
-            {/* Detailed Calculations */}
-            <Card>
+      {/* Calculations Tab */}
+      <TabsContent value="calculations" className="space-y-4">
+        {results.length === 0 ? (
+          <Alert>
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              Pilih calon penerima terlebih dahulu untuk melihat detail perhitungan MOORA.
+            </AlertDescription>
+          </Alert>
+        ) : (
+          <>
+            <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <Calculator className="w-5 h-5 text-indigo-600" />
@@ -760,7 +888,7 @@ export function ProgramCandidates({
                           </TableHeader>
                           <TableBody>
                             {results.map(r => (
-                              <TableRow key={r.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                              <TableRow key={r.id} className="hover:bg-slate-50 dark:hover:bg-slate-800">
                                 <TableCell>{getRankBadge(r.rank)}</TableCell>
                                 <TableCell className="font-medium text-slate-900 dark:text-slate-100">{r.name}</TableCell>
                                 <TableCell className="text-center">
@@ -784,7 +912,7 @@ export function ProgramCandidates({
 
       {/* Recipients Tab */}
       <TabsContent value="recipients" className="space-y-4">
-        <Card>
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader>
             <CardTitle>Daftar Penerima Bantuan - {program.name}</CardTitle>
             <CardDescription>

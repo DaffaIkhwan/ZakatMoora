@@ -287,10 +287,10 @@ export function CriteriaInfo({ criteriaList = DEFAULT_CRITERIA, userRole, onMana
           </div>
 
           {/* Kelola Kriteria Button */}
-          {userRole === 'super_admin' && onManageCriteria && (
+          {(userRole === 'super_admin' || userRole === 'manajer') && onManageCriteria && (
             <Button
               onClick={onManageCriteria}
-              className="gap-2 !bg-blue-600 hover:!bg-blue-700 !text-white !border-blue-600 shadow-md hover:shadow-lg transition-all"
+              className="btn-green gap-2"
             >
               <Settings className="w-4 h-4" />
               <span className="font-medium">Kelola Kriteria</span>
@@ -299,7 +299,7 @@ export function CriteriaInfo({ criteriaList = DEFAULT_CRITERIA, userRole, onMana
         </div>
       </div>
 
-      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm">
+      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
         <CardHeader>
           <CardTitle className="text-slate-900 dark:text-slate-100">Detail Indikator & Sub-Kriteria</CardTitle>
           <CardDescription>

@@ -9,12 +9,15 @@ import { UserPlus, Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import type { Candidate } from '../App';
 import { CRITERIA_DATA } from './CriteriaInfo';
+import { toast } from 'sonner';
+import { useConfirm } from '../hooks/use-confirm';
 
 interface CandidateFormProps {
   onSubmit: (candidate: Candidate) => void;
 }
 
 export function CandidateForm({ onSubmit }: CandidateFormProps) {
+  const { confirm } = useConfirm();
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [criteria, setCriteria] = useState({
@@ -31,30 +34,41 @@ export function CandidateForm({ onSubmit }: CandidateFormProps) {
     e.preventDefault();
     
     if (!name.trim() || !address.trim()) {
-      alert('Nama dan alamat harus diisi!');
+      toast.error('Gagal validasi', {
+        description: 'Nama dan alamat harus diisi!'
+      });
       return;
     }
 
-    const candidate: Candidate = {
-      id: Date.now().toString(),
-      name: name.trim(),
-      address: address.trim(),
-      criteria: { ...criteria },
-    };
-
-    onSubmit(candidate);
-    
-    // Reset form
-    setName('');
-    setAddress('');
-    setCriteria({
-      C1: 0,
-      C2: 0,
-      C3: 0,
-      C4: 0,
-      C5: 0,
-      C6: 0,
-      C7: 0,
+    confirm({
+      title: 'Tambahkan Calon?',
+      description: `Apakah Anda yakin ingin memasukkan ${name} ke dalam daftar kandidat seleksi?`,
+      confirmText: 'Ya, Tambahkan',
+      cancelText: 'Batal',
+      onConfirm: () => {
+        const toastId = toast.loading('Memverifikasi data calon penerima...');
+        
+        setTimeout(() => {
+          onSubmit(candidate);
+          toast.success('Calon Ditambahkan', {
+            id: toastId,
+            description: `${candidate.name} telah masuk dalam tabel analisis.`
+          });
+          
+          // Reset form
+          setName('');
+          setAddress('');
+          setCriteria({
+            C1: 0,
+            C2: 0,
+            C3: 0,
+            C4: 0,
+            C5: 0,
+            C6: 0,
+            C7: 0,
+          });
+        }, 800);
+      }
     });
   };
 
@@ -68,7 +82,7 @@ export function CandidateForm({ onSubmit }: CandidateFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Personal Info */}
-      <Card>
+      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
         <CardHeader>
           <CardTitle>Data Pribadi</CardTitle>
           <CardDescription>Informasi dasar calon penerima</CardDescription>
@@ -98,7 +112,7 @@ export function CandidateForm({ onSubmit }: CandidateFormProps) {
       </Card>
 
       {/* Criteria Assessment */}
-      <Card>
+      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 mt-6">
         <CardHeader>
           <CardTitle>Penilaian Kriteria</CardTitle>
           <CardDescription>
@@ -166,7 +180,7 @@ export function CandidateForm({ onSubmit }: CandidateFormProps) {
 
       {/* Submit Button */}
       <div className="flex justify-end">
-        <Button type="submit" size="lg" className="gap-2">
+        <Button type="submit" size="lg" className="btn-green gap-2">
           <UserPlus className="w-4 h-4" />
           Tambah Calon Penerima
         </Button>

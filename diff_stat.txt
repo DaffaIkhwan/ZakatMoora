@@ -1,0 +1,8 @@
+﻿ backend/prisma/schema.prisma                    |  52 ++
+ backend/src/controllers/monitoringController.js | 100 ++-
+ src/components/MonitoringForm.tsx               | 482 +++++++------
+ src/components/MonitoringModule.tsx             | 877 +++++++++++++++++-------
+ src/components/MustahikDatabase.tsx             | 828 +++++++++++-----------
+ src/types/index.ts                              |  89 ++-
+ 6 files changed, 1574 insertions(+), 854 deletions(-)
+    

@@ -37,7 +37,7 @@ function createSubCriteriaDecisionMatrix(candidates: Mustahik[], criteriaList: C
   candidates.forEach(candidate => {
     const row: number[] = [];
     subCriteriaCodes.forEach(code => {
-      const value = candidate.subCriteria?.[code] ?? 0;
+      const value = candidate.subCriteria?.[code] ?? 0; 
       row.push(value);
     });
     matrix.push(row);
@@ -280,7 +280,7 @@ export function getCalculationSteps(candidates: Mustahik[], criteriaList: Criter
     const subWeightedMatrix = applySubCriteriaWeights(subNormalizedMatrix, subCriteriaCodes, criteriaList);
     // Calculate types for sub-criteria
     const typeMap: Record<string, string> = {};
-    criteriaList?.forEach(c => c.aspects?.forEach(a => typeMap[a.code] = c.type));
+    criteriaList?.forEach(c => c.aspects?.forEach(a => typeMap[a.code] = c.type || 'benefit'));
     const subTypes = subCriteriaCodes.map(code => typeMap[code] || 'benefit');
 
     const mooraScores = calculateOptimization(subWeightedMatrix, subTypes);

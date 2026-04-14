@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
+import { useConfirm } from '../hooks/use-confirm';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { Button } from './ui/button';
@@ -7,25 +9,27 @@ import { Alert, AlertDescription } from './ui/alert';
 import { Trash2, Trophy, Medal, Award, AlertCircle, Eye, Calculator } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import type { Candidate } from '../App';
+import type { Mustahik, CandidateWithScore } from '../types';
 import { calculateMOORA, getCalculationSteps } from './mooraCalculations';
-import { CRITERIA_DATA } from './CriteriaInfo';
+import { DEFAULT_CRITERIA, ICON_MAP } from './CriteriaInfo';
+import { BookOpen } from 'lucide-react';
 
 interface ResultsTableProps {
-  candidates: Candidate[];
+  candidates: Mustahik[];
   onDelete: (id: string) => void;
   onClearAll: () => void;
 }
 
 export function ResultsTable({ candidates, onDelete, onClearAll }: ResultsTableProps) {
+  const { confirm } = useConfirm();
   const [selectedCandidate, setSelectedCandidate] = useState<string | null>(null);
 
   const results = useMemo(() => {
-    return calculateMOORA(candidates);
+    return calculateMOORA(candidates, DEFAULT_CRITERIA);
   }, [candidates]);
 
   const calculationSteps = useMemo(() => {
-    return getCalculationSteps(candidates);
+    return getCalculationSteps(candidates, DEFAULT_CRITERIA);
   }, [candidates]);
 
   const getRankBadge = (rank: number) => {
@@ -73,13 +77,13 @@ export function ResultsTable({ candidates, onDelete, onClearAll }: ResultsTableP
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card>
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="pb-3">
             <CardDescription>Total Calon Penerima</CardDescription>
             <CardTitle className="text-3xl">{candidates.length}</CardTitle>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="pb-3">
             <CardDescription>Prioritas Tertinggi</CardDescription>
             {results[0] && (
@@ -87,7 +91,7 @@ export function ResultsTable({ candidates, onDelete, onClearAll }: ResultsTableP
             )}
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader className="pb-3">
             <CardDescription>Skor Tertinggi</CardDescription>
             {results[0] && (
@@ -98,7 +102,7 @@ export function ResultsTable({ candidates, onDelete, onClearAll }: ResultsTableP
       </div>
 
       {/* Results Table */}
-      <Card>
+      <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -111,9 +115,18 @@ export function ResultsTable({ candidates, onDelete, onClearAll }: ResultsTableP
               variant="destructive"
               size="sm"
               onClick={() => {
-                if (confirm('Yakin ingin menghapus semua data?')) {
-                  onClearAll();
-                }
+                confirm({
+                  title: 'Hapus Semua Data',
+                  description: 'Apakah Anda yakin ingin menghapus seluruh data simulasi? Perubahan ini tidak dapat dibatalkan.',
+                  confirmText: 'Hapus Semua',
+                  variant: 'destructive',
+                  onConfirm: () => {
+                    onClearAll();
+                    toast.success('Data Dihapus', {
+                      description: 'Seluruh data simulasi berhasil dibersihkan.'
+                    });
+                  }
+                });
               }}
             >
               <Trash2 className="w-4 h-4 mr-2" />
@@ -150,15 +163,16 @@ export function ResultsTable({ candidates, onDelete, onClearAll }: ResultsTableP
                       <div className="flex items-center justify-center gap-2">
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button
+                          <Button
                               variant="outline"
                               size="sm"
+                              className="hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 hover:text-blue-600 transition-all active:scale-95"
                               onClick={() => setSelectedCandidate(result.id)}
                             >
                               <Eye className="w-4 h-4" />
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="!max-w-[calc(100vw-8rem)] max-h-[90vh] overflow-y-auto !bg-white !dark:bg-slate-900 !px-16 !pb-14">
+                          <DialogContent className="max-w-[580px] w-[95vw] h-[700px] max-h-[90vh] dialog-bg-navy dialog-border-navy border-0 shadow-2xl p-0 overflow-hidden flex flex-col">
                             <DialogHeader>
                               <DialogTitle>Detail Penilaian - {result.name}</DialogTitle>
                               <DialogDescription>
@@ -175,18 +189,18 @@ export function ResultsTable({ candidates, onDelete, onClearAll }: ResultsTableP
                                 </TabsList>
 
                                 <TabsContent value="criteria" className="space-y-4 mt-4">
-                                  {CRITERIA_DATA.map((criteria) => {
-                                    const value = selectedResult.criteria[criteria.code as keyof typeof selectedResult.criteria];
-                                    const Icon = criteria.icon;
+                                  {DEFAULT_CRITERIA.map((criterion) => {
+                                    const value = (selectedResult as any).criteria?.[criterion.code] || 0;
+                                    const Icon = ICON_MAP[criterion.icon] || BookOpen;
                                     return (
-                                      <div key={criteria.code} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                      <div key={criterion.code} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                                         <div className="flex items-center gap-3">
-                                          <div className={`${criteria.color} p-2 rounded-lg`}>
+                                          <div className={`${criterion.color} p-2 rounded-lg`}>
                                             <Icon className="w-4 h-4 text-white" />
                                           </div>
                                           <div>
-                                            <p>{criteria.code} - {criteria.name}</p>
-                                            <p className="text-sm text-gray-500">Bobot: {(criteria.weight * 100).toFixed(0)}%</p>
+                                            <p>{criterion.code} - {criterion.name}</p>
+                                            <p className="text-sm text-gray-500">Bobot: {(criterion.weight * 100).toFixed(0)}%</p>
                                           </div>
                                         </div>
                                         <Badge variant="secondary" className="text-lg">
@@ -201,16 +215,16 @@ export function ResultsTable({ candidates, onDelete, onClearAll }: ResultsTableP
                                   <p className="text-sm text-gray-600 mb-4">
                                     Nilai setelah normalisasi vektor (x<sub>ij</sub>* = x<sub>ij</sub> / √Σx<sub>ij</sub>²)
                                   </p>
-                                  {CRITERIA_DATA.map((criteria) => {
-                                    const value = selectedResult.normalizedCriteria[criteria.code];
-                                    const Icon = criteria.icon;
+                                  {DEFAULT_CRITERIA.map((criterion) => {
+                                    const value = selectedResult.normalizedCriteria[criterion.code] || 0;
+                                    const Icon = ICON_MAP[criterion.icon] || BookOpen;
                                     return (
-                                      <div key={criteria.code} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                      <div key={criterion.code} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                                         <div className="flex items-center gap-3">
-                                          <div className={`${criteria.color} p-2 rounded-lg`}>
+                                          <div className={`${criterion.color} p-2 rounded-lg`}>
                                             <Icon className="w-4 h-4 text-white" />
                                           </div>
-                                          <span>{criteria.code} - {criteria.name}</span>
+                                          <span>{criterion.code} - {criterion.name}</span>
                                         </div>
                                         <Badge variant="secondary" className="tabular-nums">
                                           {value.toFixed(6)}
@@ -224,16 +238,16 @@ export function ResultsTable({ candidates, onDelete, onClearAll }: ResultsTableP
                                   <p className="text-sm text-gray-600 mb-4">
                                     Nilai setelah dikalikan bobot (w<sub>i</sub> × x<sub>ij</sub>*)
                                   </p>
-                                  {CRITERIA_DATA.map((criteria) => {
-                                    const value = selectedResult.weightedNormalized[criteria.code];
-                                    const Icon = criteria.icon;
+                                  {DEFAULT_CRITERIA.map((criterion) => {
+                                    const value = selectedResult.weightedNormalized[criterion.code] || 0;
+                                    const Icon = ICON_MAP[criterion.icon] || BookOpen;
                                     return (
-                                      <div key={criteria.code} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                      <div key={criterion.code} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                                         <div className="flex items-center gap-3">
-                                          <div className={`${criteria.color} p-2 rounded-lg`}>
+                                          <div className={`${criterion.color} p-2 rounded-lg`}>
                                             <Icon className="w-4 h-4 text-white" />
                                           </div>
-                                          <span>{criteria.code} - {criteria.name}</span>
+                                          <span>{criterion.code} - {criterion.name}</span>
                                         </div>
                                         <Badge variant="secondary" className="tabular-nums">
                                           {value.toFixed(6)}
@@ -259,9 +273,18 @@ export function ResultsTable({ candidates, onDelete, onClearAll }: ResultsTableP
                           variant="destructive"
                           size="sm"
                           onClick={() => {
-                            if (confirm(`Hapus data ${result.name}?`)) {
-                              onDelete(result.id);
-                            }
+                            confirm({
+                              title: 'Hapus Kandidat',
+                              description: `Apakah Anda yakin ingin menghapus data ${result.name}?`,
+                              confirmText: 'Hapus',
+                              variant: 'destructive',
+                              onConfirm: () => {
+                                onDelete(result.id);
+                                toast.success('Kandidat Dihapus', {
+                                  description: `Data ${result.name} berhasil dihapus.`
+                                });
+                              }
+                            });
                           }}
                         >
                           <Trash2 className="w-4 h-4" />
@@ -278,7 +301,7 @@ export function ResultsTable({ candidates, onDelete, onClearAll }: ResultsTableP
 
       {/* Calculation Details */}
       {calculationSteps && (
-        <Card>
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-md hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Calculator className="w-5 h-5" />

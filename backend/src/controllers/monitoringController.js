@@ -36,33 +36,37 @@ const getMonitoring = async (req, res) => {
             socialEconomicCondition: d.socialEconomicCondition, // JSON object via Prisma
             challenges: d.challenges,
             achievements: d.achievements,
-            nextPlan: d.nextPlan,
             surveyor: d.surveyor,
             notes: d.notes,
+            pendapatanBulanan: d.pendapatanBulanan,
+            kebutuhanPokokBulanan: d.kebutuhanPokokBulanan,
+            hutangBaru: d.hutangBaru,
+            tabunganBaru: d.tabunganBaru,
+            statusKesejahteraan: d.statusKesejahteraan,            
             mustahikName: d.mustahik?.name,
             programName: d.program?.name
         }));
         res.json(mapped);
     } catch (error) {
         console.error('getMonitoring error:', error);
-
-        // RECOVERY: Return Mock Data if DB fails
-        console.log('RECOVERY MODE: Returning mock monitoring data');
-        const mockData = [
-            { id: '1', mustahikName: 'Pak Budi', programName: 'Program Modal', businessProgress: { businessType: 'Kuliner', businessStatus: 'berkembang', revenue: 7500000, profit: 3000000 }, socialEconomicCondition: { monthlyIncome: 3000000, monthlyExpenditure: 2000000 }, monitoringDate: new Date() },
-            { id: '2', mustahikName: 'Ibu Siti', programName: 'Program Modal', businessProgress: { businessType: 'Jasa', businessStatus: 'berkembang', revenue: 6000000, profit: 2500000 }, socialEconomicCondition: { monthlyIncome: 2500000, monthlyExpenditure: 1500000 }, monitoringDate: new Date() },
-            { id: '3', mustahikName: 'Joko', programName: 'Pertanian', businessProgress: { businessType: 'Pertanian', businessStatus: 'menurun', revenue: 500000, profit: -100000 }, socialEconomicCondition: { monthlyIncome: 500000, monthlyExpenditure: 1500000 }, monitoringDate: new Date() },
-            { id: '4', mustahikName: 'Lestari', programName: 'Pertanian', businessProgress: { businessType: 'Pertanian', businessStatus: 'tutup', revenue: 0, profit: 0 }, socialEconomicCondition: { monthlyIncome: 0, monthlyExpenditure: 1000000 }, monitoringDate: new Date() },
-            { id: '5', mustahikName: 'Rudi', programName: 'Program Modal', businessProgress: { businessType: 'Perdagangan', businessStatus: 'berkembang', revenue: 8000000, profit: 3500000 }, socialEconomicCondition: { monthlyIncome: 3500000, monthlyExpenditure: 2000000 }, monitoringDate: new Date() },
-            { id: '6', mustahikName: 'Sari', programName: 'Program Modal', businessProgress: { businessType: 'Jasa', businessStatus: 'stabil', revenue: 3000000, profit: 1000000 }, socialEconomicCondition: { monthlyIncome: 3500000, monthlyExpenditure: 2000000 }, monitoringDate: new Date() },
-        ];
-        res.json(mockData);
-        // res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
 };
 
 const createMonitoring = async (req, res) => {
-    const { mustahikId, programId, monitoringDate, businessProgress, socialEconomicCondition, challenges, achievements, nextPlan, surveyor, notes } = req.body;
+    const { mustahikId, programId, monitoringDate, businessProgress, socialEconomicCondition, challenges, achievements, nextPlan, surveyor, notes, pendapatanBulanan, kebutuhanPokokBulanan, hutangBaru, tabunganBaru } = req.body;
+    
+    // CIBEST & IKB MONEV Logic
+    let statusKesejahteraan = 'Menurun';
+    const rasio = (pendapatanBulanan && kebutuhanPokokBulanan) ? (parseFloat(pendapatanBulanan) / parseFloat(kebutuhanPokokBulanan)) : 0;
+    
+    if (rasio < 1.0 || hutangBaru) {
+        statusKesejahteraan = 'Menurun';
+    } else if (rasio >= 1.0 && !hutangBaru && !tabunganBaru) {
+        statusKesejahteraan = 'Stabil';
+    } else if (rasio >= 1.0 && !hutangBaru && tabunganBaru) {
+        statusKesejahteraan = 'Berkembang';
+    }
     try {
         const newData = await prisma.monitoringData.create({
             data: {
@@ -75,7 +79,12 @@ const createMonitoring = async (req, res) => {
                 achievements,
                 nextPlan,
                 surveyor,
-                notes
+                notes,
+                pendapatanBulanan: pendapatanBulanan ? parseFloat(pendapatanBulanan) : null,
+                kebutuhanPokokBulanan: kebutuhanPokokBulanan ? parseFloat(kebutuhanPokokBulanan) : null,
+                hutangBaru: hutangBaru || false,
+                tabunganBaru: tabunganBaru || false,
+                statusKesejahteraan
             },
             include: {
                 mustahik: { select: { name: true } },
@@ -95,6 +104,11 @@ const createMonitoring = async (req, res) => {
             nextPlan: newData.nextPlan,
             surveyor: newData.surveyor,
             notes: newData.notes,
+            pendapatanBulanan: newData.pendapatanBulanan,
+            kebutuhanPokokBulanan: newData.kebutuhanPokokBulanan,
+            hutangBaru: newData.hutangBaru,
+            tabunganBaru: newData.tabunganBaru,
+            statusKesejahteraan: newData.statusKesejahteraan,            
             mustahikName: newData.mustahik?.name,
             programName: newData.program?.name
         });

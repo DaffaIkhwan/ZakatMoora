@@ -19,6 +19,7 @@ model User {
   isActive  Boolean   @default(true)
   createdAt DateTime  @default(now())
   mustahik  Mustahik?
+  muzakki   Muzakki?
 
   @@schema("app")
 }
@@ -37,6 +38,7 @@ model AidProgram {
   createdAt          DateTime           @default(now())
   monitoringData     MonitoringData[]
   recipientHistory   RecipientHistory[]
+  donations          Donation[]
 
   @@map("Program")
   @@schema("app")
@@ -74,6 +76,7 @@ model SubCriterion {
 model Mustahik {
   id               String             @id
   userId           String?            @unique
+  nik              String?
   name             String
   address          String
   phone            String
@@ -127,10 +130,60 @@ model MonitoringData {
   nextPlan                String?
   surveyor                String?
   notes                   String?
+  
+  // CIBEST & IKB MONEV Indicators
+  pendapatanBulanan       Decimal?   @db.Decimal(15, 2)
+  kebutuhanPokokBulanan   Decimal?   @db.Decimal(15, 2)
+  hutangBaru              Boolean?   @default(false)
+  tabunganBaru            Boolean?   @default(false)
+  statusKesejahteraan     String?
+
+  // CIBEST Spiritual Indicators (Beik & Arsyianti, 2016)
+  sholat5Waktu            Int?       @default(3)
+  puasaRamadhan           Int?       @default(3)
+  zakatInfaq              Int?       @default(3)
+  lingkunganKeluarga      Int?       @default(3)
+  kebijakanPemerintah     Int?       @default(3)
+  cibestQuadrant          String?
+
   mustahik                Mustahik   @relation(fields: [mustahikId], references: [id])
   program                 AidProgram @relation(fields: [programId], references: [id])
 
   @@map("MonitoringData")
+  @@schema("app")
+}
+
+model Muzakki {
+  id             String     @id @default(uuid())
+  userId         String?    @unique
+  nik            String?
+  name           String
+  address        String
+  phone          String
+  job            String?
+  institution    String?
+  registeredDate DateTime   @default(now())
+  user           User?      @relation(fields: [userId], references: [id])
+  donations      Donation[]
+
+  @@schema("app")
+}
+
+model Donation {
+  id            String      @id @default(uuid())
+  muzakkiId     String
+  programId     String?
+  amount        Decimal     @db.Decimal(15, 2)
+  donationDate  DateTime    @default(now())
+  paymentMethod String?     @default("Cash")
+  status        String?     @default("success")
+  snapToken     String?
+  notes         String?
+  isAnonymous   Boolean?    @default(false)
+  isAllocation  Boolean?    @default(false)
+  muzakki       Muzakki     @relation(fields: [muzakkiId], references: [id])
+  program       AidProgram? @relation(fields: [programId], references: [id])
+
   @@schema("app")
 }
 
